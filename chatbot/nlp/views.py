@@ -36,4 +36,32 @@ class SVM(APIView):
             mecab = Mecab('/usr/local/lib64/mecab/dic/mecab-ko-dic')
             return mecab.pos(str(input))
 
+    # def train_data(self, type):
+    #     data = pd.read_csv('resource/'+type+'.csv')
+    #     x_data = data['question']
+    #     y_data = pd.Categorical(data['id'])
+
+    #     answer_index = dict()
+    #     for row in data.iterrows():
+    #         id = row[1]['id']
+    #         answer = row[1]['answer']
+
+    #     if not id in answer_index:
+    #         answer_index[id] = answer
+
+    #     cv = CountVectorizer(tokenizer=get_noun)
+    #     tdm = cv.fit_transform(x_data)
+    #     print(tdm.shape)
+    #     # pprint.pprint(cv.vocabulary_)
+    #     text_clf_svm = Pipeline([('vect', cv),
+    #                             ('tfidf', TfidfTransformer()),
+    #                             ('clf-svm', SGDClassifier(loss='hinge',
+    #                                                     penalty='l2',
+    #                                                     alpha=1e-3,
+    #                                                     max_iter=10,
+    #                                                     random_state=42
+    #                                                    ))])
+    #     print(text_clf_svm.fit(x_data, y_data))
+    #     return  [text_clf_svm, answer_index]
+
 svm_view = SVM.as_view()
