@@ -1,5 +1,4 @@
-# nlu 테스트용 프로젝트입니다
-* 사용된 기술이나 자신이 만든 api에 대해 작성해주세요
+# poop assistant
 
 ## How to Install
 * 1. install postgresql and create database
