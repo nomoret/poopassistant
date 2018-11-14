@@ -1,3 +1,22 @@
 from django.contrib import admin
+from . import models
 
-# Register your models here.
+@admin.register(models.Intent)
+class IntentAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'description',
+        'creator',
+        'created_at',
+        'updated_at',
+    )
+
+@admin.register(models.Example)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = (
+        'example',
+        'creator',
+        'intent',
+        'created_at',
+        'updated_at',
+    )
