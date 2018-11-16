@@ -10,6 +10,7 @@ class IntentAdmin(admin.ModelAdmin):
         'created_at',
         'updated_at',
     )
+    # examples size
 
 @admin.register(models.Example)
 class CommentAdmin(admin.ModelAdmin):
