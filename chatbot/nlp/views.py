@@ -39,6 +39,39 @@ class IntentDetail(APIView):
 
 intent_detaile_view = IntentDetail.as_view()
 
+class ListAllEntity(APIView):
+
+    def get(self, request, format=None):
+
+        print(request.scheme)
+        print(request.body)
+
+        all_entities =  models.Entity.objects.all()
+
+        serializer = serializers.SimpleEntitySerializer(all_entities, many=True)
+
+        return Response(data=serializer.data)
+
+list_all_entities_view = ListAllEntity.as_view()
+
+class EntityDetail(APIView):
+
+    def get(self, request, entity_id, format=None):
+
+        user = request.user
+        print(user)
+
+        try:
+            entity =  models.Entity.objects.get(id=entity_id)
+        except models.Entity.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = serializers.EntitySerializer(entity)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+entity_detaile_view = EntityDetail.as_view()
+
 class SVM(APIView):
 
     def get(self, request, format=None):

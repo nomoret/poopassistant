@@ -29,7 +29,7 @@ class Example(TimeStampModel):
     intent = models.ForeignKey(Intent, on_delete=models.CASCADE, null=True, related_name='examples')
 
     def __str__(self):
-            return self.example
+        return self.example
 
 class Entity(TimeStampModel):
 
@@ -37,6 +37,9 @@ class Entity(TimeStampModel):
 
     entity_name = models.CharField(max_length=128, blank=True)  
     creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)
+
+    def __str__(self):
+        return self.entity_name
 
 class EntityValue(TimeStampModel):
 
@@ -52,6 +55,9 @@ class EntityValue(TimeStampModel):
     entity_type = models.CharField(max_length=80, choices=ENTITY_CHOICE, null=True)
     creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)    
     entity = models.ForeignKey(Entity, on_delete=models.CASCADE, null=True, related_name='entitiy_values')
+
+    def __str__(self):
+        return self.entity_value_name
 
 class Synonym(TimeStampModel):
 
