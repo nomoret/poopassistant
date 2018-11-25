@@ -98,7 +98,7 @@ class SVM(APIView):
         'data': {
             'input': input_str,
             'pos_list': pos_tags,
-            'pos_tagger' : 'mecab'
+            'pos_tagger' : pos_tagger_type,
             }
         }
 
