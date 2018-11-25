@@ -1,9 +1,43 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from . import serializers
+from . import models
 
 from konlpy.tag import Mecab
 from konlpy.tag import Twitter
+
+class ListAllIntent(APIView):
+
+    def get(self, request, format=None):
+
+        print(request.scheme)
+        print(request.body)
+
+        all_intents =  models.Intent.objects.all()
+
+        serializer = serializers.SimpleIntentSerializer(all_intents, many=True)
+
+        return Response(data=serializer.data)
+
+list_all_intents_view = ListAllIntent.as_view()
+
+class IntentDetail(APIView):
+
+    def get(self, request, intent_id, format=None):
+        user = request.user
+
+        try:
+            intent = models.Intent.objects.get(id=intent_id)
+        except models.Intent.DoesNotExist:
+            print("not found intent!!!!")
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = serializers.IntentSerializer(intent)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+intent_detaile_view = IntentDetail.as_view()
 
 class SVM(APIView):
 
@@ -16,7 +50,11 @@ class SVM(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
         pos_tagger_type =  request.query_params.get('pos_tagger', None)
+        if not pos_tagger_type:
+            pos_tagger_type = 'mecab'
+        
         pos_tags = self._pos_tagger(input_str, pos_tagger_type)
+        print(pos_tags)
 
         if pos_tags is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)

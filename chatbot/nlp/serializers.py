@@ -3,21 +3,19 @@ from . import models
 from chatbot.users import models as user_models
 
 
-class IntentSerializer(serializers.ModelSerializer):
+class SimpleIntentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Intent
         fields = ('__all__')
-
 
 class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = user_models.User
         fields = (
-            'username'
+            'username',
         )
-
 
 class ExampleSerializer(serializers.ModelSerializer):
 
@@ -28,5 +26,19 @@ class ExampleSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'example',
+            'creator',
+        )
+
+class IntentSerializer(serializers.ModelSerializer):
+
+    examples = ExampleSerializer(many=True)
+
+    class Meta:
+        model = models.Intent
+        fields = (
+            "id",
+            'name',
+            'description',
+            'examples',
             'creator',
         )

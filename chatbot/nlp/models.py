@@ -10,14 +10,20 @@ class TimeStampModel(models.Model):
         abstract = True
 
 class Intent(TimeStampModel):
+
+    """ Intent Model """
+
     name = models.CharField(max_length=128, blank=True)
     description = models.CharField(max_length=128, blank=True)
     creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)
 
+    def __str__(self):
+        return self.name
 
 class Example(TimeStampModel):
 
     """ Example Model """
+
     example = models.TextField()
     creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)
     intent = models.ForeignKey(Intent, on_delete=models.CASCADE, null=True, related_name='examples')
@@ -27,10 +33,14 @@ class Example(TimeStampModel):
 
 class Entity(TimeStampModel):
 
+    """ Entity Model """
+
     entity_name = models.CharField(max_length=128, blank=True)  
     creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)
 
 class EntityValue(TimeStampModel):
+
+    """ Entity Value Model """
 
     ENTITY_CHOICE = {
         ("synonyms", "Synonyms"),
