@@ -21,3 +21,33 @@ class CommentAdmin(admin.ModelAdmin):
         'created_at',
         'updated_at',
     )
+
+@admin.register(models.Entity)
+class EntityAdmin(admin.ModelAdmin):
+    list_display = (
+        'entity_name',
+        'creator',
+        'created_at',
+        'updated_at',
+    )
+
+@admin.register(models.EntityValue)
+class EntityValueAdmin(admin.ModelAdmin):
+    list_display = (
+        'entity_value_name',
+        'entity_type',
+        'creator',
+        'entity',
+        'created_at',
+        'updated_at',
+    )
+
+@admin.register(models.Synonym)
+class SynonymAdmin(admin.ModelAdmin):
+    list_display = (
+        'text',
+        'creator',
+        'created_at',
+        'updated_at',
+        'entity_synonym',
+    )

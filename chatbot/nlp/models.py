@@ -17,7 +17,7 @@ class Intent(TimeStampModel):
 
 class Example(TimeStampModel):
 
-    """ Comment Model """
+    """ Example Model """
     example = models.TextField()
     creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)
     intent = models.ForeignKey(Intent, on_delete=models.CASCADE, null=True, related_name='examples')
@@ -27,27 +27,28 @@ class Example(TimeStampModel):
 
 class Entity(TimeStampModel):
 
+    entity_name = models.CharField(max_length=128, blank=True)  
+    creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)
+
+class EntityValue(TimeStampModel):
+
     ENTITY_CHOICE = {
         ("synonyms", "Synonyms"),
         ("patterns", "Patterns"),
         ("not-specified", "Not-specified")
     }
 
-    entity_name = models.CharField(max_length=128, blank=True)
-    entity_type = models.CharField(max_length=80, choices=ENTITY_CHOICE, null=True)
-    creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)
-
-class EntityValue(TimeStampModel):
     entity_value_name = models.CharField(max_length=128, blank=True)
+    entity_type = models.CharField(max_length=80, choices=ENTITY_CHOICE, null=True)
     creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)    
-    entity = models.ForeignKey(Entity, on_delete=models.CASCADE, null=True, related_name='entities')
+    entity = models.ForeignKey(Entity, on_delete=models.CASCADE, null=True, related_name='entitiy_values')
 
 class Synonym(TimeStampModel):
 
-    """ Comment Model """
-    name = models.TextField()
+    """ Synonym Model """
+    text = models.CharField(max_length=128, blank=True)
     creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)
-    entity_value = models.ForeignKey(EntityValue, on_delete=models.CASCADE, null=True, related_name='entityvalue')
+    entity_synonym = models.ForeignKey(EntityValue, on_delete=models.CASCADE, null=True, related_name='entity_synonym')
 
     def __str__(self):
-            return self.name
+            return self.text

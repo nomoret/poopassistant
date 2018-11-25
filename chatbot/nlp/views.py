@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from konlpy.tag import Mecab
+from konlpy.tag import Twitter
 
 class SVM(APIView):
 
@@ -12,9 +13,11 @@ class SVM(APIView):
         input_str = request.query_params.get('chat', None)
 
         if not input_str:
-            return Response(status=status.HTTP_400_BAD_REQUEST)    
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        pos_tagger_type =  request.query_params.get('pos_tagger', None)
+        pos_tags = self._pos_tagger(input_str, pos_tagger_type)
 
-        pos_tags = self._pos_tagger(input_str)
         if pos_tags is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -33,8 +36,13 @@ class SVM(APIView):
     def _pos_tagger(self, input, type='mecab'):
 
         if(type == 'mecab'):
-            mecab = Mecab('/usr/local/lib64/mecab/dic/mecab-ko-dic')
+            osx_path = '/usr/local/lib/mecab/dic/mecab-ko-dic'
+            tumbleweed_path = '/usr/local/lib64/mecab/dic/mecab-ko-dic'
+            mecab = Mecab(osx_path)
             return mecab.pos(str(input))
+        elif (type == 'twitter'):
+            twitter = Twitter()
+            return twitter.pos(str(input))
 
     # def train_data(self, type):
     #     data = pd.read_csv('resource/'+type+'.csv')
