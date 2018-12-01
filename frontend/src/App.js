@@ -5,7 +5,7 @@ class App extends Component {
   render() {
     return (
       <div className={styles.app}>
-        <header className={styles.appHeader}>
+        <div className={styles.appHeader}>
           <div>back btn icon</div>
           <div>ui name</div>
           <div>last modfied time</div>
@@ -13,7 +13,7 @@ class App extends Component {
           <div>delete item</div>
           <div>seach item</div>
           <div>try it</div>
-        </header>
+        </div>
         <div className={styles.appContainer}>
           <div className={styles.appSidebar}>side bar</div>
           <div className={styles.appContent}>item editor</div>
