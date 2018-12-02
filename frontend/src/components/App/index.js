@@ -1,6 +1,7 @@
 import React from "react";
-import styles from "./App.module.scss";
+import styles from "./styles.module.scss";
 import { Route, Switch } from "react-router-dom";
+import Sidebar from "components/SideBar";
 
 const App = props => (
   <div className={styles.app}>
@@ -34,15 +35,6 @@ const Navi = () => (
     <div>delete item</div>
     <div>seach item</div>
     <div>try it</div>
-  </div>
-);
-
-const Sidebar = () => (
-  <div className={styles.appSidebar}>
-    <ul>close</ul>
-    <ul>intent</ul>
-    <ul>entity</ul>
-    <ul>deploy</ul>
   </div>
 );
 
