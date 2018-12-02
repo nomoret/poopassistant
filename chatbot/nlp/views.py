@@ -37,7 +37,7 @@ class IntentDetail(APIView):
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-intent_detaile_view = IntentDetail.as_view()
+intent_detail_view = IntentDetail.as_view()
 
 class ListAllEntity(APIView):
 
@@ -70,7 +70,7 @@ class EntityDetail(APIView):
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-entity_detaile_view = EntityDetail.as_view()
+entity_detail_view = EntityDetail.as_view()
 
 class SVM(APIView):
 
