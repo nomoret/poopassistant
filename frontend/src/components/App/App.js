@@ -1,27 +1,54 @@
-import React, { Component } from "react";
+import React from "react";
 import styles from "./App.module.scss";
+import { Route, Switch } from "react-router-dom";
 
-class App extends Component {
-  render() {
-    return (
-      <div className={styles.app}>
-        <div className={styles.appHeader}>
-          <div>back btn icon</div>
-          <div>ui name</div>
-          <div>last modfied time</div>
-          <div>export icon</div>
-          <div>delete item</div>
-          <div>seach item</div>
-          <div>try it</div>
-        </div>
-        <div className={styles.appContainer}>
-          <div className={styles.appSidebar}>side bar</div>
-          <div className={styles.appContent}>item editor</div>
-          <div className={styles.appPanel}>chat panel</div>
-        </div>
-      </div>
-    );
-  }
-}
+const App = props => (
+  <div className={styles.app}>
+    <Navi />
+    <PublicRoutes />
+  </div>
+);
+
+const PublicRoutes = props => (
+  <div className={styles.appContainer}>
+    <Sidebar />
+    <Switch>
+      <Route exact path="/intents" component={Intents} />
+      <Route exact path="/entities" component={Entities} />
+      <Route
+        exact
+        path="/"
+        render={() => <div className={styles.appContent}>main</div>}
+      />
+    </Switch>
+    <ChatPanel />
+  </div>
+);
+
+const Navi = () => (
+  <div className={styles.appHeader}>
+    <div>back btn icon</div>
+    <div>ui name</div>
+    <div>last modfied time</div>
+    <div>export icon</div>
+    <div>delete item</div>
+    <div>seach item</div>
+    <div>try it</div>
+  </div>
+);
+
+const Sidebar = () => (
+  <div className={styles.appSidebar}>
+    <ul>close</ul>
+    <ul>intent</ul>
+    <ul>entity</ul>
+    <ul>deploy</ul>
+  </div>
+);
+
+const Intents = () => <div className={styles.appContent}>intent editor</div>;
+const Entities = () => <div className={styles.appContent}>entity editor</div>;
+
+const ChatPanel = () => <div className={styles.appPanel}>chat panel</div>;
 
 export default App;
