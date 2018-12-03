@@ -2,10 +2,14 @@ import React from "react";
 import styles from "./styles.module.scss";
 import { Route, Switch } from "react-router-dom";
 import Sidebar from "components/SideBar";
+import Intents from "components/Intents";
+import Entities from "components/Entities";
+import ChatPanel from "components/ChatPanel";
+import Navigation from "components/Navigation";
 
 const App = props => (
   <div className={styles.app}>
-    <Navi />
+    <Navigation />
     <PublicRoutes />
   </div>
 );
@@ -17,7 +21,6 @@ const PublicRoutes = props => (
       <Route exact path="/intents" component={Intents} />
       <Route exact path="/entities" component={Entities} />
       <Route
-        exact
         path="/"
         render={() => <div className={styles.appContent}>main</div>}
       />
@@ -25,22 +28,5 @@ const PublicRoutes = props => (
     <ChatPanel />
   </div>
 );
-
-const Navi = () => (
-  <div className={styles.appHeader}>
-    <div>back btn icon</div>
-    <div>ui name</div>
-    <div>last modfied time</div>
-    <div>export icon</div>
-    <div>delete item</div>
-    <div>seach item</div>
-    <div>try it</div>
-  </div>
-);
-
-const Intents = () => <div className={styles.appContent}>intent editor</div>;
-const Entities = () => <div className={styles.appContent}>entity editor</div>;
-
-const ChatPanel = () => <div className={styles.appPanel}>chat panel</div>;
 
 export default App;
