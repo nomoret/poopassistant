@@ -1,10 +1,16 @@
 .sidebar {
+  top: 0;
+  left: 0;
   width: 5%;
-  height: 100%;
-  align-items: stretch;
+  min-height: 100vh;
   background-color: $bg;
-  flex-grow: 1;
-  align-items: center;
+  transition: left .5s ease;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;  
+  font-weight: 400;
+  font-style: normal;  
+
   .row {
     margin: 0;
     height: 64px;
@@ -13,6 +19,5 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    font-size: calc(10px + 2vmin);
   }
 }

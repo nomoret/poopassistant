@@ -4,22 +4,25 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => (
   <div className={styles.sidebar}>
-    <div className={styles.row}>
-      <ul>close</ul>
-    </div>
-    <div className={styles.row}>
-      <ul>
-        <Link to="/intents">intents</Link>
-      </ul>
-    </div>
-    <div className={styles.row}>
-      <ul>
+    <ul>
+      <div className={styles.row}>
+        <button />
+      </div>
+      <div className={styles.row}>
+        <li>close</li>
+      </div>
+      <div className={styles.row}>
+        <li>
+          <Link to="/intents">intents</Link>
+        </li>
+      </div>
+      <div className={styles.row}>
         <Link to="/entities">entities</Link>
-      </ul>
-    </div>
-    <div className={styles.row}>
-      <ul>deploy</ul>
-    </div>
+      </div>
+      <div className={styles.row}>
+        <li>deploy</li>
+      </div>
+    </ul>
   </div>
 );
 
