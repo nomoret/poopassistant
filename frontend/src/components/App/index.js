@@ -9,8 +9,8 @@ import Navigation from "components/Navigation";
 
 const App = props => (
   <div className={styles.app}>
-    <Navigation />
-    <PublicRoutes />
+    <Navigation key={1} />
+    <PublicRoutes key={2} />
   </div>
 );
 
@@ -20,13 +20,12 @@ const PublicRoutes = props => (
     <Switch>
       <Route exact path="/intents" component={Intents} />
       <Route exact path="/entities" component={Entities} />
-      <Route
-        path="/"
-        render={() => <div className={styles.appContent}>main</div>}
-      />
+      <Route path="/" component={BasicContainer} />
     </Switch>
     <ChatPanel />
   </div>
 );
+
+const BasicContainer = () => <div className={styles.appContent}>main</div>;
 
 export default App;

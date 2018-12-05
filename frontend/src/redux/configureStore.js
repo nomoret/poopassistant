@@ -1,9 +1,10 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
-import users from "redux/modules/users";
 import thunk from "redux-thunk";
 import { createBrowserHistory } from "history";
 import { connectRouter, routerMiddleware } from "connected-react-router";
 import { composeWithDevTools } from "redux-devtools-extension";
+import users from "redux/modules/users";
+import intents from "redux/modules/intents";
 
 const env = process.env.NODE_ENV;
 
@@ -19,6 +20,7 @@ if (env === "development") {
 const reducer = history =>
   combineReducers({
     users,
+    intents,
     router: connectRouter(history)
   });
 
@@ -30,7 +32,8 @@ if (env === "development") {
       composeWithDevTools(applyMiddleware(...middlewares))
     );
 } else {
-  store = initialState => createStore(reducer, applyMiddleware(...middlewares));
+  store = initialState =>
+    createStore(reducer(history), applyMiddleware(...middlewares));
 }
 
 export { history };
