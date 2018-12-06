@@ -2,42 +2,47 @@ import React from "react";
 import styles from "./styles.module.scss";
 import PropTypes from "prop-types";
 
-const Intents = props => {
+const Entities = props => {
   console.log("UserList no stateless");
   console.log(props);
   return (
     <div className={styles.container}>
       <div className={styles.box}>
         <div className={styles.content}>
-          {props.loading ? "loading" : <RenderIntents list={props.intents} />}
+          {props.loading ? "loading" : <RenderEntities list={props.entites} />}
         </div>
       </div>
     </div>
   );
 };
 
-const RenderIntents = props => {
+const RenderEntities = props => {
   console.log(props);
-  return props.list.map(intent => <UserRow key={intent.id} intent={intent} />);
+  return props.list.map(entity => <UserRow key={entity.id} entity={entity} />);
 };
 
 const UserRow = props => {
   const {
-    intent: { created_at, description, name, updated_at }
+    entity: {
+      creator: { username },
+      entity_name,
+      created_at,
+      updated_at
+    }
   } = props;
   console.log(props);
   return (
     <span className={styles.column}>
-      <div>{name}</div>
-      <div>{description}</div>
+      <div>{username}</div>
+      <div>{entity_name}</div>
       <div>{created_at}</div>
       <div>{updated_at}</div>
     </span>
   );
 };
 
-Intents.propTypes = {
-  intents: PropTypes.array
+Entities.propTypes = {
+  entities: PropTypes.array
 };
 
-export default Intents;
+export default Entities;

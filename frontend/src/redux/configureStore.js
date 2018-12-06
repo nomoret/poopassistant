@@ -5,6 +5,7 @@ import { connectRouter, routerMiddleware } from "connected-react-router";
 import { composeWithDevTools } from "redux-devtools-extension";
 import users from "redux/modules/users";
 import intents from "redux/modules/intents";
+import entities from "redux/modules/entities";
 
 const env = process.env.NODE_ENV;
 
@@ -21,6 +22,7 @@ const reducer = history =>
   combineReducers({
     users,
     intents,
+    entities,
     router: connectRouter(history)
   });
 

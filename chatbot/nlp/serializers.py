@@ -52,6 +52,8 @@ class SimpleEntitySerializer(serializers.ModelSerializer):
             'id',
             'entity_name',
             'creator',
+            "created_at",
+            'updated_at',
         )
 class SynonymSerializer(serializers.ModelSerializer):
     # creator = UserSerializer(read_only=True)

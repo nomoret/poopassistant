@@ -1,6 +1,29 @@
-import React from "react";
-import styles from "./styles.module.scss";
+import { connect } from "react-redux";
+import { actionCreators as enitityActions } from "redux/modules/entities";
+import Container from "./container";
 
-const Entities = () => <div className={styles.container}>entity editor</div>;
+const mapStateToProps = state => {
+  console.log("mapStateToProps");
+  console.log(state);
 
-export default Entities;
+  const {
+    entities: { entityList }
+  } = state;
+
+  return {
+    entityList
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getEntityList: () => {
+      dispatch(enitityActions.getEntityList());
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Container);
