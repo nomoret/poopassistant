@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Intents from "./presenter";
+import IntentPanel from "./presenter";
 import PropTypes from "prop-types";
 
 class Container extends Component {
@@ -33,7 +33,7 @@ class Container extends Component {
 
   render() {
     const { intentList } = this.props;
-    return <Intents {...this.state} intents={intentList} />;
+    return <IntentPanel {...this.state} intents={intentList} />;
   }
 }
 export default Container;

@@ -1,6 +1,6 @@
 // import
 // actions
-const SET_INTENT_LIST = "SET_INTENT_LIST=";
+const SET_INTENT_LIST = "SET_INTENT_LIST";
 
 // action creators
 function setIntentList(intentList) {

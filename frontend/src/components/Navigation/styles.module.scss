@@ -14,11 +14,14 @@
     padding: 0 .125rem;    
 
     .column {
+      font-weight: 400;
       width: 33%;
       display: flex;
       align-items: center;
+      text-align: right;
   
       .button {
+        border: none;
         background-color: $bg;
       }      
     }

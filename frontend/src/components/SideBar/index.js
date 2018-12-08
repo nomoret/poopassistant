@@ -1,12 +1,15 @@
 import React from "react";
 import styles from "./styles.module.scss";
 import { Link } from "react-router-dom";
+import Ionicon from "react-ionicons";
 
 const Sidebar = () => (
   <div className={styles.sidebar}>
     <ul>
       <div className={styles.row}>
-        <button />
+        <div className={styles.naviIcon}>
+          <Ionicon icon="md-arrow-round-back" fontSize="32px" color="#56acf2" />
+        </div>
       </div>
       <div className={styles.row}>
         <li>close</li>

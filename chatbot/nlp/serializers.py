@@ -7,7 +7,14 @@ class SimpleIntentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Intent
-        fields = ('__all__')
+        fields = (
+            'id',
+            'name',
+            'description',
+            'creator',
+            'modified_time',
+            'examples_count',
+        )
 
 class UserSerializer(serializers.ModelSerializer):
     
@@ -41,6 +48,7 @@ class IntentSerializer(serializers.ModelSerializer):
             'description',
             'examples',
             'creator',
+            'modified_time',
         )
 
 class SimpleEntitySerializer(serializers.ModelSerializer):

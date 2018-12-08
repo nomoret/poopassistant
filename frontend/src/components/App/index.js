@@ -2,8 +2,8 @@ import React from "react";
 import styles from "./styles.module.scss";
 import { Route, Switch } from "react-router-dom";
 import Sidebar from "components/SideBar";
-import Intents from "components/Intents";
-import Entities from "components/Entities";
+import Intents from "components/IntentPanel";
+import Entities from "components/EntityList";
 import ChatPanel from "components/ChatPanel";
 import Navigation from "components/Navigation";
 

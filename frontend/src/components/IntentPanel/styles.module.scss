@@ -1,0 +1,54 @@
+.container {
+  width: 75%;
+  height: 100%;
+  background-color: $gray-color;
+
+  display: flex;
+  justify-content: space-between;
+
+  .content {
+    width: 100%;
+    min-height: 300px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    
+    .table {
+      display: table;
+      width: 100%;  
+      box-sizing: border-box;
+      border-bottom: 1px solid $light-grey;
+      font-size: 100%;
+
+      .thread {
+        width: 100%;
+        text-align: left;
+      }
+      
+      .tbody {
+        
+        width: 100%;
+        .odd-row {
+          .column {      
+            box-sizing: border-box;
+            text-align: left;
+            align-content: center;
+          }
+        }
+
+        .even-row {
+          background-color: white;
+
+          .column {      
+            box-sizing: border-box;
+            text-align: left;
+            align-content: center;
+          }
+        }
+        
+      }
+    
+    }
+  }
+
+}
