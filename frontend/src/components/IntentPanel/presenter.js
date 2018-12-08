@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./styles.module.scss";
-import PropTypes from "prop-types";
 import IntentList from "components/IntentList";
 
 const IntentPanel = props => {
@@ -13,10 +12,6 @@ const IntentPanel = props => {
       </div>
     </div>
   );
-};
-
-IntentPanel.propTypes = {
-  intents: PropTypes.array
 };
 
 export default IntentPanel;
