@@ -1,14 +1,76 @@
 .container {
-  width: 75%;
-  height: 100%;
+  width: 100%;
+  // height: 100%;
   background-color: $gray-color;
 
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  
+  .action {
+    display: flex;
+    flex-direction: row;
+    height: 5vh;
+    // justify-content: center;
+    background-color: #F4F7FB;
+    .add-intent {
+
+      vertical-align: bottom;
+      margin-right: 8px;
+      height: 32px;
+
+      min-width: 120px;
+      background-color: #047cc0;
+      color: #fff;
+
+      font-weight: 400;
+      font-style: normal;
+      position: relative;
+      font-size: 1em;
+      text-align: center;
+
+      
+
+      &:hover {
+        background-color: #175D8D;
+        cursor: pointer;
+      }
+    }
+
+    .import {
+      background-color: inherit;
+      border: none;
+      &:active {
+        outline: none;
+      }
+      &:active {
+        opacity: 0.7;
+      }
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .export {
+      background-color: inherit;
+      border: none;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .trash-can {
+      background-color: inherit;
+      border: none;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
 
   .content {
     width: 100%;
-    min-height: 300px;
+    height: 100%;
+    min-height: 500px;
     display: flex;
     align-items: flex-start;
     flex-direction: row;

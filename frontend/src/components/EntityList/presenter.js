@@ -12,7 +12,6 @@ const Entities = props => {
           {props.loading ? "loading" : <RenderEntities list={props.entites} />}
         </div>
       </div>
-      <WatsonIntent />
     </div>
   );
 };
@@ -39,45 +38,6 @@ const UserRow = props => {
       <div>{created_at}</div>
       <div>{updated_at}</div>
     </span>
-  );
-};
-
-const WatsonIntent = () => {
-  return (
-    <div>
-      <table />
-      {/* <Table>
-        <TableHead>
-          <TableRow header>
-            <TableHeader>First Name</TableHeader>
-            <TableHeader>Last Name</TableHeader>
-            <TableHeader>House</TableHeader>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            <TableData>Harry</TableData>
-            <TableData>Potter</TableData>
-            <TableData>Gryffindor</TableData>
-          </TableRow>
-          <TableRow>
-            <TableData>Hermoine</TableData>
-            <TableData>Granger</TableData>
-            <TableData>Gryffindor</TableData>
-          </TableRow>
-          <TableRow>
-            <TableData>Blaise</TableData>
-            <TableData>Zambini</TableData>
-            <TableData>Slytherin</TableData>
-          </TableRow>
-          <TableRow>
-            <TableData>Jon</TableData>
-            <TableData>Snow</TableData>
-            <TableData>Stark</TableData>
-          </TableRow>
-        </TableBody>
-      </Table> */}
-    </div>
   );
 };
 

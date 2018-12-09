@@ -1,0 +1,96 @@
+.container {
+    background-color: white;
+    z-index: 9999;
+    margin-left: 48px;
+    padding: 0 16px 0 48px;
+
+    .header {
+        display: flex;
+        height: 48px;
+        flex-direction: row;
+        align-items: center;
+
+        .breadcrumbs {
+            flex-grow: 1;
+            color: #777677;
+
+            .breadcrumb {
+                display: flex;
+                flex-direction: row;
+
+                .item::after {
+                    content: "/";
+                    margin: 0 4px;
+                }
+            }
+        }
+
+        .column {
+            flex-grow: 0;
+            .button {    
+                color: white;
+                padding: .4em .8em;
+                font-size: 0.8em;
+                font-weight: 400;
+                background: linear-gradient(225deg, #00a78f 0%, #047cc0 100%);
+            }
+        }
+    }
+
+    .sub-header {
+        display: flex;
+        height: 64px;
+        align-items: center;
+
+        .detail {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            height: 64px;
+
+            .h3 {
+                font-size: 1.25rem;
+                line-height: 1.25;
+                font-weight: 300;
+            }
+
+            .description {
+                font-size: 14px;
+                color: #5a6872;
+                margin-top: 4px;
+            }
+        }
+    }
+
+    .sub-navi {
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -ms-flex-align: left;
+        align-items: left;
+        color: #777677;
+        
+        .list {
+            height: 64px;
+            line-height: 64px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            display: flex;
+            width: 100%;
+            border-bottom: 1px solid #d8d8d8;
+
+            .first-item {
+                margin-left: 0px;
+            }
+
+            .item {
+                margin-left: 32px;
+            }
+        }
+    }
+}

@@ -28,7 +28,7 @@ const Navigation = () => (
           />
         </div>
         <div className={styles.naviIcon}>
-          <Ionicon icon="ios-person-outline" fontSize="32px" color="white" />
+          <Ionicon icon="ios-contact-outline" fontSize="32px" color="white" />
         </div>
       </div>
     </div>

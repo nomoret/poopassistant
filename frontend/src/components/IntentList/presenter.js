@@ -11,10 +11,10 @@ const IntentList = props => {
           <th>
             <input type="checkbox" name="" value="All" />
           </th>
-          <th>name</th>
-          <th>description</th>
-          <th>modified</th>
-          <th>examples</th>
+          <th>Intents</th>
+          <th>Description</th>
+          <th>Modified</th>
+          <th>Examples</th>
         </tr>
       </thead>
       <tbody className={styles.tbody}>

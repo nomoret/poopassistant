@@ -12,9 +12,7 @@ const Sidebar = () => (
         </div>
       </div>
       <div className={styles.row}>
-        <li>close</li>
-      </div>
-      <div className={styles.row}>
+        <Ionicon icon="ios-build-outline" fontSize="32px" color="#56acf2" />
         <li>
           <Link to="/intents">intents</Link>
         </li>
