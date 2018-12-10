@@ -5,7 +5,10 @@ import Ionicon from "react-ionicons";
 
 const Sidebar = () => (
   <div className={styles.sidebar}>
-    <ul>
+    <button className={styles.closeBtn}>
+      <Ionicon icon="md-close" fontSize="32px" color="white" />
+    </button>
+    <ul className={styles.list}>
       <div className={styles.row}>
         <div className={styles.naviIcon}>
           <Ionicon icon="md-arrow-round-back" fontSize="32px" color="#56acf2" />

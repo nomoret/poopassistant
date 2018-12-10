@@ -1,8 +1,10 @@
 .table {
+  margin-left: 48px;
   display: table;
   width: 100%;  
   box-sizing: border-box;
   font-size: 100%;
+  overflow-y: auto;
 
   .thead {
     width: 100%;
