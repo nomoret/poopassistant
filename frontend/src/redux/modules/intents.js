@@ -14,7 +14,7 @@ function setIntentList(intentList) {
 // api action
 function getIntentList() {
   return (dispatch, getState) => {
-    fetch(`/nlp/all/intents`)
+    fetch(`/nlp/intents`)
       .then(response => response.json())
       .then(json => dispatch(setIntentList(json)))
       .catch(err => console.log(err));

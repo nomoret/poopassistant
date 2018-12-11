@@ -7,7 +7,7 @@ from . import models
 from konlpy.tag import Mecab
 from konlpy.tag import Twitter
 
-class ListAllIntent(APIView):
+class Intents(APIView):
 
     def get(self, request, format=None):
 
@@ -20,7 +20,17 @@ class ListAllIntent(APIView):
 
         return Response(data=serializer.data)
 
-list_all_intents_view = ListAllIntent.as_view()
+    def post(self, request, format=None):        
+        user = request.user        
+        print(request.data)
+
+        serializer = serializers.SimpleIntentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(creator=user)
+            return Response(data=request.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)       
+
+intents_view = Intents.as_view()
 
 class IntentDetail(APIView):
 
@@ -37,9 +47,74 @@ class IntentDetail(APIView):
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
+    def delete(self, request, intent_id, format=None):
+        user = request.user
+        print(user)
+
+        try:
+            intent = models.Intent.objects.get(id=intent_id)
+        except models.Intent.DoesNotExist:
+            print("not found intent!!!!")
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        intent.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 intent_detail_view = IntentDetail.as_view()
 
-class ListAllEntity(APIView):
+class IntentAddExamples(APIView):
+    def get(self, request, intent_id, format=None):
+        user = request.user
+
+        examples = models.Example.objects.filter(intent__id=intent_id)
+
+        serializer = serializers.ExampleSerializer(examples, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+        
+    def post(self, request, intent_id, format=None):
+        user = request.user
+        print(user)
+
+        try:
+            found_intent = models.Intent.objects.get(id=intent_id)
+        except models.Intent.DoesNotExist:
+            print("not found intent!!!!")
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = serializers.ExampleSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save(intent=found_intent)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.error, status=status.HTTP_400_BAD_REQUEST)
+
+intent_add_examples_view = IntentAddExamples.as_view()
+
+class Example(APIView):
+    # def get(self, request, example_id, format=None):
+    #     pass
+
+    def delete(self, request, example_id, format=None):
+        user = request.user
+        print(user)
+
+        print(example_id)
+
+        try:
+            example = models.Example.objects.get(id=example_id)
+        except models.Example.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        example.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+example_view = Example.as_view()
+
+class Entities(APIView):
 
     def get(self, request, format=None):
 
@@ -52,7 +127,7 @@ class ListAllEntity(APIView):
 
         return Response(data=serializer.data)
 
-list_all_entities_view = ListAllEntity.as_view()
+entities_view = Entities.as_view()
 
 class EntityDetail(APIView):
 

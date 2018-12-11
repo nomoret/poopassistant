@@ -15,7 +15,7 @@ function setEntityList(entityList) {
 function getEntityList() {
   console.log("entityList");
   return (dispatch, getState) => {
-    fetch(`/nlp/all/entities`)
+    fetch(`/nlp/entities`)
       .then(response => response.json())
       .then(json => dispatch(setEntityList(json)))
       .catch(err => console.log(err));
