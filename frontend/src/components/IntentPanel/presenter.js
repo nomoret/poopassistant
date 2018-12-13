@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./styles.module.scss";
-import IntentList from "components/IntentList";
 import Ionicon from "react-ionicons";
+import IntentList from "components/IntentList";
+import IntentEditor from "components/IntentEditor";
 
 const IntentPanel = props => {
   console.log("UserList no stateless");
@@ -33,6 +34,7 @@ const IntentPanel = props => {
       <div className={styles.content}>
         {props.loading ? "loading" : <IntentList list={props.intents} />}
       </div>
+      <IntentEditor />
     </div>
   );
 };

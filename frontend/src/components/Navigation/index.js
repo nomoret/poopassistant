@@ -17,7 +17,7 @@ const Navigation = () => (
           Poop <b>Assisatant</b>
         </span>
       </div>
-      <div className={styles.column} />
+      {/* <div className={styles.column} /> */}
       <div className={styles.column}>Cookie Preferences</div>
       <div className={styles.column}>
         <div className={styles.naviIcon}>
