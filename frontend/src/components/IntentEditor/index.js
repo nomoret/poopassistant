@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styles from "./styles.module.scss";
 import Ionicon from "react-ionicons";
 
@@ -9,7 +10,7 @@ const IntentEditor = props => (
         <form className={styles.form}>
           <div className={styles.header}>
             <div className={styles.title}>
-              <button className={styles.close}>
+              <button className={styles.close} onClick={props.closeEdit}>
                 <Ionicon icon="md-arrow-back" fontSize="32px" color="#56acf2" />
               </button>
               <div className={styles.verticalBar} />
@@ -111,5 +112,9 @@ const IntentEditor = props => (
     </aside>
   </div>
 );
+
+IntentEditor.propTypes = {
+  closeEdit: PropTypes.func.isRequired
+};
 
 export default IntentEditor;

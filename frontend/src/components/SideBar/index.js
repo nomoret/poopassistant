@@ -15,17 +15,27 @@ const Sidebar = () => (
         </div>
       </div>
       <div className={styles.row}>
-        <Ionicon icon="ios-build-outline" fontSize="32px" color="#56acf2" />
-        <li>
-          <Link to="/intents">intents</Link>
-        </li>
+        <div className={styles.naviIcon}>
+          <Link to="/intents">
+            <Ionicon
+              icon="ios-construct-outline"
+              fontSize="32px"
+              color="#56acf2"
+            />
+          </Link>
+        </div>
       </div>
       <div className={styles.row}>
-        <Link to="/entities">entities</Link>
+        <Link to="/intents">
+          <Ionicon icon="ios-build-outline" fontSize="32px" color="#56acf2" />
+        </Link>
       </div>
       <div className={styles.row}>
-        <li>deploy</li>
+        <Link to="/entities">
+          <Ionicon icon="ios-trending-up" fontSize="32px" color="#56acf2" />
+        </Link>
       </div>
+      <div className={styles.row}>{/* <li>deploy</li> */}</div>
     </ul>
   </div>
 );

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styles from "./styles.module.scss";
 import Ionicon from "react-ionicons";
 import IntentList from "components/IntentList";
@@ -10,7 +11,11 @@ const IntentPanel = props => {
   return (
     <div className={styles.container}>
       <div className={styles.action}>
-        <button className={styles.addIntent} title="add Intent">
+        <button
+          className={styles.addIntent}
+          title="add Intent"
+          onClick={props.openEdit}
+        >
           add Intent
         </button>
         <button className={styles.import} title="Import intents">
@@ -34,9 +39,25 @@ const IntentPanel = props => {
       <div className={styles.content}>
         {props.loading ? "loading" : <IntentList list={props.intents} />}
       </div>
-      <IntentEditor />
+      {props.seeingLikes ? <IntentEditor closeEdit={props.closeEdit} /> : null}
     </div>
   );
+};
+
+IntentPanel.propTypes = {
+  // id: PropTypes.number.isRequired,
+  intents: PropTypes.arrayOf(
+    PropTypes.shape({
+      // id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      creator: PropTypes.number,
+      examples_count: PropTypes.number.isRequired,
+      modified_time: PropTypes.string.isRequired
+    }).isRequired
+  ),
+  openEdit: PropTypes.func.isRequired,
+  closeEdit: PropTypes.func.isRequired
 };
 
 export default IntentPanel;

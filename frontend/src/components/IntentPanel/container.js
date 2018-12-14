@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 
 class Container extends Component {
   state = {
-    loading: true
+    loading: true,
+    seeingLikes: false
   };
 
   static propTypes = {
@@ -33,7 +34,29 @@ class Container extends Component {
 
   render() {
     const { intentList } = this.props;
-    return <IntentPanel {...this.state} intents={intentList} />;
+    return (
+      <IntentPanel
+        {...this.state}
+        intents={intentList}
+        openEdit={this._openEdit}
+        closeEdit={this._closeEdit}
+      />
+    );
   }
+
+  _openEdit = () => {
+    console.log("openEdit");
+    this.setState({
+      seeingLikes: true
+    });
+  };
+
+  _closeEdit = event => {
+    event.preventDefault();
+    console.log("closeEdit");
+    this.setState({
+      seeingLikes: false
+    });
+  };
 }
 export default Container;
