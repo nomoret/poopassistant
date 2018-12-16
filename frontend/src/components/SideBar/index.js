@@ -11,28 +11,40 @@ const Sidebar = () => (
     <ul className={styles.list}>
       <div className={styles.row}>
         <div className={styles.naviIcon}>
-          <Ionicon icon="md-arrow-round-back" fontSize="32px" color="#56acf2" />
+          <Ionicon
+            className={styles.icon}
+            icon="md-arrow-round-back"
+            fontSize="32px"
+          />
         </div>
       </div>
       <div className={styles.row}>
         <div className={styles.naviIcon}>
           <Link to="/intents">
             <Ionicon
+              className={styles.icon}
               icon="ios-construct-outline"
               fontSize="32px"
-              color="#56acf2"
             />
           </Link>
         </div>
       </div>
       <div className={styles.row}>
-        <Link to="/intents">
-          <Ionicon icon="ios-build-outline" fontSize="32px" color="#56acf2" />
+        <Link to="/deploy">
+          <Ionicon
+            className={styles.icon}
+            icon="ios-build-outline"
+            fontSize="32px"
+          />
         </Link>
       </div>
       <div className={styles.row}>
-        <Link to="/entities">
-          <Ionicon icon="ios-trending-up" fontSize="32px" color="#56acf2" />
+        <Link to="/improve">
+          <Ionicon
+            className={styles.icon}
+            icon="ios-trending-up"
+            fontSize="32px"
+          />
         </Link>
       </div>
       <div className={styles.row}>{/* <li>deploy</li> */}</div>

@@ -35,6 +35,14 @@
       align-items: center;
       justify-content: space-around;
       background-color: $bg;
+
+      .icon {
+        fill: #56acf2;
+        &:hover {
+          fill: white;
+          cursor: pointer;
+        }
+      }
     }
   } 
 }
