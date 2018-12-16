@@ -19,16 +19,22 @@ const IntentList = props => {
       </thead>
       <tbody className={styles.tbody}>
         {props.list.map((intent, index) => (
-          <IntentRow key={intent.id} index={index} intent={intent} />
+          <IntentRow
+            key={intent.id}
+            index={index}
+            intent={intent}
+            openEdit={props.openEdit}
+          />
         ))}
       </tbody>
     </table>
   );
 };
 
-const IntentRow = (props, index) => {
+const IntentRow = props => {
   const {
-    intent: { name, description, modified_time, examples_count }
+    intent: { name, description, modified_time, examples_count },
+    openEdit
   } = props;
   console.log(props);
 
@@ -38,9 +44,9 @@ const IntentRow = (props, index) => {
         <input type="checkbox" name="" value="intent" />
       </td>
       <td className={styles.column}>
-        <button className={styles.intentEdit}>
+        <span className={styles.intentEdit} onClick={openEdit}>
           <span>#{name}</span>
-        </button>
+        </span>
       </td>
       <td className={styles.column}>
         <div>{description}</div>
@@ -57,6 +63,16 @@ const IntentRow = (props, index) => {
 
 IntentList.propTypes = {
   intents: PropTypes.array
+};
+
+IntentRow.propTypes = {
+  intent: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    modified_time: PropTypes.string.isRequired,
+    examples_count: PropTypes.number.isRequired
+  }).isRequired,
+  openEdit: PropTypes.func.isRequired
 };
 
 export default IntentList;

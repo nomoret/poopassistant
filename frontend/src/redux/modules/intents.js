@@ -1,6 +1,7 @@
 // import
 // actions
 const SET_INTENT_LIST = "SET_INTENT_LIST";
+const ADD_INTENT = "ADD_INTENT";
 
 // action creators
 function setIntentList(intentList) {
@@ -11,6 +12,14 @@ function setIntentList(intentList) {
   };
 }
 
+function addIntent(intent) {
+  console.log(intent);
+  return {
+    type: ADD_INTENT,
+    intent
+  };
+}
+
 // api action
 function getIntentList() {
   return (dispatch, getState) => {
@@ -18,6 +27,25 @@ function getIntentList() {
       .then(response => response.json())
       .then(json => dispatch(setIntentList(json)))
       .catch(err => console.log(err));
+  };
+}
+
+function createIntent(name, description) {
+  return (dispatch, getState) => {
+    console.log(name);
+    console.log(description);
+    fetch(`/nlp/intents`, {
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+      body: JSON.stringify({
+        name,
+        description
+      })
+    })
+      .then(response => response.json())
+      .then(json => console.log(json));
+    // .then(json => dispatch(addIntent(json)))
+    // .catch(err => console.log(err));
   };
 }
 
@@ -45,7 +73,8 @@ function applySetIntentList(state, action) {
 
 // export
 const actionCreators = {
-  getIntentList
+  getIntentList,
+  createIntent
 };
 
 export { actionCreators };

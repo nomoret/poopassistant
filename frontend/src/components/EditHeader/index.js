@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./styles.module.scss";
+import { Link } from "react-router-dom";
 import Ionicon from "react-ionicons";
 
 const EditHeader = () => (
@@ -30,9 +31,15 @@ const EditHeader = () => (
     <div className={styles.subNavi}>
       <nav>
         <ul className={styles.list}>
-          <li className={styles.firstItem}>Intent</li>
-          <li className={styles.item}>Entity</li>
-          <li className={styles.item}>Dialog</li>
+          <li className={styles.firstItem}>
+            <Link to="/intents">Intent</Link>
+          </li>
+          <li className={styles.item}>
+            <Link to="/entities">Entity</Link>
+          </li>
+          <li className={styles.item}>
+            <Link to="/dialog">Dialog</Link>
+          </li>
         </ul>
       </nav>
     </div>

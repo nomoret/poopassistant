@@ -123,6 +123,26 @@
                             text-align: center;
                         }
 
+                        .create-intent-disable {
+                            border: none;
+                            vertical-align: bottom;
+                            margin-right: 8px;
+                            height: 32px;
+                            min-width: 120px;
+                            background-color: #047cc0;
+                            color: #fff;
+                            font-weight: 400;
+                            font-style: normal;
+                            position: relative;
+                            font-size: 1em;
+                            text-align: center;
+                            opacity: .65;
+                            
+                            &:hover {  
+                                cursor: not-allowed;
+                            }
+                        }
+
                         .under-line {
                             border-bottom: 2px solid #d8d8d8;
                             width: 100%;

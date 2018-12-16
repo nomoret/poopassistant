@@ -37,7 +37,11 @@ const IntentPanel = props => {
         </button>
       </div>
       <div className={styles.content}>
-        {props.loading ? "loading" : <IntentList list={props.intents} />}
+        {props.loading ? (
+          "loading"
+        ) : (
+          <IntentList list={props.intents} openEdit={props.openEdit} />
+        )}
       </div>
       {props.seeingLikes ? <IntentEditor closeEdit={props.closeEdit} /> : null}
     </div>

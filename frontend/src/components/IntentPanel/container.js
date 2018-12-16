@@ -44,15 +44,15 @@ class Container extends Component {
     );
   }
 
-  _openEdit = () => {
+  _openEdit = id => {
     console.log("openEdit");
+    console.log(id);
     this.setState({
       seeingLikes: true
     });
   };
 
-  _closeEdit = event => {
-    event.preventDefault();
+  _closeEdit = () => {
     console.log("closeEdit");
     this.setState({
       seeingLikes: false
