@@ -6,10 +6,17 @@ from django.views.generic import TemplateView
 from django.views import defaults as default_views
 from chatbot import views
 
+from rest_framework_jwt.views import obtain_jwt_token
+
 urlpatterns = [
-    
+
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
+    
+    # User management
+    path("rest-auth/", include('rest_auth.urls')),
+    path("rest-auth/registration/", include('rest_auth.registration.urls')),
+
     # User management
     path("nlp/",
         include("chatbot.nlp.urls", namespace="scenarios"),

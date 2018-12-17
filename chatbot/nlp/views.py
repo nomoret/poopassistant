@@ -27,7 +27,7 @@ class Intents(APIView):
         serializer = serializers.SimpleIntentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(creator=user)
-            return Response(data=request.data, status=status.HTTP_201_CREATED)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)       
 
 intents_view = Intents.as_view()
