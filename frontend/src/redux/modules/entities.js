@@ -15,7 +15,15 @@ function setEntityList(entityList) {
 function getEntityList() {
   console.log("entityList");
   return (dispatch, getState) => {
-    fetch(`/nlp/entities`)
+    const {
+      users: { token }
+    } = getState();
+
+    fetch(`/nlp/entities`, {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    })
       .then(response => response.json())
       .then(json => dispatch(setEntityList(json)))
       .catch(err => console.log(err));

@@ -1,4 +1,6 @@
 // import
+import { actionCreators as userAction } from "./users";
+
 // actions
 const SET_INTENT_LIST = "SET_INTENT_LIST";
 const ADD_INTENT = "ADD_INTENT";
@@ -23,8 +25,23 @@ function addIntent(intent) {
 // api action
 function getIntentList() {
   return (dispatch, getState) => {
-    fetch(`/nlp/intents`)
-      .then(response => response.json())
+    const {
+      users: { token }
+    } = getState();
+
+    console.log(getState());
+
+    fetch(`/nlp/intents`, {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    })
+      .then(response => {
+        if (response.status === 401) {
+          dispatch(userAction.logout());
+        }
+        return response.json();
+      })
       .then(json => dispatch(setIntentList(json)))
       .catch(err => console.log(err));
   };
@@ -34,8 +51,15 @@ function createIntent(name, description) {
   return (dispatch, getState) => {
     console.log(name);
     console.log(description);
+    const {
+      users: { token }
+    } = getState();
+
     fetch(`/nlp/intents`, {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        Authorization: `JWT ${token}`,
+        "Content-Type": "application/json"
+      },
       method: "POST",
       body: JSON.stringify({
         name,
@@ -43,9 +67,8 @@ function createIntent(name, description) {
       })
     })
       .then(response => response.json())
-      .then(json => console.log(json));
-    // .then(json => dispatch(addIntent(json)))
-    // .catch(err => console.log(err));
+      .then(json => dispatch(addIntent(json)))
+      .catch(err => console.log(err));
   };
 }
 
@@ -57,6 +80,8 @@ function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_INTENT_LIST:
       return applySetIntentList(state, action);
+    case ADD_INTENT:
+      return applyAddIntent(state, action);
     default:
       return state;
   }
@@ -68,6 +93,15 @@ function applySetIntentList(state, action) {
   return {
     ...state,
     intentList
+  };
+}
+
+function applyAddIntent(state, action) {
+  const { intent } = action;
+  const { intentList } = state;
+  return {
+    ...state,
+    intentList: [...intentList, intent]
   };
 }
 
