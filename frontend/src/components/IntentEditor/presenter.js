@@ -10,6 +10,7 @@ const IntentEditor = props => {
     <div className={styles.overlay}>
       <aside className={styles.page}>
         <section className={styles.content}>
+          {/* <form className={styles.form} onSubmit={props.handleSubmit}> */}
           <form className={styles.form} onSubmit={props.handleSubmit}>
             <div className={styles.header}>
               <div className={styles.title}>
@@ -105,7 +106,7 @@ const IntentEditor = props => {
                     </div>
                   </div>
                 )}
-                {props.id && !props.loading ? (
+                {!props.id ? (
                   <div>
                     <button
                       className={
@@ -128,7 +129,7 @@ const IntentEditor = props => {
                       }
                       placeholder="Add example"
                     >
-                      Create Intent
+                      Add example
                     </button>
                   </div>
                 )}
@@ -162,6 +163,7 @@ const IntentEditor = props => {
                             key={example.id}
                             index={index}
                             example={example.example}
+                            modified_time={example.modified_time}
                             creator={example.creator}
                           />
                         );

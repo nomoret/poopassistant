@@ -6,6 +6,7 @@ const ExampleRow = props => {
   console.log(props);
   const {
     example,
+    modified_time,
     creator: { username }
   } = props;
   console.log(props);
@@ -19,7 +20,7 @@ const ExampleRow = props => {
         <div>{example}</div>
       </td>
       <td className={styles.column}>
-        <div>{username}</div>
+        <div>{modified_time}</div>
       </td>
     </tr>
   );
@@ -27,6 +28,7 @@ const ExampleRow = props => {
 
 ExampleRow.propTypes = {
   example: PropTypes.string.isRequired,
+  modified_time: PropTypes.string.isRequired,
   creator: PropTypes.shape({
     username: PropTypes.string.isRequired
   }).isRequired

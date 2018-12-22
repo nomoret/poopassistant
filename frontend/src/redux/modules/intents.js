@@ -5,6 +5,7 @@ import { actionCreators as userAction } from "./users";
 const SET_INTENT_LIST = "SET_INTENT_LIST";
 const ADD_INTENT = "ADD_INTENT";
 const SET_EXAMPLE_LIST = "SET_EXAMPLE_LIST";
+const ADD_EXAMPLE = "ADD_EXAMPLE";
 
 // action creators
 function setIntentList(intentList) {
@@ -31,6 +32,15 @@ function setExampleList(exampleList) {
   };
 }
 
+function addExample(intentId, example) {
+  console.log(example);
+  return {
+    type: ADD_EXAMPLE,
+    intentId,
+    example
+  };
+}
+
 // api action
 function getIntentList() {
   return (dispatch, getState) => {
@@ -51,7 +61,12 @@ function getIntentList() {
         }
         return response.json();
       })
-      .then(json => dispatch(setIntentList(json)))
+      .then(json => {
+        console.log(json);
+        if (!json.detail) {
+          dispatch(setIntentList(json));
+        }
+      })
       .catch(err => console.log(err));
   };
 }
@@ -104,6 +119,28 @@ function getExamples(intentId) {
   };
 }
 
+function createExample(intentId, example) {
+  return (dispatch, getState) => {
+    const {
+      users: { token }
+    } = getState();
+
+    fetch(`/nlp/intents/${intentId}/examples`, {
+      headers: {
+        Authorization: `JWT ${token}`,
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify({
+        example
+      })
+    })
+      .then(response => response.json())
+      .then(json => dispatch(addExample(intentId, json)))
+      .catch(err => console.log(err));
+  };
+}
+
 // initial state
 const initialState = {};
 
@@ -116,6 +153,8 @@ function reducer(state = initialState, action) {
       return applyAddIntent(state, action);
     case SET_EXAMPLE_LIST:
       return applySetExampleList(state, action);
+    case ADD_EXAMPLE:
+      return applyAddExample(state, action);
     default:
       return state;
   }
@@ -147,11 +186,33 @@ function applySetExampleList(state, action) {
   };
 }
 
+function applyAddExample(state, action) {
+  const { intentId, example } = action;
+  const { intentList, exampleList } = state;
+
+  console.log(example);
+
+  const updatedIntent = intentList.map(intent => {
+    if (intent.id === intentId) {
+      return { ...intent, examples_count: intent.examples_count + 1 };
+    }
+
+    return intent;
+  });
+
+  return {
+    ...state,
+    intentList: updatedIntent,
+    exampleList: [...exampleList, example]
+  };
+}
+
 // export
 const actionCreators = {
   getIntentList,
   createIntent,
-  getExamples
+  getExamples,
+  createExample
 };
 
 export { actionCreators };

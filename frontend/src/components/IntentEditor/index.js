@@ -23,6 +23,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     getExamples: intentId => {
       dispatch(intentActions.getExamples(intentId));
+    },
+    createExample: example => {
+      const {
+        editIntent: { id }
+      } = ownProps;
+      dispatch(intentActions.createExample(id, example));
     }
   };
 };

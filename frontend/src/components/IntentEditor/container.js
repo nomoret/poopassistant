@@ -13,7 +13,8 @@ class Container extends Component {
   static propTypes = {
     closeEdit: PropTypes.func.isRequired,
     createIntent: PropTypes.func.isRequired,
-    getExamples: PropTypes.func.isRequired
+    getExamples: PropTypes.func.isRequired,
+    createExample: PropTypes.func.isRequired
   };
 
   componentDidMount = () => {
@@ -49,6 +50,7 @@ class Container extends Component {
         {...this.state}
         handleInputChange={this._handleInputChange}
         handleSubmit={this._handleSubmit}
+        handleExampleSubmit={this._handleExampleSubmit}
         {...this.props}
       />
     );
@@ -68,10 +70,28 @@ class Container extends Component {
 
     event.preventDefault();
 
-    const { name, description } = this.state;
-    const { createIntent } = this.props;
-    console.log(name);
-    createIntent(name, description);
+    const { name, description, example } = this.state;
+
+    if (example) {
+      console.log("add example");
+      console.log(this.props);
+      const { createExample } = this.props;
+      createExample(example);
+      this.setState({
+        example: ""
+      });
+    } else {
+      const { createIntent } = this.props;
+      console.log(name);
+      createIntent(name, description);
+    }
+  };
+
+  _handleExampleSubmit = event => {
+    event.preventDefault();
+    const { example } = this.state;
+
+    console.log(example);
   };
 }
 

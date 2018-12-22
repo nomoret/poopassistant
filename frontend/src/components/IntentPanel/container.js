@@ -58,7 +58,8 @@ class Container extends Component {
     } else {
       this.setState({
         seeingLikes: true,
-        editIntent: null
+        editIntent: null,
+        examples: undefined
       });
     }
   };
