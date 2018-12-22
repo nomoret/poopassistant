@@ -37,6 +37,10 @@ class Example(TimeStampModel):
     creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)
     intent = models.ForeignKey(Intent, on_delete=models.CASCADE, null=True, related_name='examples')
 
+    @property
+    def modified_time(self):
+        return naturaltime(self.updated_at)
+        
     def __str__(self):
         return self.example
 

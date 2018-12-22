@@ -86,7 +86,7 @@ class IntentAddExamples(APIView):
         serializer = serializers.ExampleSerializer(data=request.data)
 
         if serializer.is_valid():
-            serializer.save(intent=found_intent)
+            serializer.save(intent=found_intent, creator=user)
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.error, status=status.HTTP_400_BAD_REQUEST)

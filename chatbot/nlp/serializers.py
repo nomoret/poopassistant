@@ -34,6 +34,7 @@ class ExampleSerializer(serializers.ModelSerializer):
             'id',
             'example',
             'creator',
+            'modified_time',
         )
 
 class IntentSerializer(serializers.ModelSerializer):
