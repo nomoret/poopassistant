@@ -4,10 +4,13 @@ import PropTypes from "prop-types";
 
 const IntentRow = props => {
   const {
-    intent: { name, description, modified_time, examples_count },
-    openEdit
+    intent: { name, description, modified_time, examples_count }
   } = props;
   console.log(props);
+  const _handleSubmit = () => {
+    const { intent, openEdit } = props;
+    openEdit({ intent });
+  };
 
   return (
     <tr className={props.index % 2 === 0 ? styles.evenRow : styles.oddRow}>
@@ -15,7 +18,7 @@ const IntentRow = props => {
         <input type="checkbox" name="" value="intent" />
       </td>
       <td className={styles.column}>
-        <span className={styles.intentEdit} onClick={openEdit}>
+        <span className={styles.intentEdit} onClick={_handleSubmit}>
           <span>#{name}</span>
         </span>
       </td>

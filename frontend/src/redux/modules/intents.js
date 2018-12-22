@@ -4,6 +4,7 @@ import { actionCreators as userAction } from "./users";
 // actions
 const SET_INTENT_LIST = "SET_INTENT_LIST";
 const ADD_INTENT = "ADD_INTENT";
+const SET_EXAMPLE_LIST = "SET_EXAMPLE_LIST";
 
 // action creators
 function setIntentList(intentList) {
@@ -19,6 +20,14 @@ function addIntent(intent) {
   return {
     type: ADD_INTENT,
     intent
+  };
+}
+
+function setExampleList(exampleList) {
+  console.log(exampleList);
+  return {
+    type: SET_EXAMPLE_LIST,
+    exampleList
   };
 }
 
@@ -72,6 +81,29 @@ function createIntent(name, description) {
   };
 }
 
+function getExamples(intentId) {
+  return (dispatch, getState) => {
+    const {
+      users: { token }
+    } = getState();
+
+    console.log(getState());
+    fetch(`/nlp/intents/${intentId}/examples`, {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    })
+      .then(response => {
+        if (response.status === 401) {
+          dispatch(userAction.logout());
+        }
+        return response.json();
+      })
+      .then(json => dispatch(setExampleList(json)))
+      .catch(err => console.log(err));
+  };
+}
+
 // initial state
 const initialState = {};
 
@@ -82,6 +114,8 @@ function reducer(state = initialState, action) {
       return applySetIntentList(state, action);
     case ADD_INTENT:
       return applyAddIntent(state, action);
+    case SET_EXAMPLE_LIST:
+      return applySetExampleList(state, action);
     default:
       return state;
   }
@@ -105,10 +139,19 @@ function applyAddIntent(state, action) {
   };
 }
 
+function applySetExampleList(state, action) {
+  const { exampleList } = action;
+  return {
+    ...state,
+    exampleList
+  };
+}
+
 // export
 const actionCreators = {
   getIntentList,
-  createIntent
+  createIntent,
+  getExamples
 };
 
 export { actionCreators };

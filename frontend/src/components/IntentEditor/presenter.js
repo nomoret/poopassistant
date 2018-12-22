@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./styles.module.scss";
 import Ionicon from "react-ionicons";
+import ExampleRow from "components/ExampleRow";
 
 const IntentEditor = props => {
   console.log(props);
@@ -63,6 +64,7 @@ const IntentEditor = props => {
                         type="text"
                         placeholder="name"
                         name="name"
+                        value={props.name}
                         onChange={props.handleInputChange}
                       />
                     </div>
@@ -78,49 +80,96 @@ const IntentEditor = props => {
                       type="text"
                       placeholder="description"
                       name="description"
+                      value={props.description}
                       onChange={props.handleInputChange}
                       disabled={props.name !== "" ? "" : "disabled"}
                     />
                   </div>
                 </div>
-                <div>
-                  <button
-                    className={
-                      props.name !== ""
-                        ? styles.createIntent
-                        : styles.createIntentDisable
-                    }
-                    placeholder="Create Intent"
-                  >
-                    Create Intent
-                  </button>
-                </div>
+                {props.id && !props.loading && (
+                  <div className={styles.inputDescription}>
+                    <div>
+                      <label className={styles.labelName}>
+                        Add user examples
+                      </label>
+                    </div>
+                    <div className={styles.underLine}>
+                      <input
+                        className={styles.input}
+                        type="text"
+                        placeholder="Add user examples to this intent"
+                        name="example"
+                        value={props.example}
+                        onChange={props.handleInputChange}
+                      />
+                    </div>
+                  </div>
+                )}
+                {props.id && !props.loading ? (
+                  <div>
+                    <button
+                      className={
+                        props.name !== ""
+                          ? styles.createIntent
+                          : styles.createIntentDisable
+                      }
+                      placeholder="Create Intent"
+                    >
+                      Create Intent
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <button
+                      className={
+                        props.example !== ""
+                          ? styles.createIntent
+                          : styles.createIntentDisable
+                      }
+                      placeholder="Add example"
+                    >
+                      Create Intent
+                    </button>
+                  </div>
+                )}
               </div>
-              <div className={styles.noExample}>
-                <div className={styles.title}>No examples yet.</div>
-                <div className={styles.decription}>
-                  Train your virtual assistant with this intent by adding unique
-                  examples of what your users would say.
+              {!props.id && (
+                <div className={styles.noExample}>
+                  <div className={styles.title}>No examples yet.</div>
+                  <div className={styles.decription}>
+                    Train your virtual assistant with this intent by adding
+                    unique examples of what your users would say.
+                  </div>
                 </div>
-              </div>
-              {/* <div className={styles.examples}>
-              <table className={styles.table}>
-                <thead className={styles.thead}>
-                  <tr>
-                    <th>
-                      <input type="checkbox" name="" value="All" />
-                    </th>
-                    <th>User examples</th>
-                    <th>Added</th>
-                  </tr>
-                </thead>
-                <tbody className={styles.tbody}>
-                  {props.list.map((intent, index) => (
-                    <ExampleRow key={intent.id} index={index} intent={intent} />
-                  ))}
-                </tbody>
-              </table>
-            </div> */}
+              )}
+              {props.id && props.loading && <div>loading</div>}
+              {props.id && !props.loading && (
+                <div className={styles.examples}>
+                  <table className={styles.table}>
+                    <thead className={styles.thead}>
+                      <tr>
+                        <th>
+                          <input type="checkbox" name="" value="All" />
+                        </th>
+                        <th>User examples</th>
+                        <th>Added</th>
+                      </tr>
+                    </thead>
+                    <tbody className={styles.tbody}>
+                      {props.examples.map((example, index) => {
+                        return (
+                          <ExampleRow
+                            key={example.id}
+                            index={index}
+                            example={example.example}
+                            creator={example.creator}
+                          />
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </form>
         </section>
@@ -133,6 +182,7 @@ IntentEditor.propTypes = {
   id: PropTypes.number,
   name: PropTypes.string,
   description: PropTypes.string,
+  examples: PropTypes.array,
   handleInputChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   closeEdit: PropTypes.func.isRequired

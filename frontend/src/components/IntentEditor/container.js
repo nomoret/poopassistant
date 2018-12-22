@@ -5,22 +5,48 @@ import IntentEditor from "./presenter";
 class Container extends Component {
   state = {
     loading: true,
+    edit: false,
     name: "",
     description: ""
   };
 
   static propTypes = {
     closeEdit: PropTypes.func.isRequired,
-    createIntent: PropTypes.func.isRequired
+    createIntent: PropTypes.func.isRequired,
+    getExamples: PropTypes.func.isRequired
+  };
+
+  componentDidMount = () => {
+    console.log(this.props);
+    const { editIntent } = this.props;
+    if (editIntent) {
+      const { id, name, description } = editIntent;
+
+      this.setState({
+        id,
+        edit: true,
+        name,
+        description
+      });
+
+      const { getExamples } = this.props;
+      getExamples(id);
+    }
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.examples) {
+      this.setState({
+        loading: false
+      });
+    }
   };
 
   render() {
-    const { name, description } = this.state;
     console.log(this.state);
     return (
       <IntentEditor
-        name={name}
-        description={description}
+        {...this.state}
         handleInputChange={this._handleInputChange}
         handleSubmit={this._handleSubmit}
         {...this.props}

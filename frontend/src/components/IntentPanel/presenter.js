@@ -43,7 +43,12 @@ const IntentPanel = props => {
           <IntentList list={props.intents} openEdit={props.openEdit} />
         )}
       </div>
-      {props.seeingLikes ? <IntentEditor closeEdit={props.closeEdit} /> : null}
+      {props.seeingLikes ? (
+        <IntentEditor
+          editIntent={props.editIntent}
+          closeEdit={props.closeEdit}
+        />
+      ) : null}
     </div>
   );
 };

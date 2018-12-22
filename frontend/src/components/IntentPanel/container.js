@@ -44,12 +44,23 @@ class Container extends Component {
     );
   }
 
-  _openEdit = id => {
+  _addIntent = () => {};
+
+  _openEdit = ({ intent, ...props }) => {
     console.log("openEdit");
-    console.log(id);
-    this.setState({
-      seeingLikes: true
-    });
+    console.log(intent);
+
+    if (intent) {
+      this.setState({
+        seeingLikes: true,
+        editIntent: intent
+      });
+    } else {
+      this.setState({
+        seeingLikes: true,
+        editIntent: null
+      });
+    }
   };
 
   _closeEdit = () => {

@@ -197,8 +197,34 @@
                         margin-top: 32px;
                         padding: 0px 64px;
                         flex: 1;
-                        max-width: 600px;
                         display: block;
+
+                        .table {
+                            display: table;
+                            width: 100%;  
+                            box-sizing: border-box;
+                            font-size: 100%;
+                            overflow-y: auto;
+                          
+                            .thead {
+                              width: 100%;
+                              line-height: 48px;
+                              border-bottom: 1px solid #d8d8d8;
+                              padding: 8px 64px;
+                              box-shadow: 1px 2px 3px 0 rgba(0,0,0,0.2);
+                              position: relative;
+                              min-width: 0;
+                              height: 48px;
+                              text-align: left;
+                              .thead-row {
+                                height:100%;
+                              }
+                            }
+                            
+                            .tbody {
+                              width: 100%;
+                            }
+                        }
                     }
                 }
             }
