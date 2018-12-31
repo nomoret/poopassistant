@@ -3,6 +3,8 @@ import { actionCreators as userAction } from "./users";
 
 // actions
 const SET_INTENT_LIST = "SET_INTENT_LIST";
+const SET_INTENT = "SET_INTENT";
+const CLEAR_INTENT = "CLEAR_INTENT";
 const ADD_INTENT = "ADD_INTENT";
 const SET_EXAMPLE_LIST = "SET_EXAMPLE_LIST";
 const ADD_EXAMPLE = "ADD_EXAMPLE";
@@ -13,6 +15,20 @@ function setIntentList(intentList) {
   return {
     type: SET_INTENT_LIST,
     intentList
+  };
+}
+
+function setIntent(intent) {
+  console.log(intent);
+  return {
+    type: SET_INTENT,
+    intent
+  };
+}
+
+function clearIntent() {
+  return {
+    type: CLEAR_INTENT
   };
 }
 
@@ -65,6 +81,35 @@ function getIntentList() {
         console.log(json);
         if (!json.detail) {
           dispatch(setIntentList(json));
+        }
+      })
+      .catch(err => console.log(err));
+  };
+}
+
+function getIntent(intentId) {
+  return (dispatch, getState) => {
+    const {
+      users: { token }
+    } = getState();
+
+    console.log(getState());
+
+    fetch(`/nlp/intents/${intentId}`, {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    })
+      .then(response => {
+        if (response.status === 401) {
+          dispatch(userAction.logout());
+        }
+        return response.json();
+      })
+      .then(json => {
+        console.log(json);
+        if (!json.detail) {
+          dispatch(setIntent(json));
         }
       })
       .catch(err => console.log(err));
@@ -149,6 +194,10 @@ function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_INTENT_LIST:
       return applySetIntentList(state, action);
+    case SET_INTENT:
+      return applySetIntent(state, action);
+    case CLEAR_INTENT:
+      return applyClearIntent(state, action);
     case ADD_INTENT:
       return applyAddIntent(state, action);
     case SET_EXAMPLE_LIST:
@@ -169,12 +218,28 @@ function applySetIntentList(state, action) {
   };
 }
 
+function applySetIntent(state, action) {
+  const { intent } = action;
+  return {
+    ...state,
+    editIntent: intent
+  };
+}
+
+function applyClearIntent(state, action) {
+  return {
+    ...state,
+    editIntent: undefined
+  };
+}
+
 function applyAddIntent(state, action) {
   const { intent } = action;
   const { intentList } = state;
   return {
     ...state,
-    intentList: [...intentList, intent]
+    intentList: [...intentList, intent],
+    editIntent: { ...intent, examples: [] }
   };
 }
 
@@ -188,7 +253,7 @@ function applySetExampleList(state, action) {
 
 function applyAddExample(state, action) {
   const { intentId, example } = action;
-  const { intentList, exampleList } = state;
+  const { intentList } = state;
 
   console.log(example);
 
@@ -200,19 +265,24 @@ function applyAddExample(state, action) {
     return intent;
   });
 
+  const { editIntent } = state;
+  const { examples } = editIntent;
+
   return {
     ...state,
     intentList: updatedIntent,
-    exampleList: [...exampleList, example]
+    editIntent: { ...editIntent, examples: [...examples, example] }
   };
 }
 
 // export
 const actionCreators = {
   getIntentList,
+  getIntent,
   createIntent,
   getExamples,
-  createExample
+  createExample,
+  clearIntent
 };
 
 export { actionCreators };

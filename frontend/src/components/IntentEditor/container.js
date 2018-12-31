@@ -7,7 +7,8 @@ class Container extends Component {
     loading: true,
     edit: false,
     name: "",
-    description: ""
+    description: "",
+    example: ""
   };
 
   static propTypes = {
@@ -18,24 +19,13 @@ class Container extends Component {
   };
 
   componentDidMount = () => {
-    console.log(this.props);
-    const { editIntent } = this.props;
-    if (editIntent) {
-      const { id, name, description } = editIntent;
-
-      this.setState({
-        id,
-        edit: true,
-        name,
-        description
-      });
-
-      const { getExamples } = this.props;
-      getExamples(id);
-    }
+    console.log("edit dialog open!!!!");
   };
 
   componentWillReceiveProps = nextProps => {
+    console.log(this.props);
+    console.log(nextProps);
+
     if (nextProps.examples) {
       this.setState({
         loading: false
@@ -45,9 +35,15 @@ class Container extends Component {
 
   render() {
     console.log(this.state);
+    const { id, loading, edit, name, description, example } = this.state;
     return (
       <IntentEditor
-        {...this.state}
+        id={id}
+        loading={loading}
+        edit={edit}
+        name={name}
+        description={description}
+        example={example}
         handleInputChange={this._handleInputChange}
         handleSubmit={this._handleSubmit}
         handleExampleSubmit={this._handleExampleSubmit}
@@ -75,14 +71,18 @@ class Container extends Component {
     if (example) {
       console.log("add example");
       console.log(this.props);
-      const { createExample } = this.props;
-      createExample(example);
+      const { id, createExample } = this.props;
+      createExample(id, example);
       this.setState({
         example: ""
       });
     } else {
       const { createIntent } = this.props;
-      console.log(name);
+      this.setState({
+        loading: false,
+        examples: []
+      });
+
       createIntent(name, description);
     }
   };

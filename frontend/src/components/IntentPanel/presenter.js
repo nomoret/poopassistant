@@ -14,7 +14,7 @@ const IntentPanel = props => {
         <button
           className={styles.addIntent}
           title="add Intent"
-          onClick={props.openEdit}
+          onClick={props.addIntent}
         >
           add Intent
         </button>
@@ -43,12 +43,7 @@ const IntentPanel = props => {
           <IntentList list={props.intents} openEdit={props.openEdit} />
         )}
       </div>
-      {props.seeingLikes ? (
-        <IntentEditor
-          editIntent={props.editIntent}
-          closeEdit={props.closeEdit}
-        />
-      ) : null}
+      {props.seeingLikes ? <IntentEditor closeEdit={props.closeEdit} /> : null}
     </div>
   );
 };
@@ -65,6 +60,7 @@ IntentPanel.propTypes = {
       modified_time: PropTypes.string.isRequired
     }).isRequired
   ),
+  addIntent: PropTypes.func.isRequired,
   openEdit: PropTypes.func.isRequired,
   closeEdit: PropTypes.func.isRequired
 };

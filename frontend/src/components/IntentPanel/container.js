@@ -10,6 +10,8 @@ class Container extends Component {
 
   static propTypes = {
     getIntentList: PropTypes.func.isRequired,
+    getIntent: PropTypes.func.isRequired,
+    clearIntent: PropTypes.func.isRequired,
     intentList: PropTypes.array
   };
 
@@ -38,30 +40,33 @@ class Container extends Component {
       <IntentPanel
         {...this.state}
         intents={intentList}
+        addIntent={this._addIntent}
         openEdit={this._openEdit}
         closeEdit={this._closeEdit}
       />
     );
   }
 
-  _addIntent = () => {};
+  _addIntent = () => {
+    console.log("addIntent");
+    this.setState({
+      seeingLikes: true
+    });
+    //clear editInent
+  };
 
-  _openEdit = ({ intent, ...props }) => {
+  _openEdit = props => {
     console.log("openEdit");
-    console.log(intent);
+    this.setState({
+      seeingLikes: true
+    });
 
-    if (intent) {
-      this.setState({
-        seeingLikes: true,
-        editIntent: intent
-      });
-    } else {
-      this.setState({
-        seeingLikes: true,
-        editIntent: null,
-        examples: undefined
-      });
-    }
+    const {
+      intent: { id }
+    } = props;
+    //get editIntent
+    const { getIntent } = this.props;
+    getIntent(id);
   };
 
   _closeEdit = () => {
@@ -69,6 +74,10 @@ class Container extends Component {
     this.setState({
       seeingLikes: false
     });
+
+    //diff editIntent
+    const { clearIntent } = this.props;
+    clearIntent();
   };
 }
 export default Container;

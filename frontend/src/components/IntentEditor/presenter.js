@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styles from "./styles.module.scss";
 import Ionicon from "react-ionicons";
 import ExampleRow from "components/ExampleRow";
+import Loading from "components/Loading";
 
 const IntentEditor = props => {
   console.log(props);
@@ -10,7 +11,6 @@ const IntentEditor = props => {
     <div className={styles.overlay}>
       <aside className={styles.page}>
         <section className={styles.content}>
-          {/* <form className={styles.form} onSubmit={props.handleSubmit}> */}
           <form className={styles.form} onSubmit={props.handleSubmit}>
             <div className={styles.header}>
               <div className={styles.title}>
@@ -143,7 +143,7 @@ const IntentEditor = props => {
                   </div>
                 </div>
               )}
-              {props.id && props.loading && <div>loading</div>}
+              {props.id && props.loading && <Loading />}
               {props.id && !props.loading && (
                 <div className={styles.examples}>
                   <table className={styles.table}>

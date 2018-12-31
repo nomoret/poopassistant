@@ -15,10 +15,16 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = dispatch => {
   return {
     getIntentList: () => {
       dispatch(intentActions.getIntentList());
+    },
+    getIntent: intentId => {
+      dispatch(intentActions.getIntent(intentId));
+    },
+    clearIntent: () => {
+      dispatch(intentActions.clearIntent());
     }
   };
 };

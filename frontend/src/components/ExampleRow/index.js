@@ -4,12 +4,7 @@ import PropTypes from "prop-types";
 
 const ExampleRow = props => {
   console.log(props);
-  const {
-    example,
-    modified_time,
-    creator: { username }
-  } = props;
-  console.log(props);
+  const { example, modified_time } = props;
 
   return (
     <tr className={props.index % 2 === 0 ? styles.evenRow : styles.oddRow}>

@@ -8,3 +8,7 @@
 * 5. python ./manager.py makemigrations
 * 6. python ./manager.py migrate
 * 7. python ./manager.py runserver
+
+## OSX
+
+# 1. conda install -c conda-forge jpype1

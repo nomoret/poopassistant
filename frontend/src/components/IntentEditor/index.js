@@ -7,16 +7,23 @@ const mapStateToProps = state => {
   console.log(state);
 
   const {
-    intents: { exampleList }
+    intents: { editIntent }
   } = state;
 
-  return {
-    examples: exampleList
-  };
+  if (editIntent) {
+    const { id, name, description, examples } = editIntent;
+    return {
+      id,
+      name,
+      description,
+      examples: examples ? examples : []
+    };
+  } else {
+    return null;
+  }
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  console.log(ownProps);
+const mapDispatchToProps = dispatch => {
   return {
     createIntent: (name, description) => {
       dispatch(intentActions.createIntent(name, description));
@@ -24,11 +31,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     getExamples: intentId => {
       dispatch(intentActions.getExamples(intentId));
     },
-    createExample: example => {
-      const {
-        editIntent: { id }
-      } = ownProps;
-      dispatch(intentActions.createExample(id, example));
+    createExample: (intentId, example) => {
+      dispatch(intentActions.createExample(intentId, example));
     }
   };
 };
