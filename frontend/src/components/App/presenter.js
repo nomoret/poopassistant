@@ -6,7 +6,7 @@ import Sidebar from "components/SideBar";
 import Auth from "components/Auth";
 import EditHeader from "components/EditHeader";
 import Intents from "components/IntentPanel";
-import Entities from "components/EntityList";
+import Entities from "components/EntityPanel";
 import ChatPanel from "components/ChatPanel";
 import Navigation from "components/Navigation";
 

@@ -1,0 +1,120 @@
+.container {
+  width: 100%;
+  background-color: $gray-color;
+
+  display: flex;
+  flex-direction: column;
+
+  .navi {
+    display: flex;
+    flex-direction: row;
+    height: 5vh;
+    background-color: white;
+    margin-left: 48px;
+    border-bottom: 1px solid $light-grey;
+  }
+
+  .action {
+    display: flex;
+    flex-direction: row;
+    height: 5vh;
+    // justify-content: center;
+    background-color: #F4F7FB;
+    margin-left: 48px;
+    .add-intent {
+      border: none;
+      vertical-align: bottom;
+      margin-right: 8px;
+      height: 32px;
+      min-width: 120px;
+      background-color: #047cc0;
+      color: #fff;
+      font-weight: 400;
+      font-style: normal;
+      position: relative;
+      font-size: 1em;
+      text-align: center;
+
+      &:hover {
+        background-color: #175D8D;
+        cursor: pointer;
+      }
+    }
+
+    .import {
+      background-color: inherit;
+      border: none;
+      &:active {
+        outline: none;
+      }
+      &:active {
+        opacity: 0.7;
+      }
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .export {
+      background-color: inherit;
+      border: none;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .trash-can {
+      background-color: inherit;
+      border: none;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .content {
+    width: 100%;
+    min-height: 700px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    
+    .table {
+      display: table;
+      width: 100%;  
+      box-sizing: border-box;
+      border-bottom: 1px solid $light-grey;
+      font-size: 100%;
+
+      .thread {
+        width: 100%;
+        text-align: left;
+      }
+      
+      .tbody {
+        
+        width: 100%;
+        .odd-row {
+          .column {      
+            box-sizing: border-box;
+            text-align: left;
+            align-content: center;
+          }
+        }
+
+        .even-row {
+          background-color: white;
+
+          .column {      
+            box-sizing: border-box;
+            text-align: left;
+            align-content: center;
+          }
+        }
+        
+      }
+    
+    }
+  }
+
+}
