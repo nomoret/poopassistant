@@ -1,4 +1,5 @@
 // import
+import { actionCreators as userAction } from "redux/modules/users";
 // actions
 const SET_ENTITY_LIST = "SET_ENTITY_LIST";
 
@@ -24,8 +25,20 @@ function getEntityList() {
         Authorization: `JWT ${token}`
       }
     })
-      .then(response => response.json())
-      .then(json => dispatch(setEntityList(json)))
+      .then(response => {
+        console.log(response.status);
+        if (response.status === 401) {
+          dispatch(userAction.logout());
+        }
+        return response.json();
+      })
+      .then(json => {
+        if (json.detail) {
+          dispatch(userAction.logout());
+        } else {
+          dispatch(setEntityList(json));
+        }
+      })
       .catch(err => console.log(err));
   };
 }
