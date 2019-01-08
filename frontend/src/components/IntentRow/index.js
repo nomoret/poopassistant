@@ -6,7 +6,7 @@ const IntentRow = props => {
   const {
     intent: { name, description, modified_time, examples_count }
   } = props;
-  console.log(props);
+
   const _handleSubmit = () => {
     const { intent, openEdit } = props;
     openEdit({ intent });
