@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 import Ionicon from "react-ionicons";
 
 const ActionButtons = props => {
-  console.log("UserList no stateless");
+  console.log("ActionButtons");
   console.log(props);
   return (
     <div className={styles.action}>

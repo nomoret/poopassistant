@@ -5,7 +5,8 @@ import PropTypes from "prop-types";
 class Container extends Component {
   state = {
     loading: true,
-    seeingLikes: false
+    seeingLikes: false,
+    selected: []
   };
 
   static propTypes = {
@@ -39,14 +40,16 @@ class Container extends Component {
       <EnityPanel
         {...this.state}
         entities={entityList}
-        addEnitiy={this._addEnitiy}
+        addEntity={this._addEntity}
         openEdit={this._openEdit}
         closeEdit={this._closeEdit}
+        selectRow={this._selectRow}
+        selectAll={this._selectAll}
       />
     );
   }
 
-  _addEnitiy = () => {
+  _addEntity = () => {
     console.log("addEnitiy");
     this.setState({
       seeingLikes: true
@@ -59,6 +62,8 @@ class Container extends Component {
     this.setState({
       seeingLikes: true
     });
+
+    console.log(props);
 
     // const {
     //   Enitiy: { id }
@@ -77,6 +82,33 @@ class Container extends Component {
     //diff editEnitiy
     // const { clearEnitiy } = this.props;
     // clearEnitiy();
+  };
+
+  _selectAll = (isSelect, rows) => {
+    console.log(isSelect, rows);
+    if (isSelect) {
+      this.setState({
+        selected: rows.map(row => row.id)
+      });
+    } else {
+      this.setState({
+        selected: []
+      });
+    }
+  };
+
+  _selectRow = ({ id }, isSelected) => {
+    console.log(id, isSelected);
+    const { selected } = this.state;
+    if (isSelected) {
+      this.setState({
+        selected: [...selected, id].sort()
+      });
+    } else {
+      this.setState({ selected: selected.filter(it => it !== id) });
+    }
+
+    return false;
   };
 }
 export default Container;

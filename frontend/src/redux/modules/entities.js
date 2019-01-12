@@ -1,7 +1,9 @@
 // import
 import { actionCreators as userAction } from "redux/modules/users";
+
 // actions
 const SET_ENTITY_LIST = "SET_ENTITY_LIST";
+const ADD_ENTITY = "ADD_ENTITY";
 
 // action creators
 function setEntityList(entityList) {
@@ -9,6 +11,14 @@ function setEntityList(entityList) {
   return {
     type: SET_ENTITY_LIST,
     entityList
+  };
+}
+
+function addEntity(entity) {
+  console.log(entity);
+  return {
+    type: ADD_ENTITY,
+    entity
   };
 }
 
@@ -43,6 +53,29 @@ function getEntityList() {
   };
 }
 
+function createEntity(name) {
+  return (dispatch, getState) => {
+    console.log(name);
+    const {
+      users: { token }
+    } = getState();
+
+    fetch(`/nlp/entities`, {
+      headers: {
+        Authorization: `JWT ${token}`,
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify({
+        name
+      })
+    })
+      .then(response => response.json())
+      .then(json => dispatch(addEntity(json)))
+      .catch(err => console.log(err));
+  };
+}
+
 // initial state
 const initialState = {};
 
@@ -51,6 +84,8 @@ function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_ENTITY_LIST:
       return applySetEntityList(state, action);
+    case ADD_ENTITY:
+      return applyAddEntity(state, action);
     default:
       return state;
   }
@@ -65,9 +100,18 @@ function applySetEntityList(state, action) {
   };
 }
 
+function applyAddEntity(state, action) {
+  const { entity } = action;
+  return {
+    ...state,
+    entity
+  };
+}
+
 // export
 const actionCreators = {
-  getEntityList
+  getEntityList,
+  createEntity
 };
 
 export { actionCreators };

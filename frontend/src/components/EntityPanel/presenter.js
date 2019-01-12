@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styles from "./styles.module.scss";
 import ActionButtons from "components/ActionButtons";
 import EntityTable from "components/EntityTable";
+import EntityEditor from "components/EntityEditor";
 import { Nav, NavItem, NavLink } from "reactstrap";
 
 const EnityPanel = props => {
@@ -16,10 +17,16 @@ const EnityPanel = props => {
         {props.loading ? (
           "loading"
         ) : (
-          <EntityTable entities={props.entities} openEdit={props.openEdit} />
+          <EntityTable
+            entities={props.entities}
+            selected={props.selected}
+            openEdit={props.openEdit}
+            selectAll={props.selectAll}
+            selectRow={props.selectRow}
+          />
         )}
       </div>
-      {/* {props.seeingLikes ? <EnitityEditor closeEdit={props.closeEdit} /> : null} */}
+      {props.seeingLikes ? <EntityEditor closeEdit={props.closeEdit} /> : null}
     </div>
   );
 };
@@ -39,7 +46,7 @@ EnityPanel.propTypes = {
   entities: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      entity_name: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
       creator: PropTypes.shape({
         username: PropTypes.string.isRequired
       }),
@@ -47,9 +54,12 @@ EnityPanel.propTypes = {
       updated_at: PropTypes.string.isRequired
     }).isRequired
   ),
+  selected: PropTypes.array.isRequired,
   addEntity: PropTypes.func.isRequired,
   openEdit: PropTypes.func.isRequired,
-  closeEdit: PropTypes.func.isRequired
+  closeEdit: PropTypes.func.isRequired,
+  selectAll: PropTypes.func.isRequired,
+  selectRow: PropTypes.func.isRequired
 };
 
 export default EnityPanel;

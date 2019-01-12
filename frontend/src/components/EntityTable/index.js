@@ -7,35 +7,40 @@ function nameFormatter(cell, row) {
   return <span>#{cell}</span>;
 }
 
-const columns = [
-  {
-    dataField: "entity_name",
-    text: "Name",
-    formatter: nameFormatter,
-    events: {
-      onClick: (e, column, columnIndex, row, rowIndex) => {
-        console.log(row);
-      }
-    },
-    classes: styles.intentEdit
-  },
-  {
-    dataField: "created_at",
-    text: "Created Time"
-  },
-  {
-    dataField: "updated_at",
-    text: "Updated Time"
-  }
-];
-
-const selectRow = {
-  mode: "checkbox"
-};
-
 const EntityTable = props => {
   console.log(props);
-  const { entities } = props;
+  const { entities, openEdit } = props;
+
+  const selectRow = {
+    mode: "checkbox",
+    onSelectAll: props.selectAll,
+    onSelect: props.selectRow,
+    selected: props.selected
+  };
+
+  const columns = [
+    {
+      dataField: "name",
+      text: "Name",
+      formatter: nameFormatter,
+      events: {
+        onClick: (e, column, columnIndex, row, rowIndex) => {
+          console.log(row);
+          openEdit(row);
+        }
+      },
+      classes: styles.intentEdit
+    },
+    {
+      dataField: "created_at",
+      text: "Created Time"
+    },
+    {
+      dataField: "modified_time",
+      text: "Updated Time"
+    }
+  ];
+
   return (
     <div className={styles.container}>
       <BootstrapTable
