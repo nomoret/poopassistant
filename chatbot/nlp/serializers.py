@@ -59,10 +59,11 @@ class SimpleEntitySerializer(serializers.ModelSerializer):
         model = models.Entity
         fields = (
             'id',
-            'entity_name',
+            'name',
             'creator',
             "created_at",
             'updated_at',
+            'modified_time',
         )
 class SynonymSerializer(serializers.ModelSerializer):
     # creator = UserSerializer(read_only=True)
@@ -93,7 +94,7 @@ class EntitySerializer(serializers.ModelSerializer):
         model = models.Entity
         fields = (
             'id',
-            'entity_name',
+            'name',
             'entitiy_values',
             'creator',
         )

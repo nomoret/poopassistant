@@ -127,6 +127,16 @@ class Entities(APIView):
 
         return Response(data=serializer.data)
 
+    def post(self, request, format=None):        
+        user = request.user        
+        print(request.data)
+
+        serializer = serializers.SimpleEntitySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(creator=user)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 entities_view = Entities.as_view()
 
 class EntityDetail(APIView):

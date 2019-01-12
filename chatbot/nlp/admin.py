@@ -25,7 +25,7 @@ class CommentAdmin(admin.ModelAdmin):
 @admin.register(models.Entity)
 class EntityAdmin(admin.ModelAdmin):
     list_display = (
-        'entity_name',
+        'name',
         'creator',
         'created_at',
         'updated_at',

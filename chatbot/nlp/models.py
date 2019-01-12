@@ -48,11 +48,15 @@ class Entity(TimeStampModel):
 
     """ Entity Model """
 
-    entity_name = models.CharField(max_length=128, blank=True)  
+    name = models.CharField(max_length=128, blank=True)  
     creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)
 
+    @property
+    def modified_time(self):
+        return naturaltime(self.updated_at)
+
     def __str__(self):
-        return self.entity_name
+        return self.name
 
 class EntityValue(TimeStampModel):
 
