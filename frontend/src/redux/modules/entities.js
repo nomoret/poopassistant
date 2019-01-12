@@ -1,9 +1,10 @@
 // import
-import { actionCreators as userAction } from "redux/modules/users";
+import { actionCreators as userActions } from "redux/modules/users";
 
 // actions
 const SET_ENTITY_LIST = "SET_ENTITY_LIST";
 const ADD_ENTITY = "ADD_ENTITY";
+const REMOVE_ENTITY = "DELET_ENTITY";
 
 // action creators
 function setEntityList(entityList) {
@@ -19,6 +20,13 @@ function addEntity(entity) {
   return {
     type: ADD_ENTITY,
     entity
+  };
+}
+
+function removeEntity(entities) {
+  return {
+    type: REMOVE_ENTITY,
+    entities
   };
 }
 
@@ -38,13 +46,13 @@ function getEntityList() {
       .then(response => {
         console.log(response.status);
         if (response.status === 401) {
-          dispatch(userAction.logout());
+          dispatch(userActions.logout());
         }
         return response.json();
       })
       .then(json => {
         if (json.detail) {
-          dispatch(userAction.logout());
+          dispatch(userActions.logout());
         } else {
           dispatch(setEntityList(json));
         }
@@ -76,6 +84,33 @@ function createEntity(name) {
   };
 }
 
+function deleteEntity(entities) {
+  return (dispatch, getState) => {
+    const {
+      users: { token }
+    } = getState();
+
+    fetch(`/nlp/entities`, {
+      headers: {
+        Authorization: `JWT ${token}`,
+        "Content-Type": "application/json"
+      },
+      method: "DELETE",
+      body: JSON.stringify({
+        entities
+      })
+    })
+      .then(response => {
+        if (response.status === 401) {
+          dispatch(userActions.logout());
+        } else {
+          dispatch(removeEntity(entities));
+        }
+      })
+      .catch(err => console.log(err));
+  };
+}
+
 // initial state
 const initialState = {};
 
@@ -86,6 +121,8 @@ function reducer(state = initialState, action) {
       return applySetEntityList(state, action);
     case ADD_ENTITY:
       return applyAddEntity(state, action);
+    case REMOVE_ENTITY:
+      return applyRemoveEntity(state, action);
     default:
       return state;
   }
@@ -108,10 +145,25 @@ function applyAddEntity(state, action) {
   };
 }
 
+function applyRemoveEntity(state, action) {
+  const { entities } = action;
+  console.log(entities);
+  const { entityList } = state;
+  const updatedEntityList = entityList.filter(
+    entity => entities.indexOf(entity.id) === -1
+  );
+
+  return {
+    ...state,
+    entityList: updatedEntityList
+  };
+}
+
 // export
 const actionCreators = {
   getEntityList,
-  createEntity
+  createEntity,
+  deleteEntity
 };
 
 export { actionCreators };

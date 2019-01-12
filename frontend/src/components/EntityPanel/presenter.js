@@ -12,7 +12,11 @@ const EnityPanel = props => {
   return (
     <div className={styles.container}>
       <SubNavi />
-      <ActionButtons name="entity" add={props.addEntity} />
+      <ActionButtons
+        name="entity"
+        handleAdd={props.addEntity}
+        handleDelete={props.deleteEntity}
+      />
       <div className={styles.content}>
         {props.loading ? (
           "loading"

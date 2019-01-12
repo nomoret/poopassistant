@@ -137,6 +137,21 @@ class Entities(APIView):
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, format=None):    
+        user = request.user
+
+        print(request.data)
+
+        entity_id_list = request.data['entities']
+
+        try:
+            found_entities = models.Entity.objects.filter(id__in=entity_id_list)
+            found_entities.delete()
+        except models.Image.DoesNotExist:
+            return Response(data=data, status=status.HTTP_404_NOT_FOUND)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 entities_view = Entities.as_view()
 
 class EntityDetail(APIView):

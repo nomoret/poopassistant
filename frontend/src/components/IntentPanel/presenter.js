@@ -10,7 +10,7 @@ const IntentPanel = props => {
   console.log(props);
   return (
     <div className={styles.container}>
-      <ActionButtons name="intent" add={props.addIntent} />
+      <ActionButtons name="intent" handleAdd={props.addIntent} />
       <div className={styles.content}>
         {props.loading ? (
           "loading"

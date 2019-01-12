@@ -11,7 +11,7 @@ const ActionButtons = props => {
       <button
         className={styles.addIntent}
         title={`add ${props.name}`}
-        onClick={props.add}
+        onClick={props.handleAdd}
       >
         add {props.name}
       </button>
@@ -25,7 +25,11 @@ const ActionButtons = props => {
       <button className={styles.export} title="Export">
         <Ionicon icon="ios-download-outline" fontSize="24px" color="#047cc0" />
       </button>
-      <button className={styles.trashCan} title="Delete">
+      <button
+        className={styles.trashCan}
+        title="Delete"
+        onClick={props.handleDelete}
+      >
         <Ionicon icon="ios-trash-outline" fontSize="24px" color="#047cc0" />
       </button>
     </div>
@@ -34,7 +38,8 @@ const ActionButtons = props => {
 
 ActionButtons.propTypes = {
   name: PropTypes.string,
-  add: PropTypes.func.isRequired
+  handleAdd: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired
 };
 
 export default ActionButtons;

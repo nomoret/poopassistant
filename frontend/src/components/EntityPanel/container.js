@@ -11,7 +11,8 @@ class Container extends Component {
 
   static propTypes = {
     getEntityList: PropTypes.func.isRequired,
-    entityList: PropTypes.array
+    entityList: PropTypes.array,
+    deleteEntity: PropTypes.func.isRequired
     // clearEnitiy: PropTypes.func.isRequired,
   };
 
@@ -43,6 +44,7 @@ class Container extends Component {
         addEntity={this._addEntity}
         openEdit={this._openEdit}
         closeEdit={this._closeEdit}
+        deleteEntity={this._deleteEntity}
         selectRow={this._selectRow}
         selectAll={this._selectAll}
       />
@@ -71,6 +73,14 @@ class Container extends Component {
     //get editEnitiy
     // const { getEnitiy } = this.props;
     // getEnitiy(id);
+  };
+
+  _deleteEntity = () => {
+    console.log("deleteEnitiy");
+
+    const { selected } = this.state;
+    const { deleteEntity } = this.props;
+    deleteEntity(selected);
   };
 
   _closeEdit = () => {

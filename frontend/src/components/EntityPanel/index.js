@@ -19,6 +19,9 @@ const mapDispatchToProps = dispatch => {
   return {
     getEntityList: () => {
       dispatch(enitityActions.getEntityList());
+    },
+    deleteEntity: selected => {
+      dispatch(enitityActions.deleteEntity(selected));
     }
   };
 };
