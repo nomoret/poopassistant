@@ -4,6 +4,7 @@ import { actionCreators as userAction } from "./users";
 // actions
 const SET_INTENT_LIST = "SET_INTENT_LIST";
 const SET_INTENT = "SET_INTENT";
+const REMOVE_INTENT = "REMOVE_INTENT";
 const CLEAR_INTENT = "CLEAR_INTENT";
 const ADD_INTENT = "ADD_INTENT";
 const SET_EXAMPLE_LIST = "SET_EXAMPLE_LIST";
@@ -23,6 +24,13 @@ function setIntent(intent) {
   return {
     type: SET_INTENT,
     intent
+  };
+}
+
+function removeIntent(intents) {
+  return {
+    type: REMOVE_INTENT,
+    intents
   };
 }
 
@@ -186,6 +194,33 @@ function createExample(intentId, example) {
   };
 }
 
+function deleteIntent(intents) {
+  return (dispatch, getState) => {
+    const {
+      users: { token }
+    } = getState();
+
+    fetch(`/nlp/entities`, {
+      headers: {
+        Authorization: `JWT ${token}`,
+        "Content-Type": "application/json"
+      },
+      method: "DELETE",
+      body: JSON.stringify({
+        intents
+      })
+    })
+      .then(response => {
+        if (response.status === 401) {
+          dispatch(userAction.logout());
+        } else {
+          dispatch(removeIntent(intents));
+        }
+      })
+      .catch(err => console.log(err));
+  };
+}
+
 // initial state
 const initialState = {};
 
@@ -196,6 +231,8 @@ function reducer(state = initialState, action) {
       return applySetIntentList(state, action);
     case SET_INTENT:
       return applySetIntent(state, action);
+    case REMOVE_INTENT:
+      return applyRemoveIntent(state, action);
     case CLEAR_INTENT:
       return applyClearIntent(state, action);
     case ADD_INTENT:
@@ -223,6 +260,20 @@ function applySetIntent(state, action) {
   return {
     ...state,
     editIntent: intent
+  };
+}
+
+function applyRemoveIntent(state, action) {
+  const { intents } = action;
+  console.log(intents);
+  const { intentList } = state;
+  const updatedIntentList = intentList.filter(
+    intent => intents.indexOf(intent.id) === -1
+  );
+
+  return {
+    ...state,
+    intentList: updatedIntentList
   };
 }
 
@@ -282,7 +333,8 @@ const actionCreators = {
   createIntent,
   getExamples,
   createExample,
-  clearIntent
+  clearIntent,
+  deleteIntent
 };
 
 export { actionCreators };

@@ -28,7 +28,22 @@ class Intents(APIView):
         if serializer.is_valid():
             serializer.save(creator=user)
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)       
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, format=None):    
+        user = request.user
+
+        print(request.data)
+
+        intent_id_list = request.data['entities']
+
+        try:
+            found_intents = models.Intent.objects.filter(id__in=intent_id_list)
+            found_intents.delete()
+        except models.Image.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)       
 
 intents_view = Intents.as_view()
 
@@ -148,7 +163,7 @@ class Entities(APIView):
             found_entities = models.Entity.objects.filter(id__in=entity_id_list)
             found_entities.delete()
         except models.Image.DoesNotExist:
-            return Response(data=data, status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
