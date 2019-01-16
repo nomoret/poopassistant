@@ -53,7 +53,7 @@
     "react-ionicons": "^2.1.6",
     "react-redux": "^5.1.1",
     "react-router-dom": "^4.3.1",
-    "reactstrap": "^7.0.2",
+    "reactstrap": "^7.1.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "reset-css": "^4.0.1",

@@ -1,0 +1,274 @@
+//colors
+$black_40: rgba(0,0,0,0.4);
+$black_30: rgba(0,0,0,0.3);
+$white: white;
+$color_whisper_approx: #f5f6fa;
+$color_apple_approx: #4cd137;
+$color_thunderbird_approx: #c23616;
+$white_60: rgba(255,255,255,0.6);
+$color_seagull_approx: #82ccdd;
+$color_pastel_green_approx: #78e08f;
+$white_50: rgba(255,255,255,0.5);
+$black_50: rgba(0,0,0,0.5);
+$black_20: rgba(0,0,0,0.2);
+
+.chat {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.card {
+  margin-top: 50px;
+  display: flex;
+  width: 100%;
+
+	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+	border-radius: 15px !important;
+  background-color: $black_40 !important;
+
+  .img-cont {
+    position: relative;
+    height: 70px;
+    width: 70px;
+  }
+
+  .card-header {
+    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+    border-radius: 15px 15px 0 0 !important;
+    border-bottom: 0 !important;
+
+    .user-profile {
+      .img-cont {
+        position: relative;
+        height: 70px;
+        width: 70px;
+
+        .user-img {
+          height: 70px;
+          width: 70px;
+          border: 1.5px solid $color_whisper_approx;
+        }
+    
+        .online-icon {
+          position: absolute;
+          height: 15px;
+          width: 15px;
+          background-color: $color_apple_approx;
+          //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+          border-radius: 50%;
+          bottom: 0.2em;
+          right: 0.4em;
+          border: 1.5px solid $white;
+        }
+      }
+      
+      .user-info {
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: 15px;
+        span {
+          font-size: 20px;
+          color: $white;
+        }
+        p {
+          font-size: 10px;
+          color: $white_60;
+        }
+      }
+    }
+
+    
+  }
+
+  .card-body {
+    overflow-y: auto;
+
+    .msg-cotainer {
+      margin-top: auto;
+      margin-bottom: auto;
+      margin-left: 10px;
+      //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+      border-radius: 25px;
+      background-color: $color_seagull_approx;
+      padding: 10px;
+      position: relative;
+    }
+    .msg-cotainer-send {
+      margin-top: auto;
+      margin-bottom: auto;
+      margin-right: 10px;
+      //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+      border-radius: 25px;
+      background-color: $color_pastel_green_approx;
+      padding: 10px;
+      position: relative;
+    }
+    .msg-time {
+      position: absolute;
+      left: 0;
+      bottom: -15px;
+      color: $white_50;
+      font-size: 10px;
+    }
+    .msg-time-send {
+      position: absolute;
+      right: 0;
+      bottom: -15px;
+      color: $white_50;
+      font-size: 10px;
+    }
+
+    .img-cont-msg {
+      height: 40px;
+      width: 40px;
+    }
+
+    .user_img_msg {
+      height: 40px;
+      width: 40px;
+      border: 1.5px solid $color_whisper_approx;
+    }
+  }
+
+  .card-footer {
+    //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+    border-radius: 0 0 15px 15px !important;
+    border-top: 0 !important;
+
+    .type-msg {
+      background-color: $black_30 !important;
+      border: 0 !important;
+      color: $white !important;
+      height: 60px !important;
+      overflow-y: auto;
+      &:focus {
+        //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+        box-shadow: none !important;
+        outline: 0 !important;
+      }
+    }
+    .attach-btn {
+      //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+      border-radius: 15px 0 0 15px !important;
+      background-color: $black_30 !important;
+      border: 0 !important;
+      color: $white !important;
+      cursor: pointer;
+    }
+    .send-btn {
+      //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+      border-radius: 0 15px 15px 0 !important;
+      background-color: $black_30 !important;
+      border: 0 !important;
+      color: $white !important;
+      cursor: pointer;
+    }
+  }
+}
+.contacts_body {
+	padding: 0.75rem 0 !important;
+	overflow-y: auto;
+	white-space: nowrap;
+}
+.msg_card_body {
+	overflow-y: auto;
+}
+
+
+
+.container {
+	align-content: center;
+}
+.search {
+	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+	border-radius: 15px 0 0 15px !important;
+	background-color: $black_30 !important;
+	border: 0 !important;
+	color: $white !important;
+	&:focus {
+		//Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: none !important;
+		outline: 0 !important;
+	}
+}
+
+.search_btn {
+	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+	border-radius: 0 15px 15px 0 !important;
+	background-color: $black_30 !important;
+	border: 0 !important;
+	color: $white !important;
+	cursor: pointer;
+}
+.contacts {
+	list-style: none;
+	padding: 0;
+	li {
+		width: 100% !important;
+		padding: 5px 10px;
+		margin-bottom: 15px !important;
+	}
+}
+.active {
+	background-color: $black_30;
+}
+
+.offline {
+	background-color: $color_thunderbird_approx !important;
+}
+
+.video_cam {
+	margin-left: 50px;
+	margin-top: 5px;
+	span {
+		color: $white;
+		font-size: 20px;
+		cursor: pointer;
+		margin-right: 20px;
+	}
+}
+
+.msg_head {
+	position: relative;
+}
+#action_menu_btn {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	color: $white;
+	cursor: pointer;
+	font-size: 20px;
+}
+.action_menu {
+	z-index: 1;
+	position: absolute;
+	padding: 15px 0;
+	background-color: $black_50;
+	color: $white;
+	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+	border-radius: 15px;
+	top: 30px;
+	right: 15px;
+	display: none;
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		li {
+			width: 100%;
+			padding: 10px 15px;
+			margin-bottom: 5px;
+			i {
+				padding-right: 10px;
+			}
+			&:hover {
+				cursor: pointer;
+				background-color: $black_20;
+			}
+		}
+	} 
+}
+@media(max-width: 576px) {
+	.contacts_card {
+		margin-bottom: 15px !important;
+	}
+}
