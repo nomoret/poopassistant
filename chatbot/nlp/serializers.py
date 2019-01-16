@@ -54,6 +54,7 @@ class IntentSerializer(serializers.ModelSerializer):
 
 class SimpleEntitySerializer(serializers.ModelSerializer):
     creator = UserSerializer(read_only=True)
+    values = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Entity
@@ -61,10 +62,17 @@ class SimpleEntitySerializer(serializers.ModelSerializer):
             'id',
             'name',
             'creator',
-            "created_at",
-            'updated_at',
+            'values',
             'modified_time',
         )
+    def get_values(self, obj):
+        try:
+            entity_values = models.EntityValue.objects.filter(entity__id=obj.id)[:10]
+            serializer = SimpleEntityValueSerializer(entity_values, many=True)
+            return serializer.data
+        except models.EntityValue.DoesNotExist:
+            return []
+    
 class SynonymSerializer(serializers.ModelSerializer):
     # creator = UserSerializer(read_only=True)
 
@@ -72,6 +80,13 @@ class SynonymSerializer(serializers.ModelSerializer):
         model = models.Synonym
         fields = (
             'text',
+        )
+
+class SimpleEntityValueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.EntityValue
+        fields = (
+            'entity_value_name',
         )
 
 class EntityValueSerializer(serializers.ModelSerializer):
