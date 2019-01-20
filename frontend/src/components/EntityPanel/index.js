@@ -20,8 +20,14 @@ const mapDispatchToProps = dispatch => {
     getEntityList: () => {
       dispatch(enitityActions.getEntityList());
     },
+    getEntity: entityId => {
+      dispatch(enitityActions.getEntity(entityId));
+    },
     deleteEntity: selected => {
       dispatch(enitityActions.deleteEntity(selected));
+    },
+    clearEditEntity: () => {
+      dispatch(enitityActions.clearEditEntity());
     }
   };
 };

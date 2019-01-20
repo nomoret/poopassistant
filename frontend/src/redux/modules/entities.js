@@ -5,6 +5,8 @@ import { actionCreators as userActions } from "redux/modules/users";
 const SET_ENTITY_LIST = "SET_ENTITY_LIST";
 const ADD_ENTITY = "ADD_ENTITY";
 const REMOVE_ENTITY = "DELET_ENTITY";
+const SET_EDIT_ENTITY = "SET_EDIT_ENTITY";
+const RESET_EDIT_ENTITY = "RESET_EDIT_ENTITY";
 
 // action creators
 function setEntityList(entityList) {
@@ -27,6 +29,19 @@ function removeEntity(entities) {
   return {
     type: REMOVE_ENTITY,
     entities
+  };
+}
+
+function setEditEntity(entity) {
+  return {
+    type: SET_EDIT_ENTITY,
+    entity
+  };
+}
+
+function clearEditEntity() {
+  return {
+    type: RESET_EDIT_ENTITY
   };
 }
 
@@ -111,6 +126,30 @@ function deleteEntity(entities) {
   };
 }
 
+function getEntity(entityId) {
+  return (dispatch, getState) => {
+    const {
+      users: { token }
+    } = getState();
+
+    fetch(`/nlp/entities/${entityId}`, {
+      headers: {
+        Authorization: `JWT ${token}`,
+        "Content-Type": "application/json"
+      },
+      method: "GET"
+    })
+      .then(response => {
+        if (response.status === 401) {
+          dispatch(userActions.logout());
+        }
+        return response.json();
+      })
+      .then(json => dispatch(setEditEntity(json)))
+      .catch(err => console.log(err));
+  };
+}
+
 // initial state
 const initialState = {};
 
@@ -123,6 +162,10 @@ function reducer(state = initialState, action) {
       return applyAddEntity(state, action);
     case REMOVE_ENTITY:
       return applyRemoveEntity(state, action);
+    case SET_EDIT_ENTITY:
+      return applySetEntity(state, action);
+    case RESET_EDIT_ENTITY:
+      return applyResetEntity(state, action);
     default:
       return state;
   }
@@ -159,11 +202,29 @@ function applyRemoveEntity(state, action) {
   };
 }
 
+function applySetEntity(state, action) {
+  const { entity } = action;
+  console.log(entity);
+  return {
+    ...state,
+    entity
+  };
+}
+
+function applyResetEntity(state, action) {
+  return {
+    ...state,
+    entity: null
+  };
+}
+
 // export
 const actionCreators = {
   getEntityList,
   createEntity,
-  deleteEntity
+  deleteEntity,
+  getEntity,
+  clearEditEntity
 };
 
 export { actionCreators };
