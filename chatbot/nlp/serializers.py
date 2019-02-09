@@ -95,6 +95,7 @@ class EntityValueSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.EntityValue
         fields = (
+            'id',
             'entity_value_name',
             'entity_type',
             'entity_synonym',
