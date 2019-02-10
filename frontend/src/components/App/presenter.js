@@ -13,7 +13,16 @@ import Navigation from "components/Navigation";
 const App = props => (
   <div className={styles.app}>
     <Navigation key={1} />
-    {props.isLoggedIn ? <PublicRoutes key={2} /> : <PrivateRoutes key={2} />}
+    {props.isLoggedIn ? (
+      <PublicRoutes
+        key={2}
+        toggleChatPanel={props.toggleChatPanel}
+        openChatPanel={props.openChatPanel}
+        closeChatPanel={props.closeChatPanel}
+      />
+    ) : (
+      <PrivateRoutes key={2} />
+    )}
   </div>
 );
 
@@ -25,7 +34,7 @@ const PublicRoutes = props => (
   <div className={styles.appContainer}>
     <Sidebar />
     <div className={styles.appContent}>
-      <EditHeader />
+      <EditHeader openChatPanel={props.openChatPanel} />
       <Switch>
         <Route exact path="/intents" component={Intents} />
         <Route exact path="/entities" component={Entities} />
@@ -35,7 +44,9 @@ const PublicRoutes = props => (
         <Route path="/" component={BasicContainer} />
       </Switch>
     </div>
-    <ChatPanel />
+    {props.toggleChatPanel ? (
+      <ChatPanel closeChatPanel={props.closeChatPanel} />
+    ) : null}
   </div>
 );
 

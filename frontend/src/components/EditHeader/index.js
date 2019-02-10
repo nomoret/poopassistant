@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 import { Link } from "react-router-dom";
 import Ionicon from "react-ionicons";
 
-const EditHeader = () => (
+const EditHeader = props => (
   <div className={styles.container}>
     <header className={styles.header}>
       <div className={styles.breadcrumbs}>
@@ -14,7 +14,7 @@ const EditHeader = () => (
         </ol>
       </div>
       <div className={styles.column}>
-        <button className={styles.button}>
+        <button className={styles.button} onClick={props.openChatPanel}>
           <span>Try it!</span>
         </button>
       </div>

@@ -2,9 +2,9 @@ import React from "react";
 import styles from "./styles.module.scss";
 import ChatCard from "components/Card";
 
-const ChatPanel = () => (
+const ChatPanel = props => (
   <div className={styles.container}>
-    <ChatCard />
+    <ChatCard {...props} />
   </div>
 );
 

@@ -20,6 +20,7 @@ $black_20: rgba(0,0,0,0.2);
   margin-top: 50px;
   display: flex;
   width: 100%;
+  height: calc(100vh - 48px);
 
 	//Instead of the line below you could use @include border-radius($radius, $vertical-radius)
 	border-radius: 15px !important;
