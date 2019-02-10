@@ -5,7 +5,8 @@ import EntityEditor from "./presenter";
 class Container extends Component {
   state = {
     loading: true,
-    name: ""
+    // name: "",
+    dropdownOpen: false
   };
 
   static propTypes = {
@@ -19,7 +20,7 @@ class Container extends Component {
 
   componentWillReceiveProps = nextProps => {
     console.log(nextProps);
-    if (nextProps.values) {
+    if (nextProps.entity) {
       this.setState({
         loading: false
       });
@@ -28,13 +29,13 @@ class Container extends Component {
 
   render() {
     console.log(this.state);
-    const { id, loading, name, values } = this.state;
+    const { loading, name, dropdownOpen } = this.state;
     return (
       <EntityEditor
-        id={id}
         loading={loading}
         name={name}
-        values={values}
+        dropdownOpen={dropdownOpen}
+        toggle={this._toggle}
         handleInputChange={this._handleInputChange}
         handleSubmit={this._handleSubmit}
         handleExampleSubmit={this._handleExampleSubmit}
@@ -66,6 +67,12 @@ class Container extends Component {
     const { example } = this.state;
 
     console.log(example);
+  };
+
+  _toggle = () => {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen
+    });
   };
 }
 

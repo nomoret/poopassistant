@@ -17,7 +17,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    createEntity: (name, description) => {
+    createEntity: name => {
       dispatch(entityActions.createEntity(name));
     }
   };

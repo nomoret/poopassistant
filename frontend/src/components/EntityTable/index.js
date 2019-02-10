@@ -3,10 +3,6 @@ import styles from "./styles.module.scss";
 import PropTypes from "prop-types";
 import BootstrapTable from "react-bootstrap-table-next";
 
-function nameFormatter(cell, row) {
-  return <span>#{cell}</span>;
-}
-
 const EntityTable = props => {
   console.log(props);
   const { entities, openEdit } = props;
@@ -18,11 +14,40 @@ const EntityTable = props => {
     selected: props.selected
   };
 
+  const _nameFormatter = (cell, row) => {
+    return <span>@{cell}</span>;
+  };
+
+  const _countFormatter = column => {
+    return (
+      <span>
+        {column.text} {`( ${entities.length} )`}
+      </span>
+    );
+  };
+
+  const _valuesFormatter = (cell, row) => {
+    console.log(cell);
+    return (
+      <span>
+        {cell.map((value, index) => {
+          const { entity_value_name } = value;
+          if (index === cell.length - 1) {
+            return entity_value_name;
+          } else {
+            return `${entity_value_name}, `;
+          }
+        })}
+      </span>
+    );
+  };
+
   const columns = [
     {
       dataField: "name",
-      text: "Name",
-      formatter: nameFormatter,
+      text: "Entity",
+      formatter: _nameFormatter,
+      headerFormatter: _countFormatter,
       events: {
         onClick: (e, column, columnIndex, row, rowIndex) => {
           console.log(row);
@@ -32,12 +57,13 @@ const EntityTable = props => {
       classes: styles.intentEdit
     },
     {
-      dataField: "created_at",
-      text: "Created Time"
+      dataField: "values",
+      text: "Values",
+      formatter: _valuesFormatter
     },
     {
       dataField: "modified_time",
-      text: "Updated Time"
+      text: "Modified"
     }
   ];
 

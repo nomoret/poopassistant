@@ -2,10 +2,55 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./styles.module.scss";
 import Ionicon from "react-ionicons";
-import ExampleRow from "components/ExampleRow";
-import Loading from "components/Loading";
+import EntityValueTable from "components/EntityValueTable";
+import ValueInputs from "components/EntityValueInput";
 
 const EntityEditor = props => {
+  console.log(props);
+  // if (props.loading) {
+  //   return <Loading />;
+  // } else
+  if (props.entity) {
+    const {
+      id,
+      creator: { username },
+      entitiy_values,
+      name
+    } = props.entity;
+
+    console.log(typeof props.name === undefined);
+    return (
+      <RenderEnityEditor
+        id={id}
+        name={props.name !== undefined ? props.name : name}
+        deafultName={name}
+        username={username}
+        values={entitiy_values}
+        dropdownOpen={props.dropdownOpen}
+        toggle={props.toggle}
+        handleInputChange={props.handleInputChange}
+        handleSubmit={props.handleSubmit}
+        handleExampleSubmit={props.handleExampleSubmit}
+        closeEdit={props.closeEdit}
+        createEntity={props.createEntity}
+      />
+    );
+  } else {
+    return (
+      <RenderEnityEditor
+        dropdownOpen={props.dropdownOpen}
+        toggle={props.toggle}
+        handleInputChange={props.handleInputChange}
+        handleSubmit={props.handleSubmit}
+        handleExampleSubmit={props.handleExampleSubmit}
+        closeEdit={props.closeEdit}
+        createEntity={props.createEntity}
+      />
+    );
+  }
+};
+
+const RenderEnityEditor = props => {
   console.log(props);
   return (
     <div className={styles.overlay}>
@@ -72,21 +117,10 @@ const EntityEditor = props => {
                   </div>
                 </div>
                 {props.id && !props.loading && (
-                  <div className={styles.inputDescription}>
-                    <div>
-                      <label className={styles.labelName}>Add value</label>
-                    </div>
-                    <div className={styles.underLine}>
-                      <input
-                        className={styles.input}
-                        type="text"
-                        placeholder="Add user examples to this entity"
-                        name="example"
-                        value={props.example}
-                        onChange={props.handleInputChange}
-                      />
-                    </div>
-                  </div>
+                  <ValueInputs
+                    dropdownOpen={props.dropdownOpen}
+                    toggle={props.toggle}
+                  />
                 )}
                 {!props.id ? (
                   <div>
@@ -109,54 +143,14 @@ const EntityEditor = props => {
                           ? styles.createEntity
                           : styles.createEntityDisable
                       }
-                      placeholder="Add example"
+                      placeholder="Add value"
                     >
-                      Add example
+                      Add value
                     </button>
                   </div>
                 )}
               </div>
-              {!props.id && (
-                <div className={styles.noExample}>
-                  <div className={styles.title}>No values yet.</div>
-                  <div className={styles.decription}>
-                    Once you've named your entity, begin by adding values,
-                    synonyms, and patterns to entities to help your virtual
-                    assistant learn and understand important details that your
-                    users mention.
-                  </div>
-                  <Loading />
-                </div>
-              )}
-              {props.id && props.loading && <Loading />}
-              {props.id && !props.loading && (
-                <div className={styles.examples}>
-                  <table className={styles.table}>
-                    <thead className={styles.thead}>
-                      <tr>
-                        <th>
-                          <input type="checkbox" name="" value="All" />
-                        </th>
-                        <th>User examples</th>
-                        <th>Added</th>
-                      </tr>
-                    </thead>
-                    <tbody className={styles.tbody}>
-                      {props.examples.map((example, index) => {
-                        return (
-                          <ExampleRow
-                            key={example.id}
-                            index={index}
-                            example={example.example}
-                            modified_time={example.modified_time}
-                            creator={example.creator}
-                          />
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+              {props.values && <EntityValueTable values={props.values} />}
             </div>
           </form>
         </section>

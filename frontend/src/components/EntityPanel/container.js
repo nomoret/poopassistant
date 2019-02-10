@@ -10,9 +10,11 @@ class Container extends Component {
   };
 
   static propTypes = {
-    getEntityList: PropTypes.func.isRequired,
     entityList: PropTypes.array,
-    deleteEntity: PropTypes.func.isRequired
+    getEntityList: PropTypes.func.isRequired,
+    getEntity: PropTypes.func.isRequired,
+    deleteEntity: PropTypes.func.isRequired,
+    clearEditEntity: PropTypes.func.isRequired
     // clearEnitiy: PropTypes.func.isRequired,
   };
 
@@ -44,7 +46,7 @@ class Container extends Component {
         addEntity={this._addEntity}
         openEdit={this._openEdit}
         closeEdit={this._closeEdit}
-        deleteEntity={this._deleteEntity}
+        removeEntity={this._deleteEntity}
         selectRow={this._selectRow}
         selectAll={this._selectAll}
       />
@@ -57,22 +59,21 @@ class Container extends Component {
       seeingLikes: true
     });
     //clear editInent
+    const { clearEditEntity } = this.props;
+    clearEditEntity();
   };
 
-  _openEdit = props => {
+  _openEdit = intent => {
     console.log("openEdit");
     this.setState({
       seeingLikes: true
     });
 
-    console.log(props);
+    console.log(intent);
 
-    // const {
-    //   Enitiy: { id }
-    // } = props;
-    //get editEnitiy
-    // const { getEnitiy } = this.props;
-    // getEnitiy(id);
+    const { id } = intent;
+    const { getEntity } = this.props;
+    getEntity(id);
   };
 
   _deleteEntity = () => {

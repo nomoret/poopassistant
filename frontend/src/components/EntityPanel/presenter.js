@@ -15,7 +15,7 @@ const EnityPanel = props => {
       <ActionButtons
         name="entity"
         handleAdd={props.addEntity}
-        handleDelete={props.deleteEntity}
+        handleDelete={props.removeEntity}
       />
       <div className={styles.content}>
         {props.loading ? (
@@ -54,12 +54,12 @@ EnityPanel.propTypes = {
       creator: PropTypes.shape({
         username: PropTypes.string.isRequired
       }),
-      created_at: PropTypes.string.isRequired,
-      updated_at: PropTypes.string.isRequired
+      modified_time: PropTypes.string.isRequired
     }).isRequired
   ),
   selected: PropTypes.array.isRequired,
   addEntity: PropTypes.func.isRequired,
+  removeEntity: PropTypes.func.isRequired,
   openEdit: PropTypes.func.isRequired,
   closeEdit: PropTypes.func.isRequired,
   selectAll: PropTypes.func.isRequired,

@@ -1,0 +1,71 @@
+.value-synonym-container {
+    margin-bottom: 16px;
+    margin-top: 16px;
+    display: flex;
+
+    .value-input {
+        flex-grow: 0.15;
+        flex-shrink: 1;
+        flex-basis: 0%;
+
+        padding-right: 22px;
+    }
+
+    .synonym-input {
+        flex: 0.85;
+        flex-grow: 0.85;
+        flex-shrink: 1;
+        flex-basis: 0%;
+        display: flex;
+
+        margin-left: 32px;
+
+        .dropdown {
+            vertical-align: top;
+            padding-top: 12px;
+            height: 54px;
+            margin-right: 32px;
+        }
+
+        .synonym-input-list {
+            box-sizing: border-box;
+        }
+    }
+
+    .label-name {
+        font-size: 13px;
+        font-weight: bold;
+        color: #343334;
+    }
+
+    .name {
+        max-width: 600px;
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 30px;
+    }
+
+    .under-line {
+        border-bottom: 2px solid #d8d8d8;
+        width: 100%;
+        display: flex;
+
+        .entity-span {
+            display: flex;
+            flex: 0;
+            font-size: 20px;
+        }                           
+    }
+
+    .input {    
+        display: flex;
+        flex: 1;                                              
+        border: none;                    
+        background-color: transparent;
+        font-size: 20px;
+        font-weight: 300;
+        line-height: 30px;
+        min-height: 30px;
+        color: #343334;
+    }
+}
