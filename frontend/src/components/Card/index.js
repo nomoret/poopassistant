@@ -29,6 +29,24 @@ class ChatCard extends Component {
     });
   }
 
+  componentDidUpdate = (prevProps, prevState) => {
+    console.log("cdu", this.myRef);
+
+    if (this.myRef) {
+      this.myRef.scrollTop = this.myRef.scrollHeight;
+      this.myRef.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  getSnapshotBeforeUpdate = (prevProps, prevState) => {
+    console.log(prevState, this.state);
+    if (prevState.history.length !== this.state.history.length) {
+      console.log("ok diff");
+    }
+  };
+
+  // static getDerivedStateFromProps(nextProps, prevState) {}
+
   render() {
     console.log("대화 목록", this.state);
     return (
@@ -50,7 +68,12 @@ class ChatCard extends Component {
             <Button onClick={this.props.closeChatPanel}>close</Button>
           </div>
         </CardHeader>
-        <CardBody className={styles.cardBody}>
+        <CardBody
+          className={styles.cardBody}
+          innerRef={el => {
+            this.myRef = el;
+          }}
+        >
           {/* send, response message list */}
           {this.state.history.map((conversation, index) => {
             const { type, message } = conversation;
@@ -119,6 +142,8 @@ class ChatCard extends Component {
       message: ""
     });
   };
+
+  _onScroll = () => {};
 }
 
 const BotMessage = props => {
