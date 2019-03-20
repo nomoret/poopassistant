@@ -21,8 +21,8 @@ const ValueInputs = props => {
               className={styles.input}
               type="text"
               placeholder="Enter Value"
-              name="example"
-              value={props.example}
+              name="value"
+              value={props.value}
               onChange={props.handleInputChange}
             />
           </div>
@@ -47,8 +47,8 @@ const ValueInputs = props => {
                 className={styles.input}
                 type="text"
                 placeholder="Enter Synonym"
-                name="example"
-                value={props.example}
+                name="synonym"
+                value={props.synonym}
                 onChange={props.handleInputChange}
               />
             </div>

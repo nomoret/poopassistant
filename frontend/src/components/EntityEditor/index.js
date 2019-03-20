@@ -19,6 +19,9 @@ const mapDispatchToProps = dispatch => {
   return {
     createEntity: name => {
       dispatch(entityActions.createEntity(name));
+    },
+    createEntityValue: (entitiyId, name) => {
+      dispatch(entityActions.createEntityValue(entitiyId, name));
     }
   };
 };

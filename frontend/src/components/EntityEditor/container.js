@@ -11,7 +11,8 @@ class Container extends Component {
 
   static propTypes = {
     closeEdit: PropTypes.func.isRequired,
-    createEntity: PropTypes.func.isRequired
+    createEntity: PropTypes.func.isRequired,
+    createEntityValue: PropTypes.func.isRequired
   };
 
   componentDidMount = () => {
@@ -38,7 +39,7 @@ class Container extends Component {
         toggle={this._toggle}
         handleInputChange={this._handleInputChange}
         handleSubmit={this._handleSubmit}
-        handleExampleSubmit={this._handleExampleSubmit}
+        handleValueSubmit={this._handleValueubmit}
         {...this.props}
       />
     );
@@ -62,11 +63,30 @@ class Container extends Component {
     createEntity(name);
   };
 
-  _handleExampleSubmit = event => {
+  _handleValueubmit = event => {
     event.preventDefault();
-    const { example } = this.state;
+    const { value } = this.state;
+    console.log(this.props);
+    const {
+      entity: { id },
+      createEntityValue
+    } = this.props;
 
-    console.log(example);
+    const value_test = {
+      entity_value_name: value,
+      entity_type: "synonyms",
+      entity_synonym: [
+        {
+          text: "sad"
+        },
+        {
+          text: "happy"
+        }
+      ]
+    };
+
+    createEntityValue(id, value_test);
+    console.log("Add Value!!", value_test);
   };
 
   _toggle = () => {

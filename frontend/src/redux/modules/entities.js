@@ -7,6 +7,7 @@ const ADD_ENTITY = "ADD_ENTITY";
 const REMOVE_ENTITY = "DELET_ENTITY";
 const SET_EDIT_ENTITY = "SET_EDIT_ENTITY";
 const RESET_EDIT_ENTITY = "RESET_EDIT_ENTITY";
+const ADD_ENTITY_VALUE = "SET_ENTITY_VALUE";
 
 // action creators
 function setEntityList(entityList) {
@@ -36,6 +37,13 @@ function setEditEntity(entity) {
   return {
     type: SET_EDIT_ENTITY,
     entity
+  };
+}
+
+function setEntityValue(value) {
+  return {
+    type: ADD_ENTITY_VALUE,
+    value
   };
 }
 
@@ -150,6 +158,31 @@ function getEntity(entityId) {
   };
 }
 
+function createEntityValue(entityId, value) {
+  return (dispatch, getState) => {
+    const {
+      users: { token }
+    } = getState();
+
+    fetch(`/nlp/entities/${entityId}/values`, {
+      headers: {
+        Authorization: `JWT ${token}`,
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify(value)
+    })
+      .then(response => {
+        if (response.status === 401) {
+          dispatch(userActions.logout());
+        }
+        return response.json();
+      })
+      .then(json => dispatch(setEntityValue(json)))
+      .catch(err => console.log(err));
+  };
+}
+
 // initial state
 const initialState = {};
 
@@ -166,6 +199,8 @@ function reducer(state = initialState, action) {
       return applySetEntity(state, action);
     case RESET_EDIT_ENTITY:
       return applyResetEntity(state, action);
+    case ADD_ENTITY_VALUE:
+      return applyAddEntityValue(state, action);
     default:
       return state;
   }
@@ -182,8 +217,11 @@ function applySetEntityList(state, action) {
 
 function applyAddEntity(state, action) {
   const { entity } = action;
+  const { entityList } = state;
+
   return {
     ...state,
+    entityList: [...entityList, entity],
     entity
   };
 }
@@ -211,6 +249,14 @@ function applySetEntity(state, action) {
   };
 }
 
+function applyAddEntityValue(state, action) {
+  console.log(action);
+  // const { value } = action;
+  return {
+    ...state
+  };
+}
+
 function applyResetEntity(state, action) {
   return {
     ...state,
@@ -224,7 +270,8 @@ const actionCreators = {
   createEntity,
   deleteEntity,
   getEntity,
-  clearEditEntity
+  clearEditEntity,
+  createEntityValue
 };
 
 export { actionCreators };

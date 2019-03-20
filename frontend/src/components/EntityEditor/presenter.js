@@ -30,7 +30,7 @@ const EntityEditor = props => {
         toggle={props.toggle}
         handleInputChange={props.handleInputChange}
         handleSubmit={props.handleSubmit}
-        handleExampleSubmit={props.handleExampleSubmit}
+        handleValueSubmit={props.handleValueSubmit}
         closeEdit={props.closeEdit}
         createEntity={props.createEntity}
       />
@@ -42,7 +42,6 @@ const EntityEditor = props => {
         toggle={props.toggle}
         handleInputChange={props.handleInputChange}
         handleSubmit={props.handleSubmit}
-        handleExampleSubmit={props.handleExampleSubmit}
         closeEdit={props.closeEdit}
         createEntity={props.createEntity}
       />
@@ -120,6 +119,7 @@ const RenderEnityEditor = props => {
                   <ValueInputs
                     dropdownOpen={props.dropdownOpen}
                     toggle={props.toggle}
+                    handleInputChange={props.handleInputChange}
                   />
                 )}
                 {!props.id ? (
@@ -131,6 +131,7 @@ const RenderEnityEditor = props => {
                           : styles.createEntityDisable
                       }
                       placeholder="Create Entity"
+                      onClick={props.handleSubmit}
                     >
                       Create Entity
                     </button>
@@ -144,6 +145,7 @@ const RenderEnityEditor = props => {
                           : styles.createEntityDisable
                       }
                       placeholder="Add value"
+                      onClick={props.handleValueSubmit}
                     >
                       Add value
                     </button>
