@@ -98,6 +98,7 @@ class IntentAddExamples(APIView):
             print("not found intent!!!!")
             return Response(status=status.HTTP_404_NOT_FOUND)
         
+        print(request.data)
         serializer = serializers.ExampleSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -186,6 +187,53 @@ class EntityDetail(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 entity_detail_view = EntityDetail.as_view()
+
+class EntityAddValues(APIView):
+    def get(self, request, entity_id, format=None):
+        user = request.user
+
+        values = models.EntityValue.objects.filter(entity__id=entity_id)
+
+        serializer = serializers.EntityValueSerializer(values, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        
+    def post(self, request, entity_id, format=None):
+        user = request.user
+        print(user)
+
+        try:
+            found_entity = models.Entity.objects.get(id=entity_id)
+        except models.Entity.DoesNotExist:
+            print("not found Entity!!!!")
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        print(request.data)
+
+        value = request.data
+        print(value)
+
+        serializer = serializers.SimpleEntityValueSerializer(data=value)
+        if not serializer.is_valid():   
+            return Response(data=serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            serializer.save(creator=user, entity=found_entity)    
+
+    
+        synonyms = request.data['entity_synonym']
+        print(synonyms)
+        synonym_serializer = serializers.SimpleSynonymSerializer(data=synonyms, many=True)
+        if synonym_serializer.is_valid():
+            synonym_serializer.save(creator=user, entity_synonym=serializer.data)
+        else:
+            print("not creat synoym!!!!")
+
+        print(synonym_serializer.data)
+        
+        # serializer = serializers.EntityValueSerializer(data=request.data)
+        
+        
+
+entity_add_values_view = EntityAddValues.as_view()
 
 class SVM(APIView):
 

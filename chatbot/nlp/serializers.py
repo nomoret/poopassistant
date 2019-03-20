@@ -65,6 +65,7 @@ class SimpleEntitySerializer(serializers.ModelSerializer):
             'values',
             'modified_time',
         )
+        
     def get_values(self, obj):
         try:
             entity_values = models.EntityValue.objects.filter(entity__id=obj.id)[:10]
@@ -74,19 +75,35 @@ class SimpleEntitySerializer(serializers.ModelSerializer):
             return []
     
 class SynonymSerializer(serializers.ModelSerializer):
-    # creator = UserSerializer(read_only=True)
+    creator = UserSerializer(read_only=True)
 
     class Meta:
         model = models.Synonym
         fields = (
             'text',
+            'creator'
         )
 
+class SimpleSynonymSerializer(serializers.ModelSerializer):
+    creator = UserSerializer(read_only=True)
+
+    class Meta:
+        model = models.Synonym
+        fields =('__all__')
+        # fields = (
+        #     'text'
+        #     'creator'
+        # )
+
 class SimpleEntityValueSerializer(serializers.ModelSerializer):
+    entity_synonym = SimpleSynonymSerializer(many=True, read_only=True)
+
     class Meta:
         model = models.EntityValue
         fields = (
             'entity_value_name',
+            'entity_type',
+            'entity_synonym'
         )
 
 class EntityValueSerializer(serializers.ModelSerializer):
@@ -98,7 +115,7 @@ class EntityValueSerializer(serializers.ModelSerializer):
             'id',
             'entity_value_name',
             'entity_type',
-            'entity_synonym',
+            'entity_synonym'
         )
 
 

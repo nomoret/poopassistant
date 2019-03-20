@@ -68,7 +68,7 @@ class EntityValue(TimeStampModel):
         ("not-specified", "Not-specified")
     }
 
-    entity_value_name = models.CharField(max_length=128, blank=True)
+    entity_value_name = models.CharField(max_length=128, blank=False)
     entity_type = models.CharField(max_length=80, choices=ENTITY_CHOICE, null=True)
     creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)    
     entity = models.ForeignKey(Entity, on_delete=models.CASCADE, null=True, related_name='entitiy_values')
@@ -84,4 +84,4 @@ class Synonym(TimeStampModel):
     entity_synonym = models.ForeignKey(EntityValue, on_delete=models.CASCADE, null=True, related_name='entity_synonym')
 
     def __str__(self):
-            return self.text
+        return self.text
