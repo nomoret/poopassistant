@@ -4,6 +4,8 @@ Base settings to build other settings files upon.
 
 import environ
 
+import datetime
+
 ROOT_DIR = environ.Path(__file__) - 3  # (chatbot/config/settings/base.py - 3 = chatbot/)
 APPS_DIR = ROOT_DIR.path('chatbot')
 
@@ -254,6 +256,12 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.BasicAuthentication',
     ),
 }
+
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA':  datetime.timedelta(seconds=3600)
+}
+
 REST_USE_JWT = True
 ACCOUNT_LOGOUT_ON_GET = True
 
