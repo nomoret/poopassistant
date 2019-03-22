@@ -90,7 +90,10 @@ const RenderEnityEditor = props => {
                     color="#047cc0"
                   />
                 </button>
-                <button className={styles.button}>
+                <button
+                  className={styles.button}
+                  onClick={e => e.preventDefault()}
+                >
                   <span>Try it!</span>
                 </button>
               </div>

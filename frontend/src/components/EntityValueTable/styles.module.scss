@@ -1,0 +1,34 @@
+.container {
+    
+    .action {
+        height: 48px;
+    }
+
+    .value-action {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 48px;
+        background-color: #047cc0;
+        color: #fff;
+        padding: 0px 64px;
+
+        .button {
+            background-color: inherit;
+            color: #fff;
+            padding: 0px;
+            margin: 0px;
+            min-width: 0px;
+            border-radius: 0px;
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            border: none;
+        }
+
+        .description {
+            padding-right: 24px;
+        }
+    }
+}

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import BootstrapTable from "react-bootstrap-table-next";
 
 const EntityValueTable = props => {
-  console.log(props);
+  console.log("EntityValue", props);
   const { values } = props;
 
   const selectRow = {
@@ -29,11 +29,11 @@ const EntityValueTable = props => {
       return (
         <span>
           {cell.map((value, index) => {
-            const { entity_value_name } = value;
+            const { text } = value;
             if (index === cell.length - 1) {
-              return entity_value_name;
+              return text;
             } else {
-              return `${entity_value_name}, `;
+              return `${text}, `;
             }
           })}
         </span>
@@ -62,6 +62,9 @@ const EntityValueTable = props => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.action}>
+        <EntityValueAction selected={props.selected} />
+      </div>
       <BootstrapTable
         hover
         striped
@@ -72,6 +75,33 @@ const EntityValueTable = props => {
       />
     </div>
   );
+};
+
+const EntityValueAction = props => {
+  if (props.selected && props.selected.length > 0) {
+    return (
+      <div className={styles.valueAction}>
+        <div>
+          <button className={styles.button}>Delete</button>
+        </div>
+        <div>
+          {props.selected.length > 1 ? (
+            <span className={styles.description}>
+              {`${props.selected.length} items selected`}
+            </span>
+          ) : (
+            <span className={styles.description}>
+              {`${props.selected.length} item selected`}
+            </span>
+          )}
+
+          <button className={styles.button}>Cancel</button>
+        </div>
+      </div>
+    );
+  } else {
+    return null;
+  }
 };
 
 EntityValueTable.propTypes = {
