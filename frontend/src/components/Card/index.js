@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  Form,
   Button
 } from "reactstrap";
 
@@ -106,7 +105,6 @@ class ChatCard extends Component {
               </Button>
             </InputGroupAddon>
           </InputGroup>
-          {/* </Form> */}
         </CardFooter>
       </Card>
     );

@@ -9,6 +9,7 @@ import Intents from "components/IntentPanel";
 import Entities from "components/EntityPanel";
 import ChatPanel from "components/ChatPanel";
 import Navigation from "components/Navigation";
+import DialogTree from "components/DialogTree";
 
 const App = props => (
   <div className={styles.app}>
@@ -38,7 +39,7 @@ const PublicRoutes = props => (
       <Switch>
         <Route exact path="/intents" component={Intents} />
         <Route exact path="/entities" component={Entities} />
-        <Route exact path="/dialog" component={Dialog} />
+        <Route exact path="/dialog" component={DialogTree} />
         <Route exact path="/deploy" component={Deploy} />
         <Route exact path="/improve" component={Improve} />
         <Route path="/" component={BasicContainer} />
@@ -51,7 +52,6 @@ const PublicRoutes = props => (
 );
 
 const BasicContainer = () => <div className={styles.appPanel}>main</div>;
-const Dialog = () => <div className={styles.appPanel}>Dialog</div>;
 const Deploy = () => <div className={styles.appPanel}>Deploy</div>;
 const Improve = () => <div className={styles.appPanel}>Improve</div>;
 
