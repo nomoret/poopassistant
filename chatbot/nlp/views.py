@@ -207,31 +207,36 @@ class EntityAddValues(APIView):
             print("not found Entity!!!!")
             return Response(status=status.HTTP_404_NOT_FOUND)
         
-        print(request.data)
+        if request.data is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        # need to finding existing entity value 
+        try:
+            entity_value_name = request.data['entity_value_name']
+            entity_type = request.data['entity_type']
+            newEntityValue = models.EntityValue.objects.create(
+                entity_value_name = entity_value_name,
+                entity_type = entity_type,
+                creator=user,
+                entity=found_entity,
+            )
+            newEntityValue.save()
+        except Exception as e:
+            print("Exception", e)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        value = request.data
-        print(value)
-
-        serializer = serializers.SimpleEntityValueSerializer(data=value)
-        if not serializer.is_valid():   
-            return Response(data=serializer.error, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            serializer.save(creator=user, entity=found_entity)    
-
-    
         synonyms = request.data['entity_synonym']
-        print(synonyms)
+        if synonyms is None:
+            Response(data=request.data, status=status.HTTP_200_OK)
+
         synonym_serializer = serializers.SimpleSynonymSerializer(data=synonyms, many=True)
         if synonym_serializer.is_valid():
-            synonym_serializer.save(creator=user, entity_synonym=serializer.data)
+            synonym_serializer.save(creator=user, entity_synonym=newEntityValue)
         else:
             print("not creat synoym!!!!")
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-        print(synonym_serializer.data)
-        
-        # serializer = serializers.EntityValueSerializer(data=request.data)
-        
-        
+        return Response(data=request.data, status=status.HTTP_200_OK)
 
 entity_add_values_view = EntityAddValues.as_view()
 
