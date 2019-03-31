@@ -8,6 +8,7 @@ from .views import (
     entities_view,
     entity_detail_view,
     entity_add_values_view,
+    entity_value_detail_view
 )
 
 app_name = "nlp"
@@ -20,4 +21,5 @@ urlpatterns = [
     path("entities", view=entities_view, name="entities"),
     path("entities/<int:entity_id>", view=entity_detail_view, name="entity_detail"),
     path("entities/<int:entity_id>/values", view=entity_add_values_view, name="entity_add_values"),
+    path("values/<int:entity_value_id>", view=entity_value_detail_view, name="entity_value_detail"),
 ]

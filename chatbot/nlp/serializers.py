@@ -52,6 +52,15 @@ class IntentSerializer(serializers.ModelSerializer):
             'modified_time',
         )
 
+class ResponseIntentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Intent
+        fields = (
+            'name',
+            'description',
+        )
+
 class SimpleEntitySerializer(serializers.ModelSerializer):
     creator = UserSerializer(read_only=True)
     values = serializers.SerializerMethodField()

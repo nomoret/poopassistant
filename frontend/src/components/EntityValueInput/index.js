@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./styles.module.scss";
+import Ionicon from "react-ionicons";
 import {
   Dropdown,
   DropdownItem,
@@ -51,6 +52,9 @@ const ValueInputs = props => {
                 value={props.synonym}
                 onChange={props.handleInputChange}
               />
+              <button className={styles.btn} title="Export">
+                <Ionicon icon="md-add-circle" fontSize="24px" color="#047cc0" />
+              </button>
             </div>
           </div>
         </div>

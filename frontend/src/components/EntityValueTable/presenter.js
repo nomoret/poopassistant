@@ -63,7 +63,10 @@ const EntityValueTable = props => {
   return (
     <div className={styles.container}>
       <div className={styles.action}>
-        <EntityValueAction selected={props.selected} />
+        <EntityValueAction
+          selected={props.selected}
+          deleteButton={props.selectedDelete}
+        />
       </div>
       <BootstrapTable
         hover
@@ -82,7 +85,9 @@ const EntityValueAction = props => {
     return (
       <div className={styles.valueAction}>
         <div>
-          <button className={styles.button}>Delete</button>
+          <button className={styles.button} onClick={props.deleteButton}>
+            Delete
+          </button>
         </div>
         <div>
           {props.selected.length > 1 ? (
@@ -105,7 +110,8 @@ const EntityValueAction = props => {
 };
 
 EntityValueTable.propTypes = {
-  values: PropTypes.array
+  values: PropTypes.array,
+  selectedDelete: PropTypes.func.isRequired
 };
 
 export default EntityValueTable;

@@ -1,11 +1,26 @@
-import React from "react";
-import styles from "./styles.module.scss";
-import ChatCard from "components/Card";
+import { connect } from "react-redux";
+import { actionCreators } from "redux/modules/chattings";
+import Container from "./container";
 
-const ChatPanel = props => (
-  <div className={styles.container}>
-    <ChatCard {...props} />
-  </div>
-);
+const mapStateToProps = state => {
+  const {
+    chattings: { response }
+  } = state;
 
-export default ChatPanel;
+  return {
+    response
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    sendMessage: msg => {
+      dispatch(actionCreators.sendMessage(msg));
+    }
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Container);

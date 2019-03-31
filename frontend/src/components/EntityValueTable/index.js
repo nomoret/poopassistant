@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { actionCreators as intentActions } from "redux/modules/intents";
+import { actionCreators as enittyActions } from "redux/modules/entities";
 import Container from "./container";
 
 // const mapStateToProps = state => {
@@ -23,12 +23,15 @@ import Container from "./container";
 //   }
 // };
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     createIntent: (name, description) => {
-//       dispatch(intentActions.createIntent(name, description));
-//     }
-//   };
-// };
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteEntityValue: entityValueId => {
+      dispatch(enittyActions.deleteEntityValue(entityValueId));
+    }
+  };
+};
 
-export default connect()(Container);
+export default connect(
+  null,
+  mapDispatchToProps
+)(Container);

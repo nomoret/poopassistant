@@ -29,7 +29,7 @@ class ChatCard extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    console.log("cdu", this.myRef);
+    // console.log("cdu", this.myRef);
 
     if (this.myRef) {
       this.myRef.scrollTop = this.myRef.scrollHeight;
@@ -37,17 +37,26 @@ class ChatCard extends Component {
     }
   };
 
-  getSnapshotBeforeUpdate = (prevProps, prevState) => {
-    console.log(prevState, this.state);
-    if (prevState.history.length !== this.state.history.length) {
-      console.log("ok diff");
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.response) {
+      console.log("componentWillReceiveProps", nextProps);
+      const { name, description } = nextProps.response;
+
+      const response = {
+        type: "bot",
+        message: `${name} - ${description} 의도를 물어봤군요`
+      };
+
+      this.setState({
+        history: [...this.state.history, response],
+        loading: false
+      });
     }
   };
 
-  // static getDerivedStateFromProps(nextProps, prevState) {}
-
   render() {
     console.log("대화 목록", this.state);
+    console.log(this.props);
     return (
       <Card className={styles.card}>
         <CardHeader className={styles.cardHeader}>
@@ -128,17 +137,29 @@ class ChatCard extends Component {
     }
     console.log("Click", message);
 
-    const sendMessage = { type: "user", message: message };
+    const { sendMessage } = this.props;
 
-    const response = {
-      type: "bot",
-      message: "아직 준비중입니다."
-    };
+    sendMessage(message);
+
+    const msg = { type: "user", message: message };
 
     this.setState({
-      history: [...this.state.history, sendMessage, response],
-      message: ""
+      history: [...this.state.history, msg],
+      message: "",
+      loading: true
     });
+
+    // const msg = { type: "user", message: message };
+
+    // const response = {
+    //   type: "bot",
+    //   message: "아직 준비중입니다."
+    // };
+
+    // this.setState({
+    //   history: [...this.state.history, msg, response],
+    //   message: ""
+    // });
   };
 
   _onScroll = () => {};

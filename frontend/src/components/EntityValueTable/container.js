@@ -12,6 +12,7 @@ class Container extends Component {
     // createIntent: PropTypes.func.isRequired,
     // getExamples: PropTypes.func.isRequired,
     // createExample: PropTypes.func.isRequired
+    deleteEntityValue: PropTypes.func.isRequired
   };
 
   render() {
@@ -22,6 +23,7 @@ class Container extends Component {
         selected={selected}
         selectAll={this._selectAll}
         selectRow={this._selectRow}
+        selectedDelete={this._selectedDelete}
         {...this.props}
       />
     );
@@ -52,6 +54,19 @@ class Container extends Component {
     }
 
     return false;
+  };
+
+  _selectedDelete = event => {
+    event.preventDefault();
+
+    const { deleteEntityValue } = this.props;
+
+    const { selected } = this.state;
+
+    console.log("_selectedDelete", selected);
+    if (selected) {
+      selected.map(row => deleteEntityValue(row));
+    }
   };
 }
 

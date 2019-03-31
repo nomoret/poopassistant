@@ -8,6 +8,7 @@ const REMOVE_ENTITY = "DELET_ENTITY";
 const SET_EDIT_ENTITY = "SET_EDIT_ENTITY";
 const RESET_EDIT_ENTITY = "RESET_EDIT_ENTITY";
 const ADD_ENTITY_VALUE = "SET_ENTITY_VALUE";
+const REMOVE_ENTITY_VALUE = "REMOVE_ENTITY_VALUE";
 
 // action creators
 function setEntityList(entityList) {
@@ -40,10 +41,18 @@ function setEditEntity(entity) {
   };
 }
 
-function setEntityValue(value) {
+function setEntityValue(entityId, entityValue) {
   return {
     type: ADD_ENTITY_VALUE,
-    value
+    entityId,
+    entityValue
+  };
+}
+
+function removeEntityValue(entityValueId) {
+  return {
+    type: REMOVE_ENTITY_VALUE,
+    entityValueId
   };
 }
 
@@ -178,7 +187,28 @@ function createEntityValue(entityId, value) {
         }
         return response.json();
       })
-      .then(json => dispatch(setEntityValue(json)))
+      .then(json => dispatch(setEntityValue(entityId, json)))
+      .catch(err => console.log(err));
+  };
+}
+
+function deleteEntityValue(entityValueId) {
+  return (dispatch, getState) => {
+    const {
+      users: { token }
+    } = getState();
+
+    fetch(`/nlp/values/${entityValueId}`, {
+      headers: {
+        Authorization: `JWT ${token}`
+      },
+      method: "DELETE"
+    })
+      .then(response => {
+        if (response.status === 204) {
+          dispatch(removeEntityValue(entityValueId));
+        }
+      })
       .catch(err => console.log(err));
   };
 }
@@ -201,6 +231,8 @@ function reducer(state = initialState, action) {
       return applyResetEntity(state, action);
     case ADD_ENTITY_VALUE:
       return applyAddEntityValue(state, action);
+    case REMOVE_ENTITY_VALUE:
+      return applyRemoveEntityValue(state, action);
     default:
       return state;
   }
@@ -250,10 +282,41 @@ function applySetEntity(state, action) {
 }
 
 function applyAddEntityValue(state, action) {
-  console.log(action);
-  // const { value } = action;
+  const { entityId, entityValue } = action;
+  console.log(entityValue);
+
+  const { entity } = state;
+  const { entitiy_values } = entity;
+
+  const updateEntity = {
+    ...entity,
+    entitiy_values: [...entitiy_values, entityValue]
+  };
+
+  console.log("추가 됬냐", updateEntity);
+
   return {
-    ...state
+    ...state,
+    entity: updateEntity
+  };
+}
+
+function applyRemoveEntityValue(state, action) {
+  const { entityValueId } = action;
+  const { entity } = state;
+
+  console.log(entityValueId);
+
+  const { entitiy_values } = entity;
+  console.log(entitiy_values);
+  const updateEntityValues = entitiy_values.filter(
+    entityValue => entityValue.id !== entityValueId
+  );
+
+  const updateEntity = { ...entity, entitiy_values: updateEntityValues };
+  return {
+    ...state,
+    entity: updateEntity
   };
 }
 
@@ -271,7 +334,8 @@ const actionCreators = {
   deleteEntity,
   getEntity,
   clearEditEntity,
-  createEntityValue
+  createEntityValue,
+  deleteEntityValue
 };
 
 export { actionCreators };
