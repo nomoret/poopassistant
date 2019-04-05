@@ -328,7 +328,7 @@ def train_data():
     # pprint.pprint(cv.vocabulary_)
     text_clf_svm = Pipeline([('vect', cv),
                             ('tfidf', TfidfTransformer()),
-                            ('clf-svm', SGDClassifier(loss='hinge',
+                            ('clf-svm', SGDClassifier(loss='log',
                                                     penalty='l2',
                                                     alpha=1e-3,
                                                     max_iter=10,
@@ -376,7 +376,7 @@ class SVM(APIView):
         return Response(data=responseData, status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
-        print("DSAS")
+        print("request message response")
 
         if request.data is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -384,6 +384,18 @@ class SVM(APIView):
 
         idx = int(text_clf_svm.predict([user_message]))
         print(idx)
+
+        probs = text_clf_svm.predict_proba([user_message])
+        print(probs)
+        print(probs.shape)
+        print(text_clf_svm.classes_)
+
+        probs_index = 0
+        for mapping_id in text_clf_svm.classes_:
+            if mapping_id == idx:
+                break
+            probs_index += 1
+                 
 
         try:
             found_intent = models.Intent.objects.get(id=idx)
@@ -394,11 +406,16 @@ class SVM(APIView):
                 'description': 'invalide intent'
             }
             return Response(data=invalid_data, status=status.HTTP_204_NO_CONTENT)
-            
-        print(found_intent)
-        serializer = serializers.ResponseIntentSerializer(found_intent)
 
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        serializer = serializers.ResponseIntentSerializer(found_intent)
+        
+        response_data = {
+            'name': serializer.data['name'],
+            'description': serializer.data['description'],
+            'accuracy':(probs[0][probs_index])
+        }
+
+        return Response(data=response_data, status=status.HTTP_200_OK)
         
     def _pos_tagger(self, input, type='mecab'):
 

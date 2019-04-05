@@ -40,11 +40,13 @@ class ChatCard extends Component {
   componentWillReceiveProps = nextProps => {
     if (nextProps.response) {
       console.log("componentWillReceiveProps", nextProps);
-      const { name, description } = nextProps.response;
+      const { name, description, accuracy } = nextProps.response;
 
       const response = {
         type: "bot",
-        message: `${name} - ${description} 의도를 물어봤군요`
+        message: `${name} - ${description} 의도를 물어봤군요 정확도는 ${(
+          accuracy * 100.0
+        ).toFixed(2)}`
       };
 
       this.setState({
