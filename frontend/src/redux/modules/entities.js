@@ -288,9 +288,13 @@ function applyAddEntityValue(state, action) {
   const { entity } = state;
   const { entitiy_values } = entity;
 
+  const updateEntityValues = entitiy_values
+    ? [...entitiy_values, entityValue]
+    : [entityValue];
+
   const updateEntity = {
     ...entity,
-    entitiy_values: [...entitiy_values, entityValue]
+    entitiy_values: updateEntityValues
   };
 
   console.log("추가 됬냐", updateEntity);
