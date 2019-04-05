@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import PropTypes from "prop-types";
 import styles from "./styles.module.scss";
-
+import Ionicon from "react-ionicons";
 import {
   InputGroup,
   InputGroupAddon,
@@ -46,7 +46,7 @@ class ChatCard extends Component {
         type: "bot",
         message: `${name} - ${description} 의도를 물어봤군요 정확도는 ${(
           accuracy * 100.0
-        ).toFixed(2)}`
+        ).toFixed(2)}%`
       };
 
       this.setState({
@@ -75,7 +75,12 @@ class ChatCard extends Component {
               <span>Chat with 테스트봇</span>
               <p>{`${this.state.history.length} Messages`}</p>
             </div>
-            <Button onClick={this.props.closeChatPanel}>close</Button>
+            <Button
+              className={styles.closeBtn}
+              onClick={this.props.closeChatPanel}
+            >
+              <Ionicon icon="ios-close" fontSize="68px" color="#047cc0" />
+            </Button>
           </div>
         </CardHeader>
         <CardBody
