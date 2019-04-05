@@ -27,10 +27,10 @@ function setIntent(intent) {
   };
 }
 
-function removeIntent(intents) {
+function removeIntent(intentId) {
   return {
     type: REMOVE_INTENT,
-    intents
+    intentId
   };
 }
 
@@ -194,27 +194,23 @@ function createExample(intentId, example) {
   };
 }
 
-function deleteIntent(intents) {
+function deleteIntent(intentId) {
   return (dispatch, getState) => {
     const {
       users: { token }
     } = getState();
 
-    fetch(`/nlp/entities`, {
+    fetch(`/nlp/intents/${intentId}`, {
       headers: {
-        Authorization: `JWT ${token}`,
-        "Content-Type": "application/json"
+        Authorization: `JWT ${token}`
       },
-      method: "DELETE",
-      body: JSON.stringify({
-        intents
-      })
+      method: "DELETE"
     })
       .then(response => {
         if (response.status === 401) {
           dispatch(userAction.logout());
         } else {
-          dispatch(removeIntent(intents));
+          dispatch(removeIntent(intentId));
         }
       })
       .catch(err => console.log(err));
@@ -264,12 +260,10 @@ function applySetIntent(state, action) {
 }
 
 function applyRemoveIntent(state, action) {
-  const { intents } = action;
-  console.log(intents);
+  const { intentId } = action;
+  console.log(intentId);
   const { intentList } = state;
-  const updatedIntentList = intentList.filter(
-    intent => intents.indexOf(intent.id) === -1
-  );
+  const updatedIntentList = intentList.filter(intent => intent.id !== intentId);
 
   return {
     ...state,

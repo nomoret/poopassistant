@@ -12,10 +12,21 @@ const IntentRow = props => {
     openEdit({ intent });
   };
 
+  const _handleCheckbox = () => {
+    const { selectRow } = props;
+    const isSelected = props.isSelected ? props.isSelected : true;
+    selectRow(props, isSelected);
+  };
+
   return (
     <tr className={props.index % 2 === 0 ? styles.evenRow : styles.oddRow}>
       <td className={styles.column}>
-        <input type="checkbox" name="" value="intent" />
+        <input
+          type="checkbox"
+          name=""
+          value="intent"
+          onClick={_handleCheckbox}
+        />
       </td>
       <td className={styles.column}>
         <span className={styles.intentEdit} onClick={_handleSubmit}>

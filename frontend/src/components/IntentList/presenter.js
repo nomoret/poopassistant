@@ -25,6 +25,8 @@ const IntentList = props => {
             index={index}
             intent={intent}
             openEdit={props.openEdit}
+            selectAll={props.selectAll}
+            selectRow={props.selectRow}
           />
         ))}
       </tbody>

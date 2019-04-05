@@ -15,11 +15,7 @@
         z-index: 1040;
         background-color: #f6f6f6;
         border-left: 1px solid #d8d8d8;
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-        transition: -webkit-transform 0.4s ease-out;
-        transition: transform 0.4s ease-out;
-        transition: transform 0.4s ease-out, -webkit-transform 0.4s ease-out;
+        animation: overlay 0.4s;
 
         .content {
             height: 100vh;
@@ -230,4 +226,13 @@
             }
         }
     }
-} 
+}
+
+@keyframes overlay {
+    from {
+        transform: translateY(120%)
+    }
+    to {
+        transform: translateY(0)
+    }
+}

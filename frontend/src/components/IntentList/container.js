@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import IntentList from "./presenter";
 
 class Container extends Component {
+  state = {};
+
   static propTypes = {
     openEdit: PropTypes.func.isRequired
   };

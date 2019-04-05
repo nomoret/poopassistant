@@ -25,6 +25,9 @@ const mapDispatchToProps = dispatch => {
     },
     clearIntent: () => {
       dispatch(intentActions.clearIntent());
+    },
+    deleteIntent: intentId => {
+      dispatch(intentActions.deleteIntent(intentId));
     }
   };
 };

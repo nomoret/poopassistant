@@ -10,12 +10,21 @@ const IntentPanel = props => {
   console.log(props);
   return (
     <div className={styles.container}>
-      <ActionButtons name="intent" handleAdd={props.addIntent} />
+      <ActionButtons
+        name="intent"
+        handleAdd={props.addIntent}
+        handleDelete={props.selectedDelete}
+      />
       <div className={styles.content}>
         {props.loading ? (
           "loading"
         ) : (
-          <IntentList list={props.intents} openEdit={props.openEdit} />
+          <IntentList
+            list={props.intents}
+            openEdit={props.openEdit}
+            selectAll={props.selectAll}
+            selectRow={props.selectRow}
+          />
         )}
       </div>
       {props.seeingLikes ? <IntentEditor closeEdit={props.closeEdit} /> : null}
