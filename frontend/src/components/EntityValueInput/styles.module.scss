@@ -69,7 +69,15 @@
         color: #343334;
     }
 
-    .btn {
+    .add-btn {
+        background-color: inherit;
+        border: none;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .delete-btn {
         background-color: inherit;
         border: none;
         &:hover {

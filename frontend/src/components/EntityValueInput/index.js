@@ -11,7 +11,7 @@ import {
 const ValueInputs = props => {
   console.log("ValueInput", props);
   return (
-    <form>
+    <div>
       <div className={styles.valueSynonymContainer}>
         <div className={styles.valueInput}>
           <div>
@@ -22,8 +22,8 @@ const ValueInputs = props => {
               className={styles.input}
               type="text"
               placeholder="Enter Value"
-              name="value"
-              value={props.value}
+              name="valueInput"
+              value={props.valueInput}
               onChange={props.handleInputChange}
             />
           </div>
@@ -52,14 +52,38 @@ const ValueInputs = props => {
                 value={props.synonym}
                 onChange={props.handleInputChange}
               />
-              <button className={styles.btn} title="Export">
+              <button
+                className={styles.addBtn}
+                title="Add"
+                onClick={props.handleAddSynonymClick}
+              >
                 <Ionicon icon="md-add-circle" fontSize="24px" color="#047cc0" />
               </button>
             </div>
+            {props.synonyms.length > 0 &&
+              props.synonyms.map((synonym, index) => (
+                <div key={index}>
+                  <div>
+                    <span>{synonym}</span>
+                    <button
+                      className={styles.deleteBtn}
+                      onClick={props.handleDeleteSynonymClick}
+                      value={synonym}
+                    >
+                      <Ionicon
+                        icon="md-remove-circle"
+                        fontSize="24px"
+                        color="#777677"
+                        onClick={e => e.preventDefault()}
+                      />
+                    </button>
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 
