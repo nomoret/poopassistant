@@ -305,9 +305,8 @@ def get_noun(text):
     anlayze = []    
     for word in api.analyze(text):
         for pos in word.morphs:
-            # print(pos.lex)
-            # print(pos.tag)
-            if pos.tag.startswith('NN'):
+            print("{0} - {1}".format(pos.lex, pos.tag))
+            if pos.tag.startswith('NN') or pos.tag.startswith('SL'):
                 anlayze.append(pos.lex)
     message = ''.join(anlayze)
     return str(message)
