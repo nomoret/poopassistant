@@ -137,7 +137,6 @@ const EntityValueInput = props => {
       )}
       {!props.id ? (
         <div>
-          x
           <button
             className={
               props.name !== ""
