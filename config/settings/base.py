@@ -73,7 +73,8 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken', # rest auth 
     'rest_auth', # rest auth
     'rest_auth.registration',
-    'corsheaders'
+    'corsheaders',
+    'treebeard'
 ]
 LOCAL_APPS = [
     'chatbot.users.apps.UsersAppConfig',
@@ -177,7 +178,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
         'DIRS': [
-            str(APPS_DIR.path('templates')),
+            # gstr(APPS_DIR.path('templates')),
+            str(ROOT_DIR.path('frontend', 'build'))
         ],
         'OPTIONS': {
             # https://docs.djangoproject.com/en/dev/ref/settings/#template-debug
