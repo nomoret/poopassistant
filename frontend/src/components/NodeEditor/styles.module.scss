@@ -1,0 +1,17 @@
+.node-editor {
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  flex: 0 0 810px;
+  overflow-y: scroll;
+  transition: flex-basis .25s linear;
+  min-width: 300px;
+  max-width: 810px;
+
+  .node-name {
+    display: flex;
+    .hdr-btn {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
