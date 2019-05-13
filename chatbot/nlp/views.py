@@ -299,6 +299,17 @@ class EntityValueDetail(APIView):
 
 entity_value_detail_view = EntityValueDetail.as_view();
 
+class Nodes(APIView):
+    def get(self, request, format=None):
+        user = request.user
+
+        print("this api is load the node tree")
+        res = models.Node.dump_bulk()
+        print(res)
+        return Response(data=res, status=status.HTTP_200_OK)
+   
+node_tree_view =  Nodes.as_view();
+
 def get_noun(text):
     api = KhaiiiApi()
 

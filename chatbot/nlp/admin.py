@@ -51,3 +51,15 @@ class SynonymAdmin(admin.ModelAdmin):
         'updated_at',
         'entity_synonym',
     )
+
+from treebeard.admin import TreeAdmin
+from treebeard.forms import movenodeform_factory
+
+@admin.register(models.Node)
+class MyAdmin(TreeAdmin):
+    list_display= (
+        'parent',
+        'sib_order',
+        'desc',
+    )
+    form = movenodeform_factory(models.Node)

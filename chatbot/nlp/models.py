@@ -85,3 +85,46 @@ class Synonym(TimeStampModel):
 
     def __str__(self):
         return self.text
+
+from treebeard.al_tree import AL_Node
+
+class Node(AL_Node):
+    parent = models.ForeignKey('self',
+                               related_name='children_set',
+                               on_delete=models.CASCADE,
+                               null=True,
+                               db_index=True)
+    sib_order = models.PositiveIntegerField()
+    title = models.CharField(max_length=255)
+    desc = models.CharField(max_length=255)
+    message = models.ForeignKey(Intent, on_delete=models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        return 'Node - {0} : {1}'.format(self.title, self.desc)
+    
+    
+class Response(TimeStampModel):
+
+    """ Response Model """
+
+    example = models.TextField()
+    creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)
+    node = models.ForeignKey(Node, on_delete=models.CASCADE, null=True, related_name='Responses')
+
+    @property
+    def modified_time(self):
+        return naturaltime(self.updated_at)
+        
+    def __str__(self):
+        return self.example
+
+class NodeSorted(AL_Node):
+    parent = models.ForeignKey('self',
+                               related_name='children_set',
+                               on_delete=models.CASCADE,
+                               null=True,
+                               db_index=True)
+    node_order_by = ['val1', 'val2', 'desc']
+    val1 = models.IntegerField()
+    val2 = models.IntegerField()
+    desc = models.CharField(max_length=255)
