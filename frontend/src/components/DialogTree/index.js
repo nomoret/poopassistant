@@ -4,66 +4,65 @@ import SortableTree from "react-sortable-tree";
 
 class DialogTree extends Component {
   state = {
-    treeData: [
-      {
-        title: "환영 인사",
-        data: {
-          intentId: 2,
-          outputId: 4
-        }
-      },
-      {
-        title: "피자 주문",
-        subtitle: ({ node }) => `expanded: ${node.expanded ? "true" : "false"}`,
-        children: [
-          {
-            title: "메뉴 고르기",
-            subtitle: ({ node }) => {
-              console.log(node);
-              return `expanded: ${node.expanded ? "true" : "false"}`;
-            },
-            children: [{ title: "주문완료." }]
-          },
-          { title: "배달 픽업" }
-        ]
-      },
-      {
-        title: "기타",
-        expanded: true
-      }
-    ]
+    isSet: false,
+    treeData: []
   };
 
+  componentDidMount() {
+    console.log("viewing cdm", this.state, this.props);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.tree && !this.state.isSet) {
+      this.setState({
+        treeData: this.props.tree,
+        isSet: true
+      });
+    }
+  }
+
   render() {
-    return (
-      <div className={styles.dialog}>
-        <SortableTree
-          treeData={this.state.treeData}
-          onChange={treeData => this.setState({ treeData })}
-          generateNodeProps={({ node, parentNode, treeIndex }) => {
-            console.log(node);
-            return {
-              title: (
-                <CustomNode
-                  node={node}
-                  parentNode={parentNode}
-                  treeIndex={treeIndex}
-                  openEdit={this.props.openEdit}
-                />
-              )
-            };
-          }}
-        />
-      </div>
-    );
+    console.log("treedata", this.state.treeData);
+    console.log("tree", this.props.tree);
+
+    if (this.state.isSet) {
+      return (
+        <div className={styles.dialog}>
+          <SortableTree
+            treeData={this.state.treeData}
+            onChange={treeData => this.setState({ treeData })}
+            isVirtualized={true}
+            generateNodeProps={({ ...thisArg }) => {
+              console.log(thisArg);
+              const { node, parentNode, treeIndex } = thisArg;
+              return {
+                title: (
+                  <CustomNode
+                    node={node}
+                    parentNode={parentNode}
+                    treeIndex={treeIndex}
+                    openEdit={this.props.openEdit}
+                  />
+                ),
+                subtitle: node.data.desc,
+                children: node.children
+              };
+            }}
+          />
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 
 const CustomNode = props => {
   const { node, parentNode, treeIndex } = props;
+  const { title } = node.data;
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <span>{node.title}</span>
+      <span>{title}</span>
       <button
         onClick={e => {
           e.preventDefault();
