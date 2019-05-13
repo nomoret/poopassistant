@@ -7,6 +7,7 @@ import users from "redux/modules/users";
 import intents from "redux/modules/intents";
 import entities from "redux/modules/entities";
 import chattings from "redux/modules/chattings";
+import nodes from "redux/modules/nodes";
 
 const env = process.env.NODE_ENV;
 
@@ -25,6 +26,7 @@ const reducer = history =>
     intents,
     entities,
     chattings,
+    nodes,
     router: connectRouter(history)
   });
 
