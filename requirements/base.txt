@@ -19,3 +19,6 @@ coreapi==2.3.3  # https://github.com/core-api/python-client
 
 # Djang Databse
 django-treebeard # https://github.com/django-treebeard/
+
+# Natural Language
+flashtext==2.7 # https://github.com/vi3k6i5/flashtext
