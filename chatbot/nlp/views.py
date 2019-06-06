@@ -16,6 +16,8 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
 
+from flashtext import KeywordProcessor
+
 class Intents(APIView):
 
     def get(self, request, format=None):
@@ -310,6 +312,24 @@ class Nodes(APIView):
    
 node_tree_view =  Nodes.as_view();
 
+class NodeDetail(APIView):
+    def get(self, request, node_id, format=None):
+        user = request.user
+
+        print(node_id)
+        print(models.Node.objects.all())
+        try:
+            found_node = models.Node.objects.get(id=node_id)
+        except models.Node.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = serializers.NodeSerializer(found_node)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+   
+node_detail_view =  NodeDetail.as_view();
+
+
 def get_noun(text):
     api = KhaiiiApi()
 
@@ -322,38 +342,71 @@ def get_noun(text):
     message = ''.join(anlayze)
     return str(message)
 
-def train_data():
-    all_examples = models.Example.objects.all()
-    q = all_examples.values(*['id', 'example', 'intent_id'])
-    print(q)
-
-    df = pd.DataFrame.from_records(q)
-    print(df)
-    x_data = df['example']
-    y_data = pd.Categorical(df['intent_id'])
-
-    cv = CountVectorizer(tokenizer=get_noun)
-    tdm = cv.fit_transform(x_data)
-    print(tdm.shape)
-    # pprint.pprint(cv.vocabulary_)
-    text_clf_svm = Pipeline([('vect', cv),
-                            ('tfidf', TfidfTransformer()),
-                            ('clf-svm', SGDClassifier(loss='log',
-                                                    penalty='l2',
-                                                    alpha=1e-3,
-                                                    max_iter=10,
-                                                    random_state=42
-                                                    ))])
-    print(text_clf_svm.fit(x_data, y_data))
-    return text_clf_svm
-
-text_clf_svm = train_data()
-
 class SVM(APIView):
 
     def __init__(self, **kwargs):
         print("init svm")
+        # if not self.text_clf_svm:
+        #     print("asdsa")
+        print("init")
+        self.text_clf_svm = self.train_data()
+        self.initialize_entity()
         return super().__init__(**kwargs)
+
+    def get_noun(self, text):
+        api = KhaiiiApi()
+
+        anlayze = []    
+        for word in api.analyze(text):
+            for pos in word.morphs:
+                print("{0} - {1}".format(pos.lex, pos.tag))
+                if pos.tag.startswith('NN') or pos.tag.startswith('SL'):
+                    anlayze.append(pos.lex)
+        message = ''.join(anlayze)
+        return str(message)
+
+    def train_data(self):
+        all_examples = models.Example.objects.all()
+        q = all_examples.values(*['id', 'example', 'intent_id'])
+        print(q)
+
+        df = pd.DataFrame.from_records(q)
+        print(df)
+        x_data = df['example']
+        y_data = pd.Categorical(df['intent_id'])
+
+        cv = CountVectorizer(tokenizer=self.get_noun)
+        tdm = cv.fit_transform(x_data)
+        print(tdm.shape)
+        # pprint.pprint(cv.vocabulary_)
+        text_clf_svm = Pipeline([('vect', cv),
+                                ('tfidf', TfidfTransformer()),
+                                ('clf-svm', SGDClassifier(loss='log',
+                                                        penalty='l2',
+                                                        alpha=1e-3,
+                                                        max_iter=10,
+                                                        random_state=42
+                                                        ))])
+        print(text_clf_svm.fit(x_data, y_data))
+        return text_clf_svm
+
+    def initialize_entity(self):
+
+        self.keyword_processor = KeywordProcessor()
+
+        all_entity = models.Entity.objects.all()
+        print(all_entity)
+        for entity in all_entity:
+            print(entity.id)
+            print(entity.name)
+            cur_entity_name = entity.name
+
+            all_entity_values = models.EntityValue.objects.filter(entity__id=entity.id)
+            for entity_value in all_entity_values:
+                print(entity_value.id)
+                print(entity_value.entity_value_name)
+                cur_entity_value_name = entity_value.entity_value_name
+                self.keyword_processor.add_keyword(cur_entity_value_name, cur_entity_name)
 
     def get(self, request, format=None):
 
@@ -391,17 +444,35 @@ class SVM(APIView):
         if request.data is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         user_message = request.data['msg']
+        print(user_message)
 
-        idx = int(text_clf_svm.predict([user_message]))
+        entityList = self.keyword_processor.extract_keywords(user_message, span_info=True)
+        print("변경합니다")
+        print(entityList)
+
+        entities = []
+        for item in entityList:
+            start_index = item[1]
+            end_index = item[2]
+            origin_keyword = user_message[start_index:end_index]
+            item = {
+              "entity":item[0],
+              "origin": origin_keyword
+            }
+            entities.append(item)
+
+        print(entities)
+
+        idx = int(self.text_clf_svm.predict([user_message]))
         print(idx)
 
-        probs = text_clf_svm.predict_proba([user_message])
+        probs = self.text_clf_svm.predict_proba([user_message])
         print(probs)
         print(probs.shape)
-        print(text_clf_svm.classes_)
+        print(self.text_clf_svm.classes_)
 
         probs_index = 0
-        for mapping_id in text_clf_svm.classes_:
+        for mapping_id in self.text_clf_svm.classes_:
             if mapping_id == idx:
                 break
             probs_index += 1
@@ -420,6 +491,7 @@ class SVM(APIView):
         serializer = serializers.ResponseIntentSerializer(found_intent)
         
         response_data = {
+            'entities': entities,
             'name': serializer.data['name'],
             'description': serializer.data['description'],
             'accuracy':(probs[0][probs_index])

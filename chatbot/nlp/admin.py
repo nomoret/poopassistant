@@ -63,3 +63,13 @@ class MyAdmin(TreeAdmin):
         'desc',
     )
     form = movenodeform_factory(models.Node)
+
+@admin.register(models.Response)
+class ResponseAdmin(admin.ModelAdmin):
+    list_display = (
+        'node',
+        'example',
+        'creator',
+        'created_at',
+        'updated_at',
+    )

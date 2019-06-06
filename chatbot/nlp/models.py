@@ -109,8 +109,8 @@ class Response(TimeStampModel):
 
     example = models.TextField()
     creator = models.ForeignKey(user_model.User, on_delete=models.PROTECT, null=True)
-    node = models.ForeignKey(Node, on_delete=models.CASCADE, null=True, related_name='Responses')
-
+    node = models.ForeignKey(Node, on_delete=models.CASCADE, null=True, related_name='responses')
+    
     @property
     def modified_time(self):
         return naturaltime(self.updated_at)

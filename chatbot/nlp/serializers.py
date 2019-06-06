@@ -16,18 +16,20 @@ class SimpleIntentSerializer(serializers.ModelSerializer):
             'examples_count',
         )
 
+
 class UserSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = user_models.User
         fields = (
             'username',
         )
 
+
 class ExampleSerializer(serializers.ModelSerializer):
 
     creator = UserSerializer(read_only=True)
-    
+
     class Meta:
         model = models.Example
         fields = (
@@ -36,6 +38,7 @@ class ExampleSerializer(serializers.ModelSerializer):
             'creator',
             'modified_time',
         )
+
 
 class IntentSerializer(serializers.ModelSerializer):
 
@@ -52,6 +55,7 @@ class IntentSerializer(serializers.ModelSerializer):
             'modified_time',
         )
 
+
 class ResponseIntentSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -60,6 +64,7 @@ class ResponseIntentSerializer(serializers.ModelSerializer):
             'name',
             'description',
         )
+
 
 class SimpleEntitySerializer(serializers.ModelSerializer):
     creator = UserSerializer(read_only=True)
@@ -74,7 +79,7 @@ class SimpleEntitySerializer(serializers.ModelSerializer):
             'values',
             'modified_time',
         )
-        
+
     def get_values(self, obj):
         try:
             entity_values = models.EntityValue.objects.filter(entity__id=obj.id)[:10]
@@ -82,7 +87,8 @@ class SimpleEntitySerializer(serializers.ModelSerializer):
             return serializer.data
         except models.EntityValue.DoesNotExist:
             return []
-    
+
+
 class SynonymSerializer(serializers.ModelSerializer):
     creator = UserSerializer(read_only=True)
 
@@ -93,16 +99,18 @@ class SynonymSerializer(serializers.ModelSerializer):
             'creator'
         )
 
+
 class SimpleSynonymSerializer(serializers.ModelSerializer):
     creator = UserSerializer(read_only=True)
 
     class Meta:
         model = models.Synonym
-        fields =('__all__')
+        fields = ('__all__')
         # fields = (
         #     'text'
         #     'creator'
         # )
+
 
 class SimpleEntityValueSerializer(serializers.ModelSerializer):
     entity_synonym = SimpleSynonymSerializer(many=True, read_only=True)
@@ -114,6 +122,7 @@ class SimpleEntityValueSerializer(serializers.ModelSerializer):
             'entity_type',
             'entity_synonym'
         )
+
 
 class EntityValueSerializer(serializers.ModelSerializer):
     entity_synonym = SynonymSerializer(many=True)
@@ -139,4 +148,32 @@ class EntitySerializer(serializers.ModelSerializer):
             'name',
             'entitiy_values',
             'creator',
+        )
+
+
+class ResponseSerializer(serializers.ModelSerializer):
+
+    creator = UserSerializer(read_only=True)
+
+    class Meta:
+        model = models.Response
+        fields = (
+            'id',
+            'example',
+            'creator',
+            'modified_time',
+        )    
+
+
+class NodeSerializer(serializers.ModelSerializer):
+    responses = ResponseSerializer(many=True)
+
+    class Meta:
+        model = models.Node
+        fields = (
+            # 'sib_order',
+            'title',
+            'desc',
+            'message',
+            'responses'
         )
