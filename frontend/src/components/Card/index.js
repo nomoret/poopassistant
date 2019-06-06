@@ -40,8 +40,7 @@ class ChatCard extends Component {
   componentWillReceiveProps = nextProps => {
     if (nextProps.response) {
       console.log("componentWillReceiveProps", nextProps);
-      const { name, description, accuracy } = nextProps.response;
-
+      const { name, description, accuracy, entities } = nextProps.response;
       const response = {
         type: "bot",
         message: `${name} - ${description} 의도를 물어봤군요 정확도는 ${(
@@ -51,6 +50,7 @@ class ChatCard extends Component {
 
       this.setState({
         history: [...this.state.history, response],
+        entities,
         loading: false
       });
     }
@@ -98,6 +98,10 @@ class ChatCard extends Component {
               return <BotMessage key={index} message={message} />;
             }
           })}
+          {this.state.entities &&
+            this.state.entities.map(({ entity, origin }, index) => {
+              return <div key={index}>{`@${entity}:${origin}`}</div>;
+            })}
         </CardBody>
         <CardFooter className={styles.cardFooter}>
           {/* <Form onSubmit={this._sendMessage}> */}
@@ -155,18 +159,6 @@ class ChatCard extends Component {
       message: "",
       loading: true
     });
-
-    // const msg = { type: "user", message: message };
-
-    // const response = {
-    //   type: "bot",
-    //   message: "아직 준비중입니다."
-    // };
-
-    // this.setState({
-    //   history: [...this.state.history, msg, response],
-    //   message: ""
-    // });
   };
 
   _onScroll = () => {};
