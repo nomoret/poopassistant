@@ -17,7 +17,7 @@ $black_20: rgba(0,0,0,0.2);
 	margin-bottom: auto;
 }
 .card {
-  margin-top: 50px;
+  // margin-top: 50px;
   display: flex;
   width: 100%;
   height: calc(100vh - 48px);
@@ -275,6 +275,7 @@ $black_20: rgba(0,0,0,0.2);
 		}
 	} 
 }
+
 @media(max-width: 576px) {
 	.contacts_card {
 		margin-bottom: 15px !important;

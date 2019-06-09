@@ -2,6 +2,7 @@
   color: white;
   background-color: $chatpanel-bg;
 
+  margin-top: 50px;
   height: calc(100vh - 48px);
   display: flex;
   flex-direction: column;
@@ -16,4 +17,15 @@
   transition-timing-function: ease;
   position: relative;
   z-index: 2066;
+  
+  animation: overlay 0.4s;
+}
+
+@keyframes overlay {
+  from {
+      transform: translateX(120%)
+  }
+  to {
+      transform: translateX(0)
+  }
 }
