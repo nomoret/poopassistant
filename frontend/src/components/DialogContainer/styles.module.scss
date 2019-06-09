@@ -1,5 +1,5 @@
 .dialog-container {
-  background-color: #f6f6f6;
+  background-color: #f4f7fb;
   width: 100%;
   height: 5vh;
 
@@ -7,6 +7,36 @@
     margin-left: 48px;
     display: flex;
     flex-direction: row;
+
+    .add-node {
+      border: none;
+      vertical-align: bottom;
+      margin-right: 8px;
+      height: 32px;
+      min-width: 120px;
+      background-color: #047cc0;
+      color: #fff;
+      font-weight: 400;
+      font-style: normal;
+      position: relative;
+      font-size: 1em;
+      text-align: center;
+  
+      &:hover {
+        background-color: #175D8D;
+        cursor: not-allowed;
+      }
+    }
+
+    .setting {
+      color: #047cc0;
+
+      &:hover {
+        color: #175D8D;
+        cursor: not-allowed;
+      }
+    }
+
   }
   .dialog {
 

@@ -2,15 +2,21 @@ import React from "react";
 import styles from "./styles.module.scss";
 import DialogTree from "components/DialogTree";
 import NodeEditor from "components/NodeEditor";
+import Ionicon from "react-ionicons";
 
 const DialogContainer = props => {
   return (
     <div className={styles.dialogContainer}>
       <header className={styles.dialogHeader}>
-        <div>Add node</div>
-        <div>Add child node</div>
-        <div>Add folder</div>
-        <div>
+        <div className={styles.addNode}>Add node</div>
+        <div className={styles.addNode}>Add child node</div>
+        <div className={styles.addNode}>Add folder</div>
+        <div className={styles.setting}>
+          <Ionicon
+            icon="ios-settings-outline"
+            fontSize="24px"
+            color="#047cc0"
+          />
           <span>Settings</span>
         </div>
       </header>

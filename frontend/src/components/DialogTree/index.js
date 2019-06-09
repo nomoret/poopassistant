@@ -13,6 +13,7 @@ class DialogTree extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log("cdm");
     if (this.props.tree && !this.state.isSet) {
       this.setState({
         treeData: this.props.tree,
@@ -32,9 +33,9 @@ class DialogTree extends Component {
             treeData={this.state.treeData}
             onChange={treeData => this.setState({ treeData })}
             isVirtualized={true}
-            generateNodeProps={({ ...thisArg }) => {
-              console.log(thisArg);
-              const { node, parentNode, treeIndex } = thisArg;
+            canDrag={false}
+            canDrop={() => false}
+            generateNodeProps={({ node, parentNode, treeIndex }) => {
               return {
                 title: (
                   <CustomNode
@@ -65,10 +66,12 @@ const CustomNode = props => {
       <span>{title}</span>
       <button
         onClick={e => {
-          e.preventDefault();
-          console.log(parentNode, treeIndex);
+          // e.preventDefault();
+          e.stopPropagation();
+          // console.log(parentNode, treeIndex);
+          console.log(node, treeIndex);
           const { openEdit } = props;
-          openEdit();
+          openEdit(node, treeIndex);
         }}
       >
         info

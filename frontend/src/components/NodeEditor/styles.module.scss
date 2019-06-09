@@ -5,13 +5,149 @@
   transition: flex-basis .25s linear;
   min-width: 300px;
   max-width: 810px;
+  animation: overlay 0.4s;
+  background-color: #ffffff;
 
-  .node-name {
+  .header {
     display: flex;
-    .hdr-btn {
-      &:hover {
-        cursor: pointer;
+    flex: 1;
+    border-bottom: 2px solid #d8d8d8;
+    margin: 0 0 0 0;
+    
+
+    .node-name {
+      display: flex;
+      flex: 1;
+      padding-top: 16px;
+      padding-right: 32px;
+      padding-bottom: 16px;
+      padding-left: 32px;
+
+      font-size: 20px;
+      // border-bottom: 1px solid #d8d8d8;
+
+      .node-name-input {
+        flex: 1;
+
+        border: none;
+        border-bottom: 2px solid #d8d8d8;
+        background-color: transparent
       }
     }
+
+    .action {
+      display: flex;
+      padding-top: 16px;
+      padding-right: 32px;
+      padding-bottom: 16px;
+      padding-left: 32px;
+      align-items: center;
+
+      .hdr-btn {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+  }
+
+  .editor {
+    display: flex;
+    color: $font-grey-color;
+
+    font-size: 1.25em;
+    font-weight: 300;
+    flex-direction: column;
+
+    flex: 1;
+    border-bottom: 2px solid #d8d8d8;
+    margin: 0 0 0 0;
+    overflow-y: auto;
+    padding-bottom: 32px;
+    
+
+    .condition {
+      display: flex;
+      display: block;
+      padding: 32px;
+
+      .builder {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .input {
+          border: none;
+          border-bottom: 2px solid #d8d8d8;
+        }
+
+        .remove {
+          &:hover {
+            cursor: not-allowed;
+          }
+        }
+
+        .add {
+          
+          &:hover {
+            cursor: not-allowed;
+          }
+        }
+      }
+
+      
+    }
+
+    .cotenxt {
+      display: block;
+      padding: 32px;
+      .add {
+        color: #047cc0;
+      }
+    }
+
+    .resonse {
+      display: block;
+      padding: 32px;
+      border: 1px solid #d8d8d8;
+
+      .example {
+        display: flex;
+        margin-left: 32px;
+        margin-top: 12px;
+        flex: 1;
+
+        .input {
+          flex: 1;
+          border: none;
+
+          &:hover {
+            cursor: text;
+          }
+        }
+
+        .remove {
+          display: flex;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+
+  .after-response{
+    padding: 32px;
+  }
+}
+
+@keyframes overlay {
+  from {
+      transform: translateX(120%)
+  }
+  to {
+      transform: translateX(0)
   }
 }

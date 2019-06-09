@@ -14,8 +14,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    editNode: node => {
-      dispatch(actionCreator.selectEditNode(node));
+    selectEditNode: index => {
+      dispatch(actionCreator.selectEditNode(index));
     },
     getNodeTree: () => {
       dispatch(actionCreator.getNodeTree());

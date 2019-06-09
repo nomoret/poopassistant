@@ -17,7 +17,8 @@ class Container extends Component {
   }
 
   static propTypes = {
-    getNodeTree: PropTypes.func.isRequired
+    getNodeTree: PropTypes.func.isRequired,
+    selectEditNode: PropTypes.func.isRequired
   };
 
   render() {
@@ -33,11 +34,15 @@ class Container extends Component {
     );
   }
 
-  _openNodeEdit = () => {
-    console.log("open node");
+  _openNodeEdit = (...thisArgs) => {
+    console.log("open node", thisArgs);
     this.setState({
       seeingLikes: true
     });
+
+    const node = thisArgs[0];
+    const { selectEditNode } = this.props;
+    selectEditNode(node.id);
   };
 
   _closeNodeEdit = e => {
