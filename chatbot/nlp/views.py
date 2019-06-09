@@ -271,9 +271,6 @@ class EntityValueDetail(APIView):
 
         print("this api valid")
 
-        test = models.EntityValue.objects.all()
-        print(test)
-
         try:
             entity_value = models.EntityValue.objects.get(id=entity_value_id)
         except models.EntityValue.DoesNotExist:
@@ -287,9 +284,6 @@ class EntityValueDetail(APIView):
         user = request.user
 
         print("this api valid")
-
-        test = models.EntityValue.objects.all()
-        print(test)
 
         try:
             entity_value = models.EntityValue.objects.get(id=entity_value_id)
@@ -329,11 +323,24 @@ class NodeDetail(APIView):
 
     def post(self, request, node_id, format=None):
         user = request.user
+
+        print(request.data)
     
         try:
             found_node = models.Node.objects.get(id=node_id)
         except models.Node.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+        adding_response_data = request.data['response']
+
+        if adding_response_data != '':
+
+            response_serializer = serializers.ResponseSerializer(data={ 'example': adding_response_data })
+
+            if response_serializer.is_valid():
+                response_serializer.save(node=found_node, creator=user)
+            else:
+                return Response(data=response_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = serializers.UpdateNodeSerializer(found_node, data=request.data, partial=True)
 
