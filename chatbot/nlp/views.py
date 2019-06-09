@@ -317,7 +317,7 @@ class NodeDetail(APIView):
         user = request.user
 
         print(node_id)
-        print(models.Node.objects.all())
+
         try:
             found_node = models.Node.objects.get(id=node_id)
         except models.Node.DoesNotExist:
@@ -326,6 +326,23 @@ class NodeDetail(APIView):
         serializer = serializers.NodeSerializer(found_node)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, node_id, format=None):
+        user = request.user
+    
+        try:
+            found_node = models.Node.objects.get(id=node_id)
+        except models.Node.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = serializers.UpdateNodeSerializer(found_node, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
    
 node_detail_view =  NodeDetail.as_view();
 

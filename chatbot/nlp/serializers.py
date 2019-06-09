@@ -172,8 +172,20 @@ class NodeSerializer(serializers.ModelSerializer):
         model = models.Node
         fields = (
             # 'sib_order',
+            'id',
             'title',
             'desc',
             'message',
             'responses'
+        )
+
+class UpdateNodeSerializer(serializers.ModelSerializer):
+    # responses = ResponseSerializer(many=True)
+
+    class Meta:
+        model = models.Node
+        fields = (
+            'id',
+            'title',
+            'desc'
         )

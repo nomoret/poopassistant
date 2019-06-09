@@ -94,7 +94,7 @@ class Node(AL_Node):
                                on_delete=models.CASCADE,
                                null=True,
                                db_index=True)
-    sib_order = models.PositiveIntegerField()
+    sib_order = models.PositiveIntegerField(null=True)
     title = models.CharField(max_length=255)
     desc = models.CharField(max_length=255)
     message = models.ForeignKey(Intent, on_delete=models.PROTECT, null=True, blank=True)
