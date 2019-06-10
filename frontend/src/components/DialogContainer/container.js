@@ -18,6 +18,7 @@ class Container extends Component {
 
   static propTypes = {
     getNodeTree: PropTypes.func.isRequired,
+    removeNode: PropTypes.func.isRequired,
     selectEditNode: PropTypes.func.isRequired
   };
 
@@ -30,6 +31,7 @@ class Container extends Component {
         tree={tree}
         openNodeEdit={this._openNodeEdit}
         closeNodeEdit={this._closeNodeEdit}
+        removeNode={this._removeNode}
       />
     );
   }
@@ -51,6 +53,12 @@ class Container extends Component {
     this.setState({
       seeingLikes: false
     });
+  };
+
+  _removeNode = (e, index) => {
+    e.preventDefault();
+    const { removeNode } = this.props;
+    removeNode(index);
   };
 }
 

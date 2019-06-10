@@ -19,6 +19,9 @@ const mapDispatchToProps = dispatch => {
     },
     getNodeTree: () => {
       dispatch(actionCreator.getNodeTree());
+    },
+    removeNode: index => {
+      return dispatch(actionCreator.removeNode(index));
     }
   };
 };

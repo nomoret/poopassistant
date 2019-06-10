@@ -8,19 +8,15 @@ class DialogTree extends Component {
     treeData: []
   };
 
-  componentDidMount() {
-    console.log("viewing cdm", this.state, this.props);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log("cdm");
-    if (this.props.tree && !this.state.isSet) {
+  componentWillReceiveProps = nextProps => {
+    console.log("cdm", this.state.isSet);
+    if (nextProps.tree && !this.state.isSet) {
       this.setState({
-        treeData: this.props.tree,
+        treeData: nextProps.tree,
         isSet: true
       });
     }
-  }
+  };
 
   render() {
     console.log("treedata", this.state.treeData);
@@ -43,6 +39,8 @@ class DialogTree extends Component {
                     parentNode={parentNode}
                     treeIndex={treeIndex}
                     openEdit={this.props.openEdit}
+                    removeNode={this.props.removeNode}
+                    toggleSet={this._toggleSet}
                   />
                 ),
                 subtitle: node.data.desc,
@@ -56,10 +54,18 @@ class DialogTree extends Component {
       return null;
     }
   }
+
+  _toggleSet = () => {
+    this.setState(prevState => {
+      return {
+        isSet: !prevState.isSet
+      };
+    });
+  };
 }
 
 const CustomNode = props => {
-  const { node, parentNode, treeIndex } = props;
+  const { node, parentNode, treeIndex, removeNode } = props;
   const { title } = node.data;
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -85,9 +91,12 @@ const CustomNode = props => {
         add
       </button>
       <button
+        // onClick={props.removeNode}
         onClick={e => {
-          e.preventDefault();
-          console.log(parentNode, treeIndex);
+          console.log(props);
+          const { removeNode, toggleSet } = props;
+          toggleSet();
+          removeNode(e, node.id);
         }}
       >
         delete

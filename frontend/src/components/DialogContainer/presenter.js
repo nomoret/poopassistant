@@ -21,7 +21,11 @@ const DialogContainer = props => {
         </div>
       </header>
       <div className={styles.dialog}>
-        <DialogTree tree={props.tree} openEdit={props.openNodeEdit} />
+        <DialogTree
+          tree={props.tree}
+          openEdit={props.openNodeEdit}
+          removeNode={props.removeNode}
+        />
         {props.seeingLikes && <NodeEditor closeEdit={props.closeNodeEdit} />}
       </div>
     </div>
