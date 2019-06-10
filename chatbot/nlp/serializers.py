@@ -180,12 +180,13 @@ class NodeSerializer(serializers.ModelSerializer):
         )
 
 class UpdateNodeSerializer(serializers.ModelSerializer):
-    # responses = ResponseSerializer(many=True)
+    responses = ResponseSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.Node
         fields = (
             'id',
             'title',
-            'desc'
+            'desc',
+            'responses'
         )

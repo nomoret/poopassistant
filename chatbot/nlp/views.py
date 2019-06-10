@@ -347,9 +347,22 @@ class NodeDetail(APIView):
         if serializer.is_valid():
             
             serializer.save()
+
+            print(serializer.data)
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, node_id, format=None):
+        user = request.user
+
+        try:
+            found_node = models.Node.objects.get(id=node_id)
+            found_node.delete()
+        except models.Node.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)    
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
    
 node_detail_view =  NodeDetail.as_view();
 
