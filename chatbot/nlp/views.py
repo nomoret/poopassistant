@@ -303,6 +303,23 @@ class Nodes(APIView):
         res = models.Node.dump_bulk()
         print(res)
         return Response(data=res, status=status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        user = request.user
+        print(user)
+        print(request.data)
+    
+        try:
+            found_node = models.Node.objects.get(id=request.data['index'])
+        except models.Node.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        print("find node ")
+        found_node.add_child(title="Undefined", desc="Undefined")
+
+        res = models.Node.dump_bulk()
+
+        return Response(data=res, status=status.HTTP_200_OK)
    
 node_tree_view =  Nodes.as_view();
 
