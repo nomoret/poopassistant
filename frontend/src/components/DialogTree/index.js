@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styles from "./styles.module.scss";
 import SortableTree from "react-sortable-tree";
+import { throws } from "assert";
 
 class DialogTree extends Component {
   state = {
@@ -20,6 +21,7 @@ class DialogTree extends Component {
 
   render() {
     console.log("treedata", this.state.treeData);
+    console.log("tree", this.props);
     console.log("tree", this.props.tree);
 
     if (this.state.isSet) {
@@ -39,6 +41,7 @@ class DialogTree extends Component {
                     parentNode={parentNode}
                     treeIndex={treeIndex}
                     openEdit={this.props.openEdit}
+                    addChildNode={this.props.addChildNode}
                     removeNode={this.props.removeNode}
                     toggleSet={this._toggleSet}
                   />
@@ -72,9 +75,7 @@ const CustomNode = props => {
       <span>{title}</span>
       <button
         onClick={e => {
-          // e.preventDefault();
           e.stopPropagation();
-          // console.log(parentNode, treeIndex);
           console.log(node, treeIndex);
           const { openEdit } = props;
           openEdit(node, treeIndex);
@@ -84,14 +85,14 @@ const CustomNode = props => {
       </button>
       <button
         onClick={e => {
-          e.preventDefault();
-          console.log(parentNode, treeIndex);
+          const { addChildNode, toggleSet } = props;
+          toggleSet();
+          addChildNode(e, node.id);
         }}
       >
         add
       </button>
       <button
-        // onClick={props.removeNode}
         onClick={e => {
           console.log(props);
           const { removeNode, toggleSet } = props;

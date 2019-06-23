@@ -3,10 +3,18 @@
 // import { actionCreator as entityAction } from "redux/modules/entites";
 import { actionCreators as userAction } from "redux/modules/users";
 
+const ADD_CHILD_NODE = "ADD_CHILD_NODE";
 const EDIT_CURRENT_NODE = "EDIT_CURRENT_NODE";
 const GET_NODE_TREE = "GET_NODE_TREE";
 const UPDATE_NODE = "UPDATE_NODE";
 const REMOVE_NODE = "REMOVE_NODE";
+
+function setChildNode(tree) {
+  return {
+    type: ADD_CHILD_NODE,
+    tree
+  };
+}
 
 function setEditCurrentNode(node) {
   return {
@@ -33,6 +41,34 @@ function setRemoveNode(tree) {
   return {
     type: REMOVE_NODE,
     tree
+  };
+}
+
+function addChildNode(index) {
+  return (dispatch, getState) => {
+    const {
+      users: { token }
+    } = getState();
+
+    fetch(`/nlp/nodes`, {
+      headers: {
+        Authorization: `JWT ${token}`,
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify({
+        index
+      })
+    })
+      .then(response => {
+        if (response.status === 401) {
+          dispatch(userAction.logout());
+        }
+
+        return response.json();
+      })
+      .then(json => dispatch(setChildNode(json)))
+      .catch(err => console.log(err));
   };
 }
 
@@ -182,6 +218,8 @@ function reducer(state = initialState, action) {
       return applyCurrentEditNode(state, action);
     case GET_NODE_TREE:
       return applyNodeTree(state, action);
+    case ADD_CHILD_NODE:
+      return applySetChildNode(state, action);
     case UPDATE_NODE:
       return applyUpdateEditNode(state, action);
     case REMOVE_NODE:
@@ -208,6 +246,14 @@ function applyNodeTree(state, action) {
   };
 }
 
+function applySetChildNode(state, action) {
+  const { tree } = action;
+  return {
+    ...state,
+    tree
+  };
+}
+
 function applyUpdateEditNode(state, action) {
   const { node } = action;
   console.log(node);
@@ -227,6 +273,7 @@ function applyRemoveNode(state, action) {
 
 const actionCreator = {
   getNodeTree,
+  addChildNode,
   removeNode,
   selectEditNode,
   updateEditNode

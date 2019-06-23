@@ -18,6 +18,7 @@ class Container extends Component {
 
   static propTypes = {
     getNodeTree: PropTypes.func.isRequired,
+    addChildNode: PropTypes.func.isRequired,
     removeNode: PropTypes.func.isRequired,
     selectEditNode: PropTypes.func.isRequired
   };
@@ -31,6 +32,7 @@ class Container extends Component {
         tree={tree}
         openNodeEdit={this._openNodeEdit}
         closeNodeEdit={this._closeNodeEdit}
+        createChildNode={this._createChildNode}
         removeNode={this._removeNode}
       />
     );
@@ -53,6 +55,14 @@ class Container extends Component {
     this.setState({
       seeingLikes: false
     });
+  };
+
+  _createChildNode = (e, node) => {
+    console.log(node);
+    e.preventDefault();
+
+    const { addChildNode } = this.props;
+    addChildNode(node);
   };
 
   _removeNode = (e, index) => {

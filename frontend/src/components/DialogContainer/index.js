@@ -20,6 +20,9 @@ const mapDispatchToProps = dispatch => {
     getNodeTree: () => {
       dispatch(actionCreator.getNodeTree());
     },
+    addChildNode: index => {
+      dispatch(actionCreator.addChildNode(index));
+    },
     removeNode: index => {
       return dispatch(actionCreator.removeNode(index));
     }
