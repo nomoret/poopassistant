@@ -16,6 +16,8 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
 
+import numpy as np
+
 from flashtext import KeywordProcessor
 
 class Intents(APIView):
@@ -317,7 +319,7 @@ class Nodes(APIView):
             except models.Node.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
         except:
-            models.Node.add_root(title="Undefined_too", desc="Undefined")
+            models.Node.add_root(title="Undefined", desc="Undefined")
             
         res = models.Node.dump_bulk()
 
@@ -407,76 +409,79 @@ class NodeDetail(APIView):
    
 node_detail_view =  NodeDetail.as_view();
 
+
+def get_noun(text):
+    api = KhaiiiApi()
+
+    anlayze = []    
+    for word in api.analyze(text):
+        for pos in word.morphs:
+            print("{0} - {1}".format(pos.lex, pos.tag))
+            if pos.tag.startswith('NN') or pos.tag.startswith('SL'):
+                anlayze.append(pos.lex)
+    message = ''.join(anlayze)
+    return str(message)
+
+def train_data():
+    all_examples = models.Example.objects.all()
+    q = all_examples.values(*['id', 'example', 'intent_id'])
+    print(q)
+
+    df = pd.DataFrame.from_records(q)
+    print(df)
+    x_data = df['example']
+    y_data = pd.Categorical(df['intent_id'])
+
+    cv = CountVectorizer(tokenizer=get_noun)
+    tdm = cv.fit_transform(x_data)
+    print(tdm.shape)
+    # pprint.pprint(cv.vocabulary_)
+    text_clf_svm = Pipeline([('vect', cv),
+                            ('tfidf', TfidfTransformer()),
+                            ('clf-svm', SGDClassifier(loss='log',
+                                                    penalty='l2',
+                                                    alpha=1e-3,
+                                                    max_iter=10,
+                                                    random_state=42
+                                                    ))])
+    print(text_clf_svm.fit(x_data, y_data))
+    return text_clf_svm
+
+text_clf_svm = train_data()
+
+keyword_processor =  None
+replace_processor = None
+
+def initialize_entity():
+    global keyword_processor
+    global replace_processor
+    keyword_processor = KeywordProcessor()
+    replace_processor = KeywordProcessor()
+
+    all_entity = models.Entity.objects.all()
+    print(all_entity)
+    for entity in all_entity:
+        print(entity.id)
+        print(entity.name)
+        cur_entity_name = entity.name
+
+        all_entity_values = models.EntityValue.objects.filter(entity__id=entity.id)
+        for entity_value in all_entity_values:
+            print("1depth\n", entity_value)
+            print(entity_value.id)
+            print(entity_value.entity_value_name)
+            cur_entity_value_name = entity_value.entity_value_name
+
+            all_synonyms = models.Synonym.objects.filter(entity_synonym__id=entity_value.id)
+            for synomym in all_synonyms:
+                print("2depth\n", synomym)
+                replace_processor.add_keyword(synomym.text, cur_entity_value_name)
+
+            keyword_processor.add_keyword(cur_entity_value_name, cur_entity_name)
+
+initialize_entity()
+
 class SVM(APIView):
-
-    def __init__(self, **kwargs):
-        print("init svm")
-        self.text_clf_svm = self.train_data()
-        self.initialize_entity()
-        return super().__init__(**kwargs)
-
-    def get_noun(self, text):
-        api = KhaiiiApi()
-
-        anlayze = []    
-        for word in api.analyze(text):
-            for pos in word.morphs:
-                print("{0} - {1}".format(pos.lex, pos.tag))
-                if pos.tag.startswith('NN') or pos.tag.startswith('SL'):
-                    anlayze.append(pos.lex)
-        message = ''.join(anlayze)
-        return str(message)
-
-    def train_data(self):
-        all_examples = models.Example.objects.all()
-        q = all_examples.values(*['id', 'example', 'intent_id'])
-        print(q)
-
-        df = pd.DataFrame.from_records(q)
-        print(df)
-        x_data = df['example']
-        y_data = pd.Categorical(df['intent_id'])
-
-        cv = CountVectorizer(tokenizer=self.get_noun)
-        tdm = cv.fit_transform(x_data)
-        print(tdm.shape)
-        # pprint.pprint(cv.vocabulary_)
-        text_clf_svm = Pipeline([('vect', cv),
-                                ('tfidf', TfidfTransformer()),
-                                ('clf-svm', SGDClassifier(loss='log',
-                                                        penalty='l2',
-                                                        alpha=1e-3,
-                                                        max_iter=10,
-                                                        random_state=42
-                                                        ))])
-        print(text_clf_svm.fit(x_data, y_data))
-        return text_clf_svm
-
-    def initialize_entity(self):
-
-        self.keyword_processor = KeywordProcessor()
-        self.replace_processor = KeywordProcessor()
-
-        all_entity = models.Entity.objects.all()
-        print(all_entity)
-        for entity in all_entity:
-            print(entity.id)
-            print(entity.name)
-            cur_entity_name = entity.name
-
-            all_entity_values = models.EntityValue.objects.filter(entity__id=entity.id)
-            for entity_value in all_entity_values:
-                print("1depth\n", entity_value)
-                print(entity_value.id)
-                print(entity_value.entity_value_name)
-                cur_entity_value_name = entity_value.entity_value_name
-
-                all_synonyms = models.Synonym.objects.filter(entity_synonym__id=entity_value.id)
-                for synomym in all_synonyms:
-                    print("2depth\n", synomym)
-                    self.replace_processor.add_keyword(synomym.text, cur_entity_value_name)
-
-                self.keyword_processor.add_keyword(cur_entity_value_name, cur_entity_name)
 
     def get(self, request, format=None):
 
@@ -516,18 +521,18 @@ class SVM(APIView):
         user_message = request.data['msg']
         print(user_message)
 
-        replace_list = self.replace_processor.extract_keywords(user_message, span_info=True)
+        replace_list = replace_processor.extract_keywords(user_message, span_info=True)
         print("변경합니다")
         print(type(replace_list))
 
         if len(replace_list) > 0:
-            replace_user_message = self.replace_processor.replace_keywords(user_message)
+            replace_user_message = replace_processor.replace_keywords(user_message)
         else:
             replace_user_message = user_message
         print("치환 문자열")
         print(replace_user_message)
 
-        entityList = self.keyword_processor.extract_keywords(replace_user_message, span_info=True)
+        entityList = keyword_processor.extract_keywords(replace_user_message, span_info=True)
         print("변경합니다")
         print(entityList)
 
@@ -551,20 +556,40 @@ class SVM(APIView):
 
         print(entities)
 
-        idx = int(self.text_clf_svm.predict([user_message]))
-        print(idx)
+        probs = text_clf_svm.predict_proba([user_message])
 
-        probs = self.text_clf_svm.predict_proba([user_message])
-        print(probs)
-        print(probs.shape)
-        print(self.text_clf_svm.classes_)
+        limit=3
+        top_n_predictions = np.argsort(-probs, axis = 1)[:,:limit]
+        print(top_n_predictions)
 
-        probs_index = 0
-        for mapping_id in self.text_clf_svm.classes_:
-            if mapping_id == idx:
-                break
-            probs_index += 1
-                 
+        top_socs = text_clf_svm.classes_[top_n_predictions]
+        print(top_socs)
+
+        prob_intent_dict = dict(zip(top_socs[0], probs[0][top_n_predictions][0]))
+        print(prob_intent_dict)
+
+        probs_list =  []
+        for prob_intent_id in prob_intent_dict:
+            
+            try:
+                found_prob_intent = models.Intent.objects.get(id=prob_intent_id)
+            except models.Intent.DoesNotExist:
+                continue
+
+            print(prob_intent_id)
+            print(prob_intent_dict[prob_intent_id])
+            prob_intent_accuracy = prob_intent_dict[prob_intent_id]
+
+            hoho = {
+                'id': prob_intent_id,
+                'name': found_prob_intent.name,
+                'accuracy': prob_intent_accuracy
+            }
+            probs_list.append(hoho)
+        print(probs_list)
+
+        probs_index = top_n_predictions[0][0]
+        idx = top_socs[0][0]
 
         try:
             found_intent = models.Intent.objects.get(id=idx)
@@ -576,12 +601,15 @@ class SVM(APIView):
             }
             return Response(data=invalid_data, status=status.HTTP_204_NO_CONTENT)
 
-        serializer = serializers.ResponseIntentSerializer(found_intent)
+        # serializer = serializers.ResponseIntentSerializer(found_intent)
         
         response_data = {
             'entities': entities,
-            'name': serializer.data['name'],
-            'description': serializer.data['description'],
+            'name': found_intent.name,
+            'description': found_intent.description,
+            # 'name': serializer.data['name'],
+            # 'description': serializer.data['description'],
+            'outputs': probs_list,
             'accuracy':(probs[0][probs_index])
         }
 
