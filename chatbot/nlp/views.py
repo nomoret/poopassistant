@@ -308,18 +308,42 @@ class Nodes(APIView):
         user = request.user
         print(user)
         print(request.data)
-    
+        
         try:
-            found_node = models.Node.objects.get(id=request.data['index'])
-        except models.Node.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        print("find node ")
-        found_node.add_child(title="Undefined", desc="Undefined")
-
+            found_node_id = request.data['index']
+            try:
+                found_node = models.Node.objects.get(id=request.data['index'])
+                found_node.add_child(title="Undefined", desc="Undefined")
+            except models.Node.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        except:
+            models.Node.add_root(title="Undefined_too", desc="Undefined")
+            
         res = models.Node.dump_bulk()
 
         return Response(data=res, status=status.HTTP_200_OK)
+
+        # adding_response_data = request.data['response']
+
+        # if adding_response_data != '':
+
+        #     response_serializer = serializers.ResponseSerializer(data={ 'example': adding_response_data })
+
+        #     if response_serializer.is_valid():
+        #         response_serializer.save(node=found_node, creator=user)
+        #     else:
+        #         return Response(data=response_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # serializer = serializers.UpdateNodeSerializer(found_node, data=request.data)
+
+        # if serializer.is_valid():
+            
+        #     serializer.save()
+
+        #     print(serializer.data)
+        #     return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        # else:
+        #     return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
    
 node_tree_view =  Nodes.as_view();
 
@@ -383,26 +407,10 @@ class NodeDetail(APIView):
    
 node_detail_view =  NodeDetail.as_view();
 
-
-def get_noun(text):
-    api = KhaiiiApi()
-
-    anlayze = []    
-    for word in api.analyze(text):
-        for pos in word.morphs:
-            print("{0} - {1}".format(pos.lex, pos.tag))
-            if pos.tag.startswith('NN') or pos.tag.startswith('SL'):
-                anlayze.append(pos.lex)
-    message = ''.join(anlayze)
-    return str(message)
-
 class SVM(APIView):
 
     def __init__(self, **kwargs):
         print("init svm")
-        # if not self.text_clf_svm:
-        #     print("asdsa")
-        print("init")
         self.text_clf_svm = self.train_data()
         self.initialize_entity()
         return super().__init__(**kwargs)
@@ -447,6 +455,7 @@ class SVM(APIView):
     def initialize_entity(self):
 
         self.keyword_processor = KeywordProcessor()
+        self.replace_processor = KeywordProcessor()
 
         all_entity = models.Entity.objects.all()
         print(all_entity)
@@ -457,9 +466,16 @@ class SVM(APIView):
 
             all_entity_values = models.EntityValue.objects.filter(entity__id=entity.id)
             for entity_value in all_entity_values:
+                print("1depth\n", entity_value)
                 print(entity_value.id)
                 print(entity_value.entity_value_name)
                 cur_entity_value_name = entity_value.entity_value_name
+
+                all_synonyms = models.Synonym.objects.filter(entity_synonym__id=entity_value.id)
+                for synomym in all_synonyms:
+                    print("2depth\n", synomym)
+                    self.replace_processor.add_keyword(synomym.text, cur_entity_value_name)
+
                 self.keyword_processor.add_keyword(cur_entity_value_name, cur_entity_name)
 
     def get(self, request, format=None):
@@ -500,7 +516,18 @@ class SVM(APIView):
         user_message = request.data['msg']
         print(user_message)
 
-        entityList = self.keyword_processor.extract_keywords(user_message, span_info=True)
+        replace_list = self.replace_processor.extract_keywords(user_message, span_info=True)
+        print("변경합니다")
+        print(type(replace_list))
+
+        if len(replace_list) > 0:
+            replace_user_message = self.replace_processor.replace_keywords(user_message)
+        else:
+            replace_user_message = user_message
+        print("치환 문자열")
+        print(replace_user_message)
+
+        entityList = self.keyword_processor.extract_keywords(replace_user_message, span_info=True)
         print("변경합니다")
         print(entityList)
 
@@ -508,7 +535,14 @@ class SVM(APIView):
         for item in entityList:
             start_index = item[1]
             end_index = item[2]
-            origin_keyword = user_message[start_index:end_index]
+
+            # for replace_item in replace_list:
+            #     if replace_item[0] == replace_user_message[start_index:end_index]:
+            #         start_index = replace_item[1]
+            #         end_index = replace_item[2]
+            #         break
+
+            origin_keyword = replace_user_message[start_index:end_index]
             item = {
               "entity":item[0],
               "origin": origin_keyword

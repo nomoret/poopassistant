@@ -165,8 +165,17 @@ class ResponseSerializer(serializers.ModelSerializer):
         )    
 
 
+# class GreatSimpleIntentSerializer(serializers.ModelSerializer):
+
+#     class Meta:
+#         model = models.Intent
+#         fields = (
+#             'name',
+#         )
+
 class NodeSerializer(serializers.ModelSerializer):
     responses = ResponseSerializer(many=True)
+    message = SimpleIntentSerializer()
 
     class Meta:
         model = models.Node
@@ -181,6 +190,7 @@ class NodeSerializer(serializers.ModelSerializer):
 
 class UpdateNodeSerializer(serializers.ModelSerializer):
     responses = ResponseSerializer(many=True, read_only=True)
+    depth = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Node
@@ -188,5 +198,9 @@ class UpdateNodeSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'desc',
-            'responses'
+            'responses',
+            'depth',
         )
+
+    def get_depth(self, obj):
+        return obj.get_depth()
