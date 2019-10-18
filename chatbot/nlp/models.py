@@ -99,6 +99,10 @@ class Node(AL_Node):
     desc = models.CharField(max_length=255)
     message = models.ForeignKey(Intent, on_delete=models.PROTECT, null=True, blank=True)
 
+    @property
+    def depth(self):
+        return self.get_depth()
+
     def __str__(self):
         return 'Node - {0} : {1}'.format(self.title, self.desc)
     

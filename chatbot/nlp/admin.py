@@ -56,7 +56,7 @@ from treebeard.admin import TreeAdmin
 from treebeard.forms import movenodeform_factory
 
 @admin.register(models.Node)
-class MyAdmin(TreeAdmin):
+class NodeAdmin(TreeAdmin):
     list_display= (
         'parent',
         'sib_order',

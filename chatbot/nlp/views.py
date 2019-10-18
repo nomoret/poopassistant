@@ -575,9 +575,6 @@ class SVM(APIView):
                 found_prob_intent = models.Intent.objects.get(id=prob_intent_id)
             except models.Intent.DoesNotExist:
                 continue
-
-            print(prob_intent_id)
-            print(prob_intent_dict[prob_intent_id])
             prob_intent_accuracy = prob_intent_dict[prob_intent_id]
 
             hoho = {
@@ -588,29 +585,31 @@ class SVM(APIView):
             probs_list.append(hoho)
         print(probs_list)
 
-        probs_index = top_n_predictions[0][0]
-        idx = top_socs[0][0]
+        most_similar_intent_node = models.Node.objects.filter(message_id=probs_list[0]['id'])
 
-        try:
-            found_intent = models.Intent.objects.get(id=idx)
-        except models.Intent.DoesNotExist:
-            print("not found entity value")
-            invalid_data = {
-                'name': 'nothing',
-                'description': 'invalide intent'
-            }
-            return Response(data=invalid_data, status=status.HTTP_204_NO_CONTENT)
+        origin_depth = 1
 
-        # serializer = serializers.ResponseIntentSerializer(found_intent)
+        response_list = []
+        for proba_node in most_similar_intent_node:
+            print(proba_node)
+            print(proba_node.get_depth())
+            found_response = models.Response.objects.filter(node=proba_node.id)
+            response_list.append(found_response)
+
+        final_response = None
+        if len(response_list) == 0:
+            final_response = ''
+        else:
+            if len(response_list[0]) == 0:
+                final_response = ''
+            else:
+                final_response = response_list[0][0].example
         
         response_data = {
             'entities': entities,
-            'name': found_intent.name,
-            'description': found_intent.description,
-            # 'name': serializer.data['name'],
-            # 'description': serializer.data['description'],
-            'outputs': probs_list,
-            'accuracy':(probs[0][probs_index])
+            'intents': probs_list,
+            'input': user_message,
+            'output': final_response,
         }
 
         return Response(data=response_data, status=status.HTTP_200_OK)

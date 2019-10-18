@@ -185,12 +185,13 @@ class NodeSerializer(serializers.ModelSerializer):
             'title',
             'desc',
             'message',
-            'responses'
+            'responses',
+            'depth'
         )
 
 class UpdateNodeSerializer(serializers.ModelSerializer):
     responses = ResponseSerializer(many=True, read_only=True)
-    depth = serializers.SerializerMethodField()
+    # depth = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Node
@@ -202,5 +203,5 @@ class UpdateNodeSerializer(serializers.ModelSerializer):
             'depth',
         )
 
-    def get_depth(self, obj):
-        return obj.get_depth()
+    # def get_depth(self, obj):
+    #     return obj.get_depth()
