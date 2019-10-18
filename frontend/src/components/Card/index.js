@@ -40,11 +40,12 @@ class ChatCard extends Component {
   componentWillReceiveProps = nextProps => {
     if (nextProps.response) {
       console.log("componentWillReceiveProps", nextProps);
-      const { name, description, accuracy, entities } = nextProps.response;
+      const { intents, entities, output } = nextProps.response;
       const response = {
         type: "bot",
-        message: `${name} - ${description} 의도를 물어봤군요 정확도는 ${(
-          accuracy * 100.0
+        message: `${output}`,
+        proba: `#${intents[0].name} 의도 - 정확도 ${(
+          intents[0].accuracy * 100.0
         ).toFixed(2)}%`
       };
 
@@ -75,12 +76,20 @@ class ChatCard extends Component {
               <span>Chat with 테스트봇</span>
               <p>{`${this.state.history.length} Messages`}</p>
             </div>
-            <Button
-              className={styles.closeBtn}
-              onClick={this.props.closeChatPanel}
-            >
-              <Ionicon icon="ios-close" fontSize="68px" color="#047cc0" />
-            </Button>
+            <div className={styles.action}>
+              <div
+                className={styles.clearBtn}
+                onClick={this._clearMessageHistory}
+              >
+                Clear
+              </div>
+              <Button
+                className={styles.closeBtn}
+                onClick={this.props.closeChatPanel}
+              >
+                <Ionicon icon="ios-close" fontSize="68px" color="#047cc0" />
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardBody
@@ -95,7 +104,8 @@ class ChatCard extends Component {
             if (type === "user") {
               return <UserMessage key={index} message={message} />;
             } else {
-              return <BotMessage key={index} message={message} />;
+              const { proba } = conversation;
+              return <BotMessage key={index} message={message} proba={proba} />;
             }
           })}
           {this.state.entities &&
@@ -161,12 +171,20 @@ class ChatCard extends Component {
     });
   };
 
+  _clearMessageHistory = () => {
+    this.setState({
+      history: [],
+      message: "",
+      loading: false
+    });
+  };
+
   _onScroll = () => {};
 }
 
 const BotMessage = props => {
   // const { src, msg, time } = props;
-  const { message } = props;
+  const { message, proba } = props;
   return (
     <div className="d-flex justify-content-start mb-4">
       <div className={styles.imgContMsg}>
@@ -177,7 +195,8 @@ const BotMessage = props => {
         />
       </div>
       <div className={styles.msgCotainer}>
-        {message}
+        <div>{message}</div>
+        <div>{proba}</div>
         <span className={styles.msgTime}>8:40 AM, Today</span>
       </div>
     </div>

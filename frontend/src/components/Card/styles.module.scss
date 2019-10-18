@@ -77,11 +77,25 @@ $black_20: rgba(0,0,0,0.2);
         }
       }
 
-      .close-btn {
-        float: right;
-        border: none;
-        background-color: transparent;
+      .action {
+        display: flex;
+        align-items: center;
+
+        .clear-btn {
+          color: white;
+          background-color: transparent;
+          &:hover {
+            color: $default-font-color;
+            cursor: pointer;
+          }
+        }
+  
+        .close-btn {
+          border: none;
+          background-color: transparent;
+        }
       }
+
     }
 
     
