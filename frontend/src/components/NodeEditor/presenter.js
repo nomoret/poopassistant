@@ -56,6 +56,9 @@ const NodeEditor = props => {
               />
             </div>
           </div>
+          <div className={styles.item}>
+            {props.message && <div>{`# ${props.message.name}`}</div>}
+          </div>
         </section>
         {/* <section className={styles.cotenxt}>
           <div>This Set Context</div>
@@ -87,8 +90,10 @@ const NodeEditor = props => {
           <div>
             <input
               type="text"
+              style={{ width: "100%" }}
               name="response"
               placeholder="Enter response variation"
+              value={props.response}
               onChange={props.handleInputChange}
               onKeyPress={props.handleEnterKeyDown}
             />

@@ -35,19 +35,22 @@ class Container extends Component {
         id,
         title,
         desc,
+        message,
         responses
       });
     }
   };
 
   render() {
-    const { title, desc, response, responses } = this.state;
+    console.log(this.props);
+    const { title, desc, message, response, responses } = this.state;
     const { closeEdit } = this.props;
     return (
       <NodeEditor
         title={title}
         desc={desc}
-        // response={response}
+        message={message}
+        response={response}
         responses={responses}
         closeEdit={closeEdit}
         handleInputChange={this._handleInputChange}
@@ -81,12 +84,12 @@ class Container extends Component {
         responses
       };
 
-      console.log("modified node", node);
-      updateEditNode(id, node);
-
       this.setState({
         response: ""
       });
+
+      console.log("modified node", node);
+      updateEditNode(id, node);
     }
   };
 
