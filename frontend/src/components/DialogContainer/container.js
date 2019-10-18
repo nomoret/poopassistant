@@ -57,12 +57,11 @@ class Container extends Component {
     });
   };
 
-  _createChildNode = (e, node) => {
-    console.log(node);
+  _createChildNode = (e, index) => {
     e.preventDefault();
 
     const { addChildNode } = this.props;
-    addChildNode(node);
+    addChildNode(index);
   };
 
   _removeNode = (e, index) => {

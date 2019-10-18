@@ -24,6 +24,46 @@
   
       &:hover {
         background-color: #175D8D;
+        cursor: pointer;
+      }
+    }
+
+    .add-child-node {
+      border: none;
+      vertical-align: bottom;
+      margin-right: 8px;
+      height: 32px;
+      min-width: 120px;
+      background-color: #047cc0;
+      color: #fff;
+      font-weight: 400;
+      font-style: normal;
+      position: relative;
+      font-size: 1em;
+      text-align: center;
+  
+      &:hover {
+        background-color: #175D8D;
+        cursor: not-allowed;
+      }
+    }
+
+    .add-folder {
+      border: none;
+      vertical-align: bottom;
+      margin-right: 8px;
+      height: 32px;
+      min-width: 120px;
+      background-color: #047cc0;
+      color: #fff;
+      font-weight: 400;
+      font-style: normal;
+      position: relative;
+      font-size: 1em;
+      text-align: center;
+  
+      &:hover {
+        background-color: #175D8D;
         cursor: not-allowed;
       }
     }

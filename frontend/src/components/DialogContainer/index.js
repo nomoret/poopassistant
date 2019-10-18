@@ -24,7 +24,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(actionCreator.addChildNode(index));
     },
     removeNode: index => {
-      return dispatch(actionCreator.removeNode(index));
+      dispatch(actionCreator.removeNode(index));
     }
   };
 };
