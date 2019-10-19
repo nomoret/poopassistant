@@ -10,7 +10,7 @@ from .views import (
     entity_add_values_view,
     entity_value_detail_view,
     node_tree_view,
-    node_detail_view
+    node_detail_view,
 )
 
 app_name = "nlp"

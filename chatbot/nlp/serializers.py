@@ -150,7 +150,6 @@ class EntitySerializer(serializers.ModelSerializer):
             'creator',
         )
 
-
 class ResponseSerializer(serializers.ModelSerializer):
 
     creator = UserSerializer(read_only=True)

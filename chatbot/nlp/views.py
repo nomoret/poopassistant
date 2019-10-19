@@ -5,6 +5,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework import status
 from . import serializers
 from . import models
+from chatbot.analytics import views as analytics_views
 
 from konlpy.tag import Mecab
 from konlpy.tag import Twitter
@@ -295,7 +296,7 @@ class EntityValueDetail(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-entity_value_detail_view = EntityValueDetail.as_view();
+entity_value_detail_view = EntityValueDetail.as_view()
 
 class Nodes(APIView):
     def get(self, request, format=None):
@@ -407,7 +408,7 @@ class NodeDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
    
-node_detail_view =  NodeDetail.as_view();
+node_detail_view =  NodeDetail.as_view()
 
 
 def get_noun(text):
@@ -611,6 +612,9 @@ class SVM(APIView):
             'input': user_message,
             'output': final_response,
         }
+
+        """ write conversation history"""
+        analytics_views.create_history(user_message, probs_list[0]['id'], probs_list[0]['accuracy'], final_response, request.user)
 
         return Response(data=response_data, status=status.HTTP_200_OK)
         

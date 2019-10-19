@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
@@ -18,6 +18,9 @@ urlpatterns = [
     path("rest-auth/registration/", include('rest_auth.registration.urls')),
 
     # User management
+    path("analytics/",
+        include("chatbot.analytics.urls", namespace="analytics"),
+    ),
     path("nlp/",
         include("chatbot.nlp.urls", namespace="scenarios"),
     ),
@@ -28,6 +31,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path("", views.ReactAppView.as_view()),
+    # re_path(r'^[a-z]+', views.ReactAppView.as_view()),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )

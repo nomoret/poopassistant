@@ -78,7 +78,8 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     'chatbot.users.apps.UsersAppConfig',
-    'chatbot.nlp.apps.NlpConfig'
+    'chatbot.analytics.apps.AnalyticsConfig',
+    'chatbot.nlp.apps.NlpConfig',
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
