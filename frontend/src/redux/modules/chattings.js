@@ -1,3 +1,5 @@
+import { actionCreators as userAction } from "redux/modules/users";
+
 const SET_RESPOENSE_MESSAGE = "SET_RESPOENSE_MESSAGE";
 
 function setResponseMessage(response) {
@@ -23,7 +25,14 @@ function sendMessage(msg) {
         msg
       })
     })
-      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+        if (response.status === 401) {
+          dispatch(userAction.logout());
+        }
+
+        return response.json();
+      })
       .then(json => dispatch(setResponseMessage(json)))
       .catch(err => console.log(err));
   };
