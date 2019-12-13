@@ -17,7 +17,7 @@ const IntentPanel = props => {
       />
       <div className={styles.content}>
         {props.loading ? (
-          "loading"
+          <div style={{ marginLeft: "48px" }}>loading</div>
         ) : (
           <IntentList
             list={props.intents}

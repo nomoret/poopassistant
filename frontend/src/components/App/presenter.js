@@ -10,6 +10,7 @@ import Entities from "components/EntityPanel";
 import ChatPanel from "components/ChatPanel";
 import Navigation from "components/Navigation";
 import DialogContainer from "components/DialogContainer";
+import Analytics from "components/Analytics";
 
 const App = props => (
   <div className={styles.app}>
@@ -41,7 +42,7 @@ const PublicRoutes = props => (
         <Route exact path="/entities" component={Entities} />
         <Route exact path="/dialog" component={DialogContainer} />
         <Route exact path="/deploy" component={Deploy} />
-        <Route exact path="/improve" component={Improve} />
+        <Route exact path="/improve" component={Analytics} />
         <Route path="/" component={BasicContainer} />
       </Switch>
     </div>
@@ -53,7 +54,6 @@ const PublicRoutes = props => (
 
 const BasicContainer = () => <div className={styles.appPanel}>main</div>;
 const Deploy = () => <div className={styles.appPanel}>Deploy</div>;
-const Improve = () => <div className={styles.appPanel}>Improve</div>;
 
 const PrivateRoutes = props => (
   <div className={styles.appContainer}>
