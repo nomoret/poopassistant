@@ -4,13 +4,15 @@ import Container from "./container";
 
 const mapStateToProps = state => {
   const {
-    nodes: { editNode }
+    nodes: { editNode },
+    intents: { intentList }
   } = state;
 
   console.log("im node editor!!!!", editNode);
 
   return {
-    editNode
+    editNode,
+    intentList
   };
 };
 
@@ -22,7 +24,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Container);
+export default connect(mapStateToProps, mapDispatchToProps)(Container);

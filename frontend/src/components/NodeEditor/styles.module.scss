@@ -77,28 +77,44 @@
         font-weight: 400;
       }
 
-      .builder {
+      .edit {
         display: flex;
         align-items: center;
         flex-wrap: wrap;
 
-        .input {
-          border: none;
-          border-bottom: 2px solid #d8d8d8;
-        }
+        .edit-item {
+          display: flex;
+          flex-direction: row;
 
-        .remove {
-          &:hover {
-            cursor: not-allowed;
+          .input {
+            border: none;
+            border-bottom: 2px solid #d8d8d8;
+          }
+  
+          .remove {
+            &:hover {
+              cursor: not-allowed;
+            }
+          }
+  
+          .add {
+            
+            &:hover {
+              cursor: not-allowed;
+            }
           }
         }
+      }
 
-        .add {
-          
-          &:hover {
-            cursor: not-allowed;
-          }
-        }
+      .dropdown {
+        position: relative;
+        left: 0px;
+        border: solid 1px #8897a2;
+        padding: 8px;
+        z-index: 1000;
+        padding: 8px 0;
+        margin-top: 4px;
+        overflow-y: auto;
       }
 
       

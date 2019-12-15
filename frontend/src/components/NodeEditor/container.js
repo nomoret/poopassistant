@@ -7,7 +7,9 @@ class Container extends Component {
     loading: true,
     title: "",
     desc: "",
-    response: ""
+    condition: "",
+    response: "",
+    autocompleteList: null
   };
 
   static propTypes = {
@@ -42,17 +44,26 @@ class Container extends Component {
   };
 
   render() {
-    console.log(this.props);
-    const { title, desc, message, response, responses } = this.state;
+    const {
+      title,
+      desc,
+      condition,
+      message,
+      response,
+      responses,
+      autocompleteList
+    } = this.state;
     const { closeEdit } = this.props;
     return (
       <NodeEditor
         title={title}
         desc={desc}
+        condition={condition}
         message={message}
         response={response}
         responses={responses}
         closeEdit={closeEdit}
+        autocompleteList={autocompleteList}
         handleInputChange={this._handleInputChange}
         handleEnterKeyDown={this._handleEnterKeyDown}
       />
@@ -60,10 +71,32 @@ class Container extends Component {
   }
 
   _handleInputChange = e => {
-    console.log(e.target);
     const {
       target: { value, name }
     } = e;
+
+    if (name === "condition") {
+      //얻어오기
+      const { intentList } = this.props;
+
+      if (intentList && value.length > 0) {
+        let result = [];
+        intentList.forEach((v, i) => {
+          if (
+            v.name.substr(0, value.length).toUpperCase() == value.toUpperCase()
+          ) {
+            result.push(v);
+          }
+        });
+        this.setState({
+          autocompleteList: result
+        });
+      } else {
+        this.setState({
+          autocompleteList: null
+        });
+      }
+    }
 
     this.setState({
       [name]: value

@@ -3,7 +3,6 @@ import styles from "./styles.module.scss";
 import Ionicon from "react-ionicons";
 
 const NodeEditor = props => {
-  console.log("NodeEditor", props);
   return (
     <div className={styles.nodeEditor}>
       <header className={styles.header}>
@@ -35,27 +34,43 @@ const NodeEditor = props => {
       <div className={styles.editor}>
         <section className={styles.condition}>
           <div>If assistant recognizes:</div>
-          <div className={styles.builder}>
-            <input
-              className={styles.input}
-              type="text"
-              placeholder="Enter the intent, entity or context varibales..."
-            />
-            <div className={styles.remove}>
-              <Ionicon
-                icon="ios-remove-circle-outline"
-                fontSize="24px"
-                color="#047cc0"
+          <div className={styles.edit}>
+            <div className={styles.editItem}>
+              <input
+                className={styles.input}
+                type="text"
+                placeholder="Enter the intent, entity or context varibales..."
+                name="condition"
+                value={props.condition}
+                onChange={props.handleInputChange}
               />
-            </div>
-            <div className={styles.add}>
-              <Ionicon
-                icon="ios-add-circle-outline"
-                fontSize="24px"
-                color="#047cc0"
-              />
+              <div className={styles.remove}>
+                <Ionicon
+                  icon="ios-remove-circle-outline"
+                  fontSize="24px"
+                  color="#047cc0"
+                />
+              </div>
+              <div className={styles.add}>
+                <Ionicon
+                  icon="ios-add-circle-outline"
+                  fontSize="24px"
+                  color="#047cc0"
+                />
+              </div>
             </div>
           </div>
+          {props.autocompleteList && (
+            <div className={styles.dropdown}>
+              <h5>Intent List</h5>
+              <ul>
+                {props.autocompleteList.map((v, i) => {
+                  console.log(v);
+                  return <li key={i}>{`${v.name} - ${v.description}`}</li>;
+                })}
+              </ul>
+            </div>
+          )}
           <div className={styles.item}>
             {props.message && <div>{`# ${props.message.name}`}</div>}
           </div>
