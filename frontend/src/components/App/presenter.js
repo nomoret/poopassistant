@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./styles.module.scss";
 import { Route, Switch } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import Sidebar from "components/SideBar";
 import Auth from "components/Auth";
 import EditHeader from "components/EditHeader";
@@ -57,6 +58,10 @@ const Deploy = () => <div className={styles.appPanel}>Deploy</div>;
 
 const PrivateRoutes = props => (
   <div className={styles.appContainer}>
+    <Helmet>
+      <meta charSet="utf-8" />
+      <title>Log In</title>
+    </Helmet>
     <div className={styles.appContent}>
       <Switch>
         <Route path="/" component={Auth} />
