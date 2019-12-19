@@ -8,9 +8,11 @@ const DialogContainer = props => {
   return (
     <div className={styles.dialogContainer}>
       <header className={styles.dialogHeader}>
-        <div className={styles.addNode}>Add node</div>
-        <div className={styles.addNode}>Add child node</div>
-        <div className={styles.addNode}>Add folder</div>
+        <div className={styles.addNode} onClick={props.createChildNode}>
+          Add node
+        </div>
+        <div className={styles.addChildNode}>Add child node</div>
+        <div className={styles.addFolder}>Add folder</div>
         <div className={styles.setting}>
           <Ionicon
             icon="ios-settings-outline"

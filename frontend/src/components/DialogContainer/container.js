@@ -40,13 +40,14 @@ class Container extends Component {
 
   _openNodeEdit = (...thisArgs) => {
     console.log("open node", thisArgs);
-    this.setState({
-      seeingLikes: true
-    });
 
     const node = thisArgs[0];
     const { selectEditNode } = this.props;
     selectEditNode(node.id);
+
+    this.setState({
+      seeingLikes: true
+    });
   };
 
   _closeNodeEdit = e => {
@@ -57,8 +58,9 @@ class Container extends Component {
     });
   };
 
-  _createChildNode = (e, index) => {
-    e.preventDefault();
+  _createChildNode = index => e => {
+    // console.log(e, index);
+    // e.preventDefault();
 
     const { addChildNode } = this.props;
     addChildNode(index);
